@@ -19,6 +19,7 @@ public class AssessSum {
     @Column(name = "ID", nullable = false)
     private UUID id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
     @Column(name = "YEAR", length = 4, nullable = false)
     private int year;
