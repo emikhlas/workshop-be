@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ogya.workshop.performance_appraisal.util.UUIDUtil.uuidToBinary;
-
 @Service
 public class UserServImpl implements UserServ {
 
