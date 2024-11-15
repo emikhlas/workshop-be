@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.entity.User;
 import java.sql.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -29,8 +30,8 @@ public class UserReqDto {
     private Integer enabled;
     @JsonProperty("password")
     private String password;
-    @JsonProperty("role_id")
-    private UUID roleId;
+    @JsonProperty("role")
+    private Set<UUID> role;
     @JsonProperty("division_id")
     private UUID divisionId;
 
@@ -44,7 +45,6 @@ public class UserReqDto {
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setRoleId(userDto.getRoleId());
         user.setDivisionId(userDto.getDivisionId());
         return user;
     }

@@ -45,9 +45,6 @@ public class User {
     @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "ROLE_ID", nullable = false)
-    private UUID roleId;
-
     @Column(name = "DIVISION_ID", nullable = false)
     private UUID divisionId;
 

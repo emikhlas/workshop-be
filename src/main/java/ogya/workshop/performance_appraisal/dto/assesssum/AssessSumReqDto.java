@@ -5,9 +5,7 @@ import lombok.*;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.entity.User;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor

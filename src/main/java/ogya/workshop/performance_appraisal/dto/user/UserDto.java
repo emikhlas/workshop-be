@@ -5,6 +5,7 @@ import lombok.*;
 import ogya.workshop.performance_appraisal.entity.User;
 
 import java.sql.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -31,8 +32,8 @@ public class UserDto {
     private Integer enabled;
     @JsonProperty("password")
     private String password;
-    @JsonProperty("role_id")
-    private UUID roleId;
+    @JsonProperty("role")
+    private Set<String> role;
     @JsonProperty("division_id")
     private UUID divisionId;
 
@@ -48,7 +49,6 @@ public class UserDto {
         userDto.setJoinDate(Date.valueOf(user.getJoinDate()));
         userDto.setEnabled(user.getEnabled());
         userDto.setPassword(user.getPassword());
-        userDto.setRoleId(user.getRoleId());
         userDto.setDivisionId(user.getDivisionId());
         return userDto;
     }
@@ -64,7 +64,6 @@ public class UserDto {
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setRoleId(userDto.getRoleId());
         user.setDivisionId(userDto.getDivisionId());
         return user;
     }
