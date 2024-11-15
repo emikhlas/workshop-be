@@ -1,9 +1,11 @@
 package ogya.workshop.performance_appraisal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -12,22 +14,24 @@ import java.util.UUID;
 @Data
 @ToString
 @Entity
-@Table(name = "ACHIEVEMENT")
-public class Achieve {
-
+@Table(name = "EMPLOYEE_ACHIEVEMENT_SKILL")
+public class EmpAchieveSkill {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "ACHIEVEMENT_NAME", length = 100, nullable = false)
-    private String achievementName;
+    @Column(name = "USER_ID")
+    private UUID userId;
 
-    @Column(name = "GROUP_ACHIEVEMENT_ID")
-    private UUID groupAchievementId;
+    @Column(name = "ACHIEVEMENT_ID")
+    private UUID achievementId;
 
-    @Column(name = "ENABLED", nullable = false)
-    private Integer enabled = 1;
+    @Column(name = "SCORE")
+    private int score;
+
+    @Column(name = "ASSESSMENT_YEAR")
+    private int assessmentYear;
 
     @Column(name = "CREATED_BY")
     private UUID createdBy;

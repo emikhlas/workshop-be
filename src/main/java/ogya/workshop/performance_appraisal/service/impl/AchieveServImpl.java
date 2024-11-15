@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,8 @@ public class AchieveServImpl implements AchieveServ {
     }
 
     // Update an existing Achieve
-    public AchieveDto updateAchievement(String id, AchieveDto achieveDto) {
+    @Override
+    public AchieveDto updateAchievement(UUID id, AchieveDto achieveDto) {
         if (!achieveRepo.existsById(id)) {
             throw new IllegalArgumentException("Achievement with this ID does not exist.");
         }
@@ -47,7 +49,7 @@ public class AchieveServImpl implements AchieveServ {
 
     // Retrieve by ID
     @Override
-    public Optional<AchieveDto> getAchievementById(String id) {
+    public Optional<AchieveDto> getAchievementById(UUID id) {
         Optional<Achieve> achieve = achieveRepo.findById(id);
         return achieve.map(this::convertToDto);
     }
@@ -61,8 +63,9 @@ public class AchieveServImpl implements AchieveServ {
 
     // Delete an Achieve by ID
     @Override
-    public void deleteAchievement(String id) {
+    public boolean deleteAchievement(UUID id) {
         achieveRepo.deleteById(id);
+        return true;
     }
 
     // Helper method to convert Achieve entity to AchieveDto
