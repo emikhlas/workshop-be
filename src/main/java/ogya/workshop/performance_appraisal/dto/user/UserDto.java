@@ -1,10 +1,12 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.entity.User;
 
 import java.sql.Date;
+import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import java.sql.Date;
 @ToString
 public class UserDto {
     @JsonProperty("id")
-    private String id;
+    private UUID id;
     @JsonProperty("username")
     private String username;
     @JsonProperty("full_name")
@@ -23,17 +25,17 @@ public class UserDto {
     @JsonProperty("email_address")
     private String emailAddress;
     @JsonProperty("employee_status")
-    private int employeeStatus;
+    private Integer employeeStatus;
     @JsonProperty("join_date")
     private Date joinDate;
     @JsonProperty("enabled")
-    private int enabled;
+    private Integer enabled;
     @JsonProperty("password")
     private String password;
-    @JsonProperty("role_id")
-    private String roleId;
+    @JsonProperty("role")
+    private Set<String> role;
     @JsonProperty("division_id")
-    private String divisionId;
+    private UUID divisionId;
 
 
     public static UserDto fromEntity(User user) {
@@ -47,7 +49,6 @@ public class UserDto {
         userDto.setJoinDate(Date.valueOf(user.getJoinDate()));
         userDto.setEnabled(user.getEnabled());
         userDto.setPassword(user.getPassword());
-        userDto.setRoleId(user.getRoleId());
         userDto.setDivisionId(user.getDivisionId());
         return userDto;
     }
@@ -63,7 +64,6 @@ public class UserDto {
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setRoleId(userDto.getRoleId());
         user.setDivisionId(userDto.getDivisionId());
         return user;
     }
