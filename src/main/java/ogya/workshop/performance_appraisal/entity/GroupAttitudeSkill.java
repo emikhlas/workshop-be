@@ -26,7 +26,7 @@ public class GroupAttitudeSkill {
     private int percentage;
 
     @Column(name = "ENABLED", nullable = false)
-    private Integer enabled = 1;
+    private int enabled = 1;
 
     @Column(name = "CREATED_BY")
     private UUID createdBy;

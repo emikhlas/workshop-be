@@ -3,9 +3,7 @@ package ogya.workshop.performance_appraisal.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,8 +12,8 @@ import java.util.UUID;
 @Data
 @ToString
 @Entity
-@Table(name = "EMP_ACHIEVEMENT_SKILL")
-public class EmpAchieveSkill {
+@Table(name = "EMP_DEV_PLAN")
+public class EmpDevPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)
@@ -24,11 +22,8 @@ public class EmpAchieveSkill {
     @Column(name = "USER_ID")
     private UUID userId;
 
-    @Column(name = "ACHIEVEMENT_ID")
-    private UUID achievementId;
-
-    @Column(name = "SCORE", length = 3)
-    private int score;
+    @Column(name = "DEV_PLAN_ID")
+    private UUID devPlanId;
 
     @Column(name = "ASSESSMENT_YEAR", length = 4)
     private int assessmentYear;
@@ -47,7 +42,6 @@ public class EmpAchieveSkill {
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
 
-    // Set createdAt before the entity is persisted
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
@@ -55,7 +49,6 @@ public class EmpAchieveSkill {
         }
     }
 
-    // Set updatedAt before the entity is updated
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = new Date();

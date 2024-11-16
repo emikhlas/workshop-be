@@ -18,5 +18,5 @@ public class AttitudeSkillDto {
     @JsonProperty("group_attitude_skill_id")
     private UUID groupAttitudeSkillId;
     @JsonProperty("enabled")
-    private String enabled;
+    private Integer enabled;
 }

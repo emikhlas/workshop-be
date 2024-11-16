@@ -10,11 +10,13 @@ import java.util.UUID;
 @Builder
 @Data
 @ToString
-public class GroupAchieveDto {
+public class EmpDevPlanDto {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("group_achievement_name")
-    private String groupAchievementName;
-    @JsonProperty("enabled")
-    private Integer enabled;
+    @JsonProperty("user_id")
+    private UUID userId;
+    @JsonProperty("dev_plan_id")
+    private UUID devPlanId;
+    @JsonProperty("assessment_year")
+    private Integer assessmentYear;
 }

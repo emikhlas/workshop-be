@@ -18,5 +18,5 @@ public class GroupAttitudeSkillDto {
     @JsonProperty("percentage")
     private int percentage;
     @JsonProperty("enabled")
-    private String enabled;
+    private Integer enabled;
 }

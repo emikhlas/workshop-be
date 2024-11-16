@@ -77,7 +77,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         attitudeSkillDto.setId(attitudeSkill.getId());
         attitudeSkillDto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
         attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkillId());
-        attitudeSkillDto.setEnabled(attitudeSkill.getEnabled() != null ? attitudeSkill.getEnabled().toString() : null);
+        attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
         return attitudeSkillDto;
     }
 
@@ -87,7 +87,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         attitudeSkill.setId(attitudeSkillDto.getId());
         attitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
         attitudeSkill.setGroupAttitudeSkillId(attitudeSkillDto.getGroupAttitudeSkillId());
-        attitudeSkill.setEnabled(attitudeSkillDto.getEnabled() != null ? Integer.parseInt(attitudeSkillDto.getEnabled()) : 1);
+        attitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
         return attitudeSkill;
     }
 

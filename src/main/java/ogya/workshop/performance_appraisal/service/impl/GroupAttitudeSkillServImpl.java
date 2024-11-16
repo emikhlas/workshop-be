@@ -75,7 +75,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkillDto.setId(groupAttitudeSkill.getId());
         groupAttitudeSkillDto.setGroupName(groupAttitudeSkill.getGroupName());
         groupAttitudeSkillDto.setPercentage(groupAttitudeSkill.getPercentage());
-        groupAttitudeSkillDto.setEnabled(groupAttitudeSkill.getEnabled() != null ? groupAttitudeSkill.getEnabled().toString() : null);
+        groupAttitudeSkillDto.setEnabled(groupAttitudeSkill.getEnabled());
         return groupAttitudeSkillDto;
     }
 
@@ -85,7 +85,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkill.setId(groupAttitudeSkillDto.getId());
         groupAttitudeSkill.setGroupName(groupAttitudeSkillDto.getGroupName());
         groupAttitudeSkill.setPercentage(groupAttitudeSkillDto.getPercentage());
-        groupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled() != null ? Integer.parseInt(groupAttitudeSkillDto.getEnabled()) : 1);
+        groupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
         return groupAttitudeSkill;
     }
 }

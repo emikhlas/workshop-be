@@ -73,7 +73,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         GroupAchieveDto groupAchieveDto = new GroupAchieveDto();
         groupAchieveDto.setId(groupAchieve.getId());
         groupAchieveDto.setGroupAchievementName(groupAchieve.getGroupAchievementName());
-        groupAchieveDto.setEnabled(groupAchieve.getEnabled() != null ? groupAchieve.getEnabled().toString() : null);
+        groupAchieveDto.setEnabled(groupAchieve.getEnabled());
         return groupAchieveDto;
     }
 
@@ -82,7 +82,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         GroupAchieve groupAchieve = new GroupAchieve();
         groupAchieve.setId(groupAchieveDto.getId());
         groupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
-        groupAchieve.setEnabled(groupAchieveDto.getEnabled() != null ? Integer.parseInt(groupAchieveDto.getEnabled()) : 1);
+        groupAchieve.setEnabled(groupAchieveDto.getEnabled());
         return groupAchieve;
     }
 }

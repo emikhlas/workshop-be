@@ -17,5 +17,5 @@ public class AchieveDto {
     @JsonProperty("group_achievement_id")
     private UUID groupAchievementId;
     @JsonProperty("enabled")
-    private String enabled;
+    private Integer enabled;
 }
