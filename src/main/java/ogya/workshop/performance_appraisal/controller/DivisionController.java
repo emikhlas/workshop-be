@@ -1,0 +1,59 @@
+package ogya.workshop.performance_appraisal.controller;
+
+import ogya.workshop.performance_appraisal.dto.DevPlanDto;
+import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.service.DivisionServ;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/division")
+public class DivisionController {
+
+    @Autowired
+    private DivisionServ divisionServ;
+
+    // Create a new Achievement
+    @PostMapping
+    public ResponseEntity<DivisionDto> createDivision(@RequestBody DivisionDto divisionDto) {
+        DivisionDto newDivision = divisionServ.createDivision(divisionDto);
+        return ResponseEntity.ok(newDivision);
+    }
+
+    // Update an existing Achievement
+    @PutMapping("/{id}")
+    public ResponseEntity<DivisionDto> updateDivision(@PathVariable UUID id, @RequestBody DivisionDto divisionDto) {
+        try {
+            DivisionDto updateDivision = divisionServ.updateDivision(id, divisionDto);
+            return ResponseEntity.ok(updateDivision);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    // Retrieve by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<DivisionDto> getDivisionById(@PathVariable UUID id) {
+        Optional<DivisionDto> division = divisionServ.getDivisionById(id);
+        return division.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Retrieve all Achievements
+    @GetMapping
+    public List<DivisionDto> getAllDivision() {
+        return divisionServ.getAllDivision();
+    }
+
+    // Delete an Achievement by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteDivision(@PathVariable UUID id) {
+        Boolean response = divisionServ.deleteDivision(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+}
