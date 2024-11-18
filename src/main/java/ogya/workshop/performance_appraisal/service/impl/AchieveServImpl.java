@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.dto.AchieveDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
+import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,9 @@ public class AchieveServImpl implements AchieveServ {
         AchieveDto achieveDto = new AchieveDto();
         achieveDto.setId(achieve.getId());
         achieveDto.setAchievementName(achieve.getAchievementName());
-        achieveDto.setGroupAchievementId(achieve.getGroupAchievementId());
+        if (achieve.getGroupAchieve() != null) {
+            achieveDto.setGroupAchievementId(achieve.getGroupAchieve().getId());
+        }
         achieveDto.setEnabled(achieve.getEnabled());
         return achieveDto;
     }
@@ -83,7 +86,11 @@ public class AchieveServImpl implements AchieveServ {
         Achieve achieve = new Achieve();
         achieve.setId(achieveDto.getId());
         achieve.setAchievementName(achieveDto.getAchievementName());
-        achieve.setGroupAchievementId(achieveDto.getGroupAchievementId());
+        if (achieveDto.getGroupAchievementId() != null) {
+            GroupAchieve groupAchieve = new GroupAchieve();
+            groupAchieve.setId(achieveDto.getGroupAchievementId());
+            achieve.setGroupAchieve(groupAchieve);
+        }
         achieve.setEnabled(achieveDto.getEnabled());
         return achieve;
     }

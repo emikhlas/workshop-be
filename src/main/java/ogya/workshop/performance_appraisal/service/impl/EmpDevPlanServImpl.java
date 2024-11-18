@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.dto.DevPlanDto;
 import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
 import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,12 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     private EmpDevPlanDto convertToDto(EmpDevPlan empDevPlan) {
         EmpDevPlanDto empDevPlanDto = new EmpDevPlanDto();
         empDevPlanDto.setId(empDevPlan.getId());
-        empDevPlanDto.setUserId(empDevPlan.getUserId());
-        empDevPlanDto.setDevPlanId(empDevPlan.getDevPlanId());
+        if (empDevPlan.getUser() != null) {
+            empDevPlanDto.setUserId(empDevPlan.getUser().getId());
+        }
+        if (empDevPlan.getDevPlan() != null) {
+            empDevPlanDto.setDevPlanId(empDevPlan.getDevPlan().getId());
+        }
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
         return empDevPlanDto;
     }
@@ -84,8 +89,16 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     private EmpDevPlan convertToEntity(EmpDevPlanDto empDevPlanDto) {
         EmpDevPlan empDevPlan = new EmpDevPlan();
         empDevPlan.setId(empDevPlanDto.getId());
-        empDevPlan.setUserId(empDevPlanDto.getUserId());
-        empDevPlan.setDevPlanId(empDevPlanDto.getDevPlanId());
+        if (empDevPlanDto.getUserId() != null) {
+            User user = new User();
+            user.setId(empDevPlanDto.getUserId());
+            empDevPlan.setUser(user);
+        }
+        if (empDevPlanDto.getDevPlanId() != null) {
+            DevPlan devPlan = new DevPlan();
+            devPlan.setId(empDevPlanDto.getDevPlanId());
+            empDevPlan.setDevPlan(devPlan);
+        }
         empDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
         return empDevPlan;
     }

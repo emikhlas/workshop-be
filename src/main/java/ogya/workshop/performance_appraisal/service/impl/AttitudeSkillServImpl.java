@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.repository.AttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,9 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         AttitudeSkillDto attitudeSkillDto = new AttitudeSkillDto();
         attitudeSkillDto.setId(attitudeSkill.getId());
         attitudeSkillDto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
-        attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkillId());
+        if (attitudeSkill.getGroupAttitudeSkill() != null) {
+            attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkill().getId());
+        }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
         return attitudeSkillDto;
     }
@@ -86,7 +89,11 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         AttitudeSkill attitudeSkill = new AttitudeSkill();
         attitudeSkill.setId(attitudeSkillDto.getId());
         attitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
-        attitudeSkill.setGroupAttitudeSkillId(attitudeSkillDto.getGroupAttitudeSkillId());
+        if (attitudeSkillDto.getGroupAttitudeSkillId() != null) {
+            GroupAttitudeSkill groupAttitudeSkill = new GroupAttitudeSkill();
+            groupAttitudeSkill.setId(attitudeSkillDto.getGroupAttitudeSkillId());
+            attitudeSkill.setGroupAttitudeSkill(groupAttitudeSkill);
+        }
         attitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
         return attitudeSkill;
     }

@@ -2,9 +2,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.dto.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
-import ogya.workshop.performance_appraisal.entity.EmpAttitudeSkill;
-import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
+import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +74,12 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     private EmpAttitudeSkillDto convertToDto(EmpAttitudeSkill empAttitudeSkill) {
         EmpAttitudeSkillDto empAttitudeSkillDto = new EmpAttitudeSkillDto();
         empAttitudeSkillDto.setId(empAttitudeSkill.getId());
-        empAttitudeSkillDto.setUserId(empAttitudeSkill.getUserId());
-        empAttitudeSkillDto.setAttitudeSkillId(empAttitudeSkill.getAttitudeSkillId());
+        if (empAttitudeSkill.getUser() != null) {
+            empAttitudeSkillDto.setUserId(empAttitudeSkill.getUser().getId());
+        }
+        if (empAttitudeSkill.getAttitudeSkill() != null) {
+            empAttitudeSkillDto.setAttitudeSkillId(empAttitudeSkill.getAttitudeSkill().getId());
+        }
         empAttitudeSkillDto.setScore(empAttitudeSkill.getScore());
         empAttitudeSkillDto.setAssessmentYear(empAttitudeSkill.getAssessmentYear());
         return empAttitudeSkillDto;
@@ -87,8 +89,16 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     private EmpAttitudeSkill convertToEntity(EmpAttitudeSkillDto empAttitudeSkillDto) {
         EmpAttitudeSkill empAttitudeSkill = new EmpAttitudeSkill();
         empAttitudeSkill.setId(empAttitudeSkillDto.getId());
-        empAttitudeSkill.setUserId(empAttitudeSkillDto.getUserId());
-        empAttitudeSkill.setAttitudeSkillId(empAttitudeSkillDto.getAttitudeSkillId());
+        if (empAttitudeSkillDto.getUserId() != null) {
+            User user = new User();
+            user.setId(empAttitudeSkillDto.getUserId());
+            empAttitudeSkill.setUser(user);
+        }
+        if (empAttitudeSkillDto.getAttitudeSkillId() != null) {
+            AttitudeSkill attitudeSkill = new AttitudeSkill();
+            attitudeSkill.setId(empAttitudeSkillDto.getAttitudeSkillId());
+            empAttitudeSkill.setAttitudeSkill(attitudeSkill);
+        }
         empAttitudeSkill.setScore(empAttitudeSkillDto.getScore());
         empAttitudeSkill.setAssessmentYear(empAttitudeSkillDto.getAssessmentYear());
         return empAttitudeSkill;

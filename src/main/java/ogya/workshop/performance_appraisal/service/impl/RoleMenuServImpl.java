@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.dto.MenuDto;
 import ogya.workshop.performance_appraisal.dto.RoleMenuDto;
 import ogya.workshop.performance_appraisal.entity.Menu;
+import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.RoleMenu;
 import ogya.workshop.performance_appraisal.repository.RoleMenuRepo;
 import ogya.workshop.performance_appraisal.service.RoleMenuServ;
@@ -68,8 +69,12 @@ public class RoleMenuServImpl implements RoleMenuServ {
     private RoleMenuDto convertToDto(RoleMenu roleMenu) {
         RoleMenuDto roleMenuDto = new RoleMenuDto();
         roleMenuDto.setId(roleMenu.getId());
-        roleMenuDto.setRoleId(roleMenu.getRoleId());
-        roleMenuDto.setMenuId(roleMenu.getMenuId());
+        if (roleMenu.getRole() != null) {
+            roleMenuDto.setRoleId(roleMenu.getRole().getId());
+        }
+        if (roleMenu.getMenu() != null) {
+            roleMenuDto.setMenuId(roleMenu.getMenu().getId());
+        }
         return roleMenuDto;
     }
 
@@ -77,8 +82,16 @@ public class RoleMenuServImpl implements RoleMenuServ {
     private RoleMenu convertToEntity(RoleMenuDto roleMenuDto) {
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setId(roleMenuDto.getId());
-        roleMenu.setRoleId(roleMenuDto.getRoleId());
-        roleMenu.setMenuId(roleMenuDto.getMenuId());
+        if (roleMenuDto.getRoleId() != null) {
+            Role role = new Role();
+            role.setId(roleMenuDto.getRoleId());
+            roleMenu.setRole(role);
+        }
+        if (roleMenuDto.getMenuId() != null) {
+            Menu menu = new Menu();
+            menu.setId(roleMenuDto.getMenuId());
+            roleMenu.setMenu(menu);
+        }
         return roleMenu;
     }
 }

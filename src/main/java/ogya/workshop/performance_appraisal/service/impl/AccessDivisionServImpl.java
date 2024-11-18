@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.dto.AccessDivisionDto;
 import ogya.workshop.performance_appraisal.dto.DivisionDto;
 import ogya.workshop.performance_appraisal.entity.AccessDivision;
 import ogya.workshop.performance_appraisal.entity.Division;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AccessDivisionRepo;
 import ogya.workshop.performance_appraisal.service.AccessDivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,12 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
     private AccessDivisionDto convertToDto(AccessDivision accessDivision) {
         AccessDivisionDto accessDivisionDto = new AccessDivisionDto();
         accessDivisionDto.setId(accessDivision.getId());
-        accessDivisionDto.setUserId(accessDivision.getUserId());
-        accessDivisionDto.setDivisionId(accessDivision.getDivisionId());
+        if (accessDivision.getUser() != null) {
+            accessDivisionDto.setUserId(accessDivision.getUser().getId());
+        }
+        if (accessDivision.getDivision() != null) {
+            accessDivisionDto.setDivisionId(accessDivision.getDivision().getId());
+        }
         return accessDivisionDto;
     }
 
@@ -77,8 +82,14 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
     private AccessDivision convertToEntity(AccessDivisionDto accessDivisionDto) {
         AccessDivision accessDivision = new AccessDivision();
         accessDivision.setId(accessDivisionDto.getId());
-        accessDivision.setUserId(accessDivisionDto.getUserId());
-        accessDivision.setDivisionId(accessDivisionDto.getDivisionId());
+
+        User user = new User();
+        user.setId(accessDivisionDto.getUserId());
+        accessDivision.setUser(user);
+
+        Division division = new Division();
+        division.setId(accessDivisionDto.getDivisionId());
+        accessDivision.setDivision(division);
         return accessDivision;
     }
 

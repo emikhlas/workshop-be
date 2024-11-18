@@ -18,9 +18,13 @@ public class AccessDivision {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "USER_ID")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Column(name = "DIVISION_ID")
-    private UUID divisionId;
+    @ManyToOne
+    @JoinColumn(name = "DIVISION_ID")
+    private Division division;
+
+
 }

@@ -2,8 +2,10 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.dto.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpAchieveSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import org.slf4j.Logger;
@@ -81,8 +83,12 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     private EmpAchieveSkillDto convertToDto(EmpAchieveSkill empAchieveSkill) {
         EmpAchieveSkillDto empAchieveSkillDto = new EmpAchieveSkillDto();
         empAchieveSkillDto.setId(empAchieveSkill.getId());
-        empAchieveSkillDto.setUserId(empAchieveSkill.getUserId());
-        empAchieveSkillDto.setAchievementId(empAchieveSkill.getAchievementId());
+        if (empAchieveSkill.getUser() != null) {
+            empAchieveSkillDto.setUserId(empAchieveSkill.getUser().getId());
+        }
+        if (empAchieveSkill.getAchieve() != null) {
+            empAchieveSkillDto.setAchievementId(empAchieveSkill.getAchieve().getId());
+        }
         empAchieveSkillDto.setScore(empAchieveSkill.getScore());
         empAchieveSkillDto.setAssessmentYear(empAchieveSkill.getAssessmentYear());
         return empAchieveSkillDto;
@@ -92,8 +98,16 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     private EmpAchieveSkill convertToEntity(EmpAchieveSkillDto empAchieveSkillDto) {
         EmpAchieveSkill empAchieveSkill = new EmpAchieveSkill();
         empAchieveSkill.setId(empAchieveSkillDto.getId());
-        empAchieveSkill.setAchievementId(empAchieveSkillDto.getAchievementId());
-        empAchieveSkill.setUserId(empAchieveSkillDto.getUserId());
+        if (empAchieveSkillDto.getUserId() != null) {
+            User user = new User();
+            user.setId(empAchieveSkillDto.getUserId());
+            empAchieveSkill.setUser(user);
+        }
+        if (empAchieveSkillDto.getAchievementId() != null) {
+            Achieve achieve = new Achieve();
+            achieve.setId(empAchieveSkillDto.getAchievementId());
+            empAchieveSkill.setAchieve(achieve);
+        }
         empAchieveSkill.setScore(empAchieveSkillDto.getScore());
         empAchieveSkill.setAssessmentYear(empAchieveSkillDto.getAssessmentYear());
         return empAchieveSkill;
