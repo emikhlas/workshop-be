@@ -50,14 +50,14 @@ public class User {
     private Division division;
 
     @Column(name = "CREATED_AT", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    private User createdBy;
 
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
 
     @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    private User updatedBy;
 }

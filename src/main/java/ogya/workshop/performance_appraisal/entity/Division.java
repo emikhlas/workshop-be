@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -26,25 +27,25 @@ public class Division {
     private UUID createdBy;
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
-    private LocalDate createdAt;
+    private Date createdAt;
 
     @Column(name = "UPDATED_BY")
     private UUID updatedBy;
 
     @Column(name = "UPDATED_AT")
-    private LocalDate updatedAt;
+    private Date updatedAt;
 
     // Set createdAt before the entity is persisted
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
-            this.createdAt = LocalDate.now();
+            this.createdAt = new Date();
         }
     }
 
     // Set updatedAt before the entity is updated
     @PreUpdate
     public void preUpdate() {
-        this.updatedAt = LocalDate.now();
+        this.updatedAt = new Date();
     }
 }

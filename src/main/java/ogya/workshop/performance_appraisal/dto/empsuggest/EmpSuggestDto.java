@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.entity.EmpSuggest;
+import ogya.workshop.performance_appraisal.entity.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -23,13 +25,13 @@ public class EmpSuggestDto {
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
     @JsonProperty("created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UUID createdBy;
+    private User createdBy;
     @JsonProperty("updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UUID updatedBy;
+    private User updatedBy;
 
     public static EmpSuggestDto fromEntity(EmpSuggest empSuggest) {
         EmpSuggestDto empSuggestDto = new EmpSuggestDto();

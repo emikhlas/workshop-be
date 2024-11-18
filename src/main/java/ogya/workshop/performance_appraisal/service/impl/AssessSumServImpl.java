@@ -12,10 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -63,49 +62,45 @@ public class AssessSumServImpl implements AssessSumServ {
 
     @Override
     public AssessSumWithUserDto createAssessSum(AssessSumReqDto assessSumReqDto) {
-        Optional<User> user = userRepo.findById(assessSumReqDto.getUserId());
-        if(user.isPresent()){
-            AssessSum assessSum = AssessSumReqDto.toEntity(assessSumReqDto, user.get(),UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"), LocalDate.now() ,null ,null);
-            return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
-        } else {
-            throw new RuntimeException("User not found");
-        }
-
+        Log.info("Start createAssessSum in AssessSumServImpl");
+        User user = userRepo.findById(assessSumReqDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User  not found"));
+        AssessSum assessSum = AssessSumReqDto.toEntity(assessSumReqDto);
+        assessSum.setUser(user);
+        assessSum.setCreatedAt(LocalDateTime.now());
+        Log.info("End createAssessSum in AssessSumServImpl");
+        return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
     }
 
     @Override
     public AssessSumWithUserDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto) {
         Log.info("Start updateAssessSum in AssessSumServImpl");
 
-        // Fetch the existing AssessSum
         AssessSum assessSum = assessSumRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("AssessSum not found"));
 
-        // Create an instance for the updated AssessSum
-        AssessSum updateAsses = new AssessSum();
-        updateAsses.setId(id);
-        updateAsses.setCreatedAt(assessSum.getCreatedAt());
-        updateAsses.setCreatedBy(assessSum.getCreatedBy());
-        updateAsses.setUpdatedBy(UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")); // Ideally, get this from the current user context
-        updateAsses.setUpdatedAt(LocalDate.now());
-
-        // Update the user if a new user ID is provided
-        if (assessSumReqDto.getId() != null) {
-            User user = userRepo.findById(assessSumReqDto.getId())
+        if (assessSumReqDto.getUserId() != null) {
+            User user = userRepo.findById(assessSumReqDto.getUserId())
                     .orElseThrow(() -> new RuntimeException("User  not found"));
-            updateAsses.setUser (user);
-        } else {
-            updateAsses.setUser (assessSum.getUser ());
+            assessSum.setUser(user);
         }
 
-        // Update year, status, and score if they are provided
-        updateAsses.setYear(Optional.ofNullable(assessSumReqDto.getYear()).orElse(assessSum.getYear()));
-        updateAsses.setStatus(Optional.ofNullable(assessSumReqDto.getStatus()).orElse(assessSum.getStatus()));
-        updateAsses.setScore(Optional.ofNullable(assessSumReqDto.getScore()).orElse(assessSum.getScore()));
+        if (assessSumReqDto.getYear() != null) {
+            assessSum.setYear(assessSumReqDto.getYear());
+        }
 
-        // Save the updated AssessSum and return the DTO
+        if (assessSumReqDto.getScore() != null) {
+            assessSum.setScore(assessSumReqDto.getScore());
+        }
+
+        if (assessSumReqDto.getStatus() != null) {
+            assessSum.setStatus(assessSumReqDto.getStatus());
+        }
+
+        assessSum.setUpdatedAt(LocalDateTime.now());
+
         Log.info("End updateAssessSum in AssessSumServImpl");
-        return AssessSumWithUserDto.fromEntity(assessSumRepo.save(updateAsses));
+        return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
     }
     @Override
     public Boolean deleteAssessSum(UUID id) {

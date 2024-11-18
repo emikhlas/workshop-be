@@ -73,11 +73,11 @@ public class UserServImpl implements UserServ {
     @Override
     public UserDto createUser(UserReqDto userDto) {
         Log.info("Start createUser in UserServImpl");
-
-        Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
-
         User user = UserReqDto.toEntity(userDto);
-        user.setDivision(division);
+        if (userDto.getDivisionId() != null) {
+            Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
+            user.setDivision(division);
+        }
 
         userRepo.save(user);
         for(UUID roleId : userDto.getRole()) {

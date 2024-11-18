@@ -27,7 +27,7 @@ public class DivisionServImpl implements DivisionServ {
     @Override
     public DivisionDto createDivision(DivisionDto divisionDto) {
         Division division = convertToEntity(divisionDto);
-        division.setCreatedAt(LocalDate.now());  // Set the creation date
+        division.setCreatedAt(new Date());  // Set the creation date
         Division savedDivision = divisionRepo.save(division);
         return convertToDto(savedDivision);
     }
@@ -41,11 +41,11 @@ public class DivisionServImpl implements DivisionServ {
 
         Division division = convertToEntity(divisionDto);
         division.setId(id);  // Use the ID from the URL path
-        division.setUpdatedAt(LocalDate.now());  // Set the updated date
+        division.setUpdatedAt(new Date());  // Set the updated date
 
         // Ensure 'createdAt' is set if it's null during the update
         if (division.getCreatedAt() == null) {
-            division.setCreatedAt(LocalDate.now());  // Set current date if null
+            division.setCreatedAt(new Date());  // Set current date if null
         }
 
         Division updatedDivision = divisionRepo.save(division);

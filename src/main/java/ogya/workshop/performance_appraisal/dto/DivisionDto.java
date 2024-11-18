@@ -5,6 +5,7 @@ import lombok.*;
 import ogya.workshop.performance_appraisal.entity.Division;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,11 +19,11 @@ public class DivisionDto {
     @JsonProperty("division_name")
     private String divisionName;
     @JsonProperty("created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
     @JsonProperty("created_by")
     private UUID createdBy;
     @JsonProperty("updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
     @JsonProperty("updated_by")
     private UUID updatedBy;
 
