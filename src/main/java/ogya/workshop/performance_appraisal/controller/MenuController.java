@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 import ogya.workshop.performance_appraisal.service.MenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class MenuController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<MenuDto> createMenu(@RequestBody MenuDto menuDto) {
+    public ResponseEntity<MenuDto> createMenu(@RequestBody MenuCreateDto menuDto) {
         MenuDto newMenu = menuServ.createMenu(menuDto);
         return ResponseEntity.ok(newMenu);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<MenuDto> updateMenu(@PathVariable UUID id, @RequestBody MenuDto menuDto) {
+    public ResponseEntity<MenuDto> updateMenu(@PathVariable UUID id, @RequestBody MenuCreateDto menuDto) {
         try {
             MenuDto updateMenu = menuServ.updateMenu(id, menuDto);
             return ResponseEntity.ok(updateMenu);

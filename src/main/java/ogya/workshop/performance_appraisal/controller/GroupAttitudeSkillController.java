@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class GroupAttitudeSkillController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<GroupAttitudeSkillDto> createGroupAttitudeSkill(@RequestBody GroupAttitudeSkillDto groupAttitudeSkillDto) {
+    public ResponseEntity<GroupAttitudeSkillDto> createGroupAttitudeSkill(@RequestBody GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkillDto newGroupAttitudeSkill = groupAttitudeSkillServ.createGroupAttitudeSkill(groupAttitudeSkillDto);
         return ResponseEntity.ok(newGroupAttitudeSkill);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<GroupAttitudeSkillDto> updateGroupAttitudeSkill(@PathVariable UUID id, @RequestBody GroupAttitudeSkillDto groupAttitudeSkillDto) {
+    public ResponseEntity<GroupAttitudeSkillDto> updateGroupAttitudeSkill(@PathVariable UUID id, @RequestBody GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         try {
             GroupAttitudeSkillDto updateGroupAttitudeSkill = groupAttitudeSkillServ.updateGroupAttitudeSkill(id, groupAttitudeSkillDto);
             return ResponseEntity.ok(updateGroupAttitudeSkill);

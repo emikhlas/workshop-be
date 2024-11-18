@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
@@ -21,7 +22,7 @@ public class AchieveServImpl implements AchieveServ {
 
     // Create a new Achieve
     @Override
-    public AchieveDto createAchievement(AchieveDto achieveDto) {
+    public AchieveDto createAchievement(AchieveCreateDto achieveDto) {
         Achieve achieve = convertToEntity(achieveDto);
         achieve.setCreatedAt(new Date());  // Set the creation date
         Achieve savedAchieve = achieveRepo.save(achieve);
@@ -30,7 +31,7 @@ public class AchieveServImpl implements AchieveServ {
 
     // Update an existing Achieve
     @Override
-    public AchieveDto updateAchievement(UUID id, AchieveDto achieveDto) {
+    public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
         if (!achieveRepo.existsById(id)) {
             throw new IllegalArgumentException("Achievement with this ID does not exist.");
         }
@@ -86,9 +87,8 @@ public class AchieveServImpl implements AchieveServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private Achieve convertToEntity(AchieveDto achieveDto) {
+    private Achieve convertToEntity(AchieveCreateDto achieveDto) {
         Achieve achieve = new Achieve();
-        achieve.setId(achieveDto.getId());
         achieve.setAchievementName(achieveDto.getAchievementName());
         if (achieveDto.getGroupAchievementId() != null) {
             GroupAchieve groupAchieve = new GroupAchieve();

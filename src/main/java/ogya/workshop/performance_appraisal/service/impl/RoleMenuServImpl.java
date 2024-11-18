@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuDto;
 import ogya.workshop.performance_appraisal.entity.Menu;
 import ogya.workshop.performance_appraisal.entity.Role;
@@ -22,7 +23,7 @@ public class RoleMenuServImpl implements RoleMenuServ {
 
     // Create a new Group Achieve
     @Override
-    public RoleMenuDto createRoleMenu(RoleMenuDto roleMenuDto) {
+    public RoleMenuDto createRoleMenu(RoleMenuCreateDto roleMenuDto) {
         RoleMenu roleMenu = convertToEntity(roleMenuDto);
         RoleMenu savedRoleMenu = roleMenuRepo.save(roleMenu);
         return convertToDto(savedRoleMenu);
@@ -30,7 +31,7 @@ public class RoleMenuServImpl implements RoleMenuServ {
 
     // Update an existing Achieve
     @Override
-    public RoleMenuDto updateRoleMenu(UUID id, RoleMenuDto roleMenuDto) {
+    public RoleMenuDto updateRoleMenu(UUID id, RoleMenuCreateDto roleMenuDto) {
         if (!roleMenuRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -77,9 +78,8 @@ public class RoleMenuServImpl implements RoleMenuServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private RoleMenu convertToEntity(RoleMenuDto roleMenuDto) {
+    private RoleMenu convertToEntity(RoleMenuCreateDto roleMenuDto) {
         RoleMenu roleMenu = new RoleMenu();
-        roleMenu.setId(roleMenuDto.getId());
         if (roleMenuDto.getRoleId() != null) {
             Role role = new Role();
             role.setId(roleMenuDto.getRoleId());

@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
@@ -21,7 +22,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
     // Create a new Group Achieve
     @Override
-    public GroupAttitudeSkillDto createGroupAttitudeSkill(GroupAttitudeSkillDto groupAttitudeSkillDto) {
+    public GroupAttitudeSkillDto createGroupAttitudeSkill(GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill groupAttitudeSkill = convertToEntity(groupAttitudeSkillDto);
         groupAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
         GroupAttitudeSkill savedGroupAttitudeSkill = groupAttitudeSkillRepo.save(groupAttitudeSkill);
@@ -30,7 +31,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
     // Update an existing Achieve
     @Override
-    public GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillDto groupAttitudeSkillDto) {
+    public GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         if (!groupAttitudeSkillRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -84,9 +85,8 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private GroupAttitudeSkill convertToEntity(GroupAttitudeSkillDto groupAttitudeSkillDto) {
+    private GroupAttitudeSkill convertToEntity(GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill groupAttitudeSkill = new GroupAttitudeSkill();
-        groupAttitudeSkill.setId(groupAttitudeSkillDto.getId());
         groupAttitudeSkill.setGroupName(groupAttitudeSkillDto.getGroupName());
         groupAttitudeSkill.setPercentage(groupAttitudeSkillDto.getPercentage());
         groupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());

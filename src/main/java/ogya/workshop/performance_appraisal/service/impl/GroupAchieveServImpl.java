@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
@@ -20,7 +21,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
 
     // Create a new Group Achieve
     @Override
-    public GroupAchieveDto createGroupAchieve(GroupAchieveDto groupAchieveDto) {
+    public GroupAchieveDto createGroupAchieve(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = convertToEntity(groupAchieveDto);
         groupAchieve.setCreatedAt(new Date());  // Set the creation date
         GroupAchieve savedGroupAchieve = groupAchieveRepo.save(groupAchieve);
@@ -29,7 +30,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
 
     // Update an existing Achieve
     @Override
-    public GroupAchieveDto updateGroupAchieve(UUID id, GroupAchieveDto groupAchieveDto) {
+    public GroupAchieveDto updateGroupAchieve(UUID id, GroupAchieveCreateDto groupAchieveDto) {
         if (!groupAchieveRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -82,9 +83,8 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private GroupAchieve convertToEntity(GroupAchieveDto groupAchieveDto) {
+    private GroupAchieve convertToEntity(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = new GroupAchieve();
-        groupAchieve.setId(groupAchieveDto.getId());
         groupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
         groupAchieve.setEnabled(groupAchieveDto.getEnabled());
         return groupAchieve;

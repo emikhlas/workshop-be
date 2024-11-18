@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
@@ -27,7 +28,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
 
     // Create a new Group Achieve
     @Override
-    public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillDto empAchieveSkillDto) {
+    public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto) {
         System.out.println("dto: "+ empAchieveSkillDto);
         EmpAchieveSkill empAchieveSkill = convertToEntity(empAchieveSkillDto);
         System.out.println("entity :" + empAchieveSkill);
@@ -38,7 +39,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
 
     // Update an existing Achieve
     @Override
-    public EmpAchieveSkillDto updateEmpAchieveSkill(UUID id, EmpAchieveSkillDto empAchieveSkillDto) {
+    public EmpAchieveSkillDto updateEmpAchieveSkill(UUID id, EmpAchieveSkillCreateDto empAchieveSkillDto) {
         if (!empAchieveSkillRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -97,9 +98,8 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private EmpAchieveSkill convertToEntity(EmpAchieveSkillDto empAchieveSkillDto) {
+    private EmpAchieveSkill convertToEntity(EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkill empAchieveSkill = new EmpAchieveSkill();
-        empAchieveSkill.setId(empAchieveSkillDto.getId());
         if (empAchieveSkillDto.getUserId() != null) {
             User user = new User();
             user.setId(empAchieveSkillDto.getUserId());

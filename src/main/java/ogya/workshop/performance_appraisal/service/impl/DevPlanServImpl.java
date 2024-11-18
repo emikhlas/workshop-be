@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.devplan.DevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.devplan.DevPlanDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
@@ -21,7 +22,7 @@ public class DevPlanServImpl implements DevPlanServ {
 
     // Create a new Group Achieve
     @Override
-    public DevPlanDto createDevPlan(DevPlanDto devPlanDto) {
+    public DevPlanDto createDevPlan(DevPlanCreateDto devPlanDto) {
         DevPlan devPlan = convertToEntity(devPlanDto);
         devPlan.setCreatedAt(new Date());  // Set the creation date
         DevPlan savedDevPlan = devPlanRepo.save(devPlan);
@@ -30,7 +31,7 @@ public class DevPlanServImpl implements DevPlanServ {
 
     // Update an existing Achieve
     @Override
-    public DevPlanDto updateDevPlan(UUID id, DevPlanDto devPlanDto) {
+    public DevPlanDto updateDevPlan(UUID id, DevPlanCreateDto devPlanDto) {
         if (!devPlanRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -83,9 +84,8 @@ public class DevPlanServImpl implements DevPlanServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private DevPlan convertToEntity(DevPlanDto devPlanDto) {
+    private DevPlan convertToEntity(DevPlanCreateDto devPlanDto) {
         DevPlan devPlan = new DevPlan();
-        devPlan.setId(devPlanDto.getId());
         devPlan.setPlan(devPlanDto.getPlan());
         devPlan.setEnabled(devPlanDto.getEnabled());
         return devPlan;

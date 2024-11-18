@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
@@ -22,7 +23,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
 
     // Create a new Group Achieve
     @Override
-    public AttitudeSkillDto createAttitudeSkill(AttitudeSkillDto attitudeSkillDto) {
+    public AttitudeSkillDto createAttitudeSkill(AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill attitudeSkill = convertToEntity(attitudeSkillDto);
         attitudeSkill.setCreatedAt(new Date());  // Set the creation date
         AttitudeSkill savedAttitudeSkill = attitudeSkillRepo.save(attitudeSkill);
@@ -31,7 +32,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
 
     // Update an existing Achieve
     @Override
-    public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillDto attitudeSkillDto) {
+    public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillCreateDto attitudeSkillDto) {
         if (!attitudeSkillRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -87,9 +88,8 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private AttitudeSkill convertToEntity(AttitudeSkillDto attitudeSkillDto) {
+    private AttitudeSkill convertToEntity(AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill attitudeSkill = new AttitudeSkill();
-        attitudeSkill.setId(attitudeSkillDto.getId());
         attitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
         if (attitudeSkillDto.getGroupAttitudeSkillId() != null) {
             GroupAttitudeSkill groupAttitudeSkill = new GroupAttitudeSkill();

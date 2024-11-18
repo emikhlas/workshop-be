@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuDto;
 import ogya.workshop.performance_appraisal.service.RoleMenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class RoleMenuController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<RoleMenuDto> createRoleMenu(@RequestBody RoleMenuDto roleMenuDto) {
+    public ResponseEntity<RoleMenuDto> createRoleMenu(@RequestBody RoleMenuCreateDto roleMenuDto) {
         RoleMenuDto newRoleMenu = roleMenuServ.createRoleMenu(roleMenuDto);
         return ResponseEntity.ok(newRoleMenu);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<RoleMenuDto> updateRoleMenu(@PathVariable UUID id, @RequestBody RoleMenuDto roleMenuDto) {
+    public ResponseEntity<RoleMenuDto> updateRoleMenu(@PathVariable UUID id, @RequestBody RoleMenuCreateDto roleMenuDto) {
         try {
             RoleMenuDto updateRoleMenu = roleMenuServ.updateRoleMenu(id, roleMenuDto);
             return ResponseEntity.ok(updateRoleMenu);

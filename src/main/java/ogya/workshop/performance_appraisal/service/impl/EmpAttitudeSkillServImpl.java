@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
@@ -21,7 +22,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
 
     // Create a new Group Achieve
     @Override
-    public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillDto empAttitudeSkillDto) {
+    public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
         empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
         EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
@@ -30,7 +31,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
 
     // Update an existing Achieve
     @Override
-    public EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillDto empAttitudeSkillDto) {
+    public EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         if (!empAttitudeSkillRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -89,9 +90,8 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private EmpAttitudeSkill convertToEntity(EmpAttitudeSkillDto empAttitudeSkillDto) {
+    private EmpAttitudeSkill convertToEntity(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkill empAttitudeSkill = new EmpAttitudeSkill();
-        empAttitudeSkill.setId(empAttitudeSkillDto.getId());
         if (empAttitudeSkillDto.getUserId() != null) {
             User user = new User();
             user.setId(empAttitudeSkillDto.getUserId());

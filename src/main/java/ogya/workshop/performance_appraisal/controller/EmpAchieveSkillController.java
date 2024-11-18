@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class EmpAchieveSkillController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<EmpAchieveSkillDto> createEmpAchieveSkill(@RequestBody EmpAchieveSkillDto empAchieveSkillDto) {
+    public ResponseEntity<EmpAchieveSkillDto> createEmpAchieveSkill(@RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkillDto newEmpAchieveSkill = empAchieveSkillServ.createEmpAchieveSkill(empAchieveSkillDto);
         return ResponseEntity.ok(newEmpAchieveSkill);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<EmpAchieveSkillDto> updateEmpAchieveSkill(@PathVariable UUID id, @RequestBody EmpAchieveSkillDto empAchieveSkillDto) {
+    public ResponseEntity<EmpAchieveSkillDto> updateEmpAchieveSkill(@PathVariable UUID id, @RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
         try {
             EmpAchieveSkillDto updateEmpAchieveSkill = empAchieveSkillServ.updateEmpAchieveSkill(id, empAchieveSkillDto);
             return ResponseEntity.ok(updateEmpAchieveSkill);
