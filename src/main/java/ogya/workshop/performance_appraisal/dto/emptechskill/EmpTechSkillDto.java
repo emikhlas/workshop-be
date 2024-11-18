@@ -1,15 +1,12 @@
 package ogya.workshop.performance_appraisal.dto.emptechskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.*;
 import ogya.workshop.performance_appraisal.dto.techskill.TechSkillDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
-import ogya.workshop.performance_appraisal.entity.TechSkill;
-import ogya.workshop.performance_appraisal.entity.User;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -29,13 +26,13 @@ public class EmpTechSkillDto {
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
     @JsonProperty("created_by")
-    private UUID createdBy;
+    private UserDto createdBy;
     @JsonProperty("created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     @JsonProperty("updated_by")
-    private UUID updatedBy;
+    private UserDto updatedBy;
     @JsonProperty("updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     public static EmpTechSkillDto fromEntity(EmpTechSkill empTechSkill) {
         EmpTechSkillDto dto = new EmpTechSkillDto();
@@ -44,9 +41,9 @@ public class EmpTechSkillDto {
         dto.setTechSkill(TechSkillDto.fromEntity(empTechSkill.getTechSkill()));
         dto.setScore(empTechSkill.getScore());
         dto.setAssessmentYear(empTechSkill.getAssessmentYear());
-        dto.setCreatedBy(empTechSkill.getCreatedBy());
+        dto.setCreatedBy(UserDto.fromEntity(empTechSkill.getCreatedBy()));
         dto.setCreatedAt(empTechSkill.getCreatedAt());
-        dto.setUpdatedBy(empTechSkill.getUpdatedBy());
+        dto.setUpdatedBy(UserDto.fromEntity(empTechSkill.getUpdatedBy()));
         dto.setUpdatedAt(empTechSkill.getUpdatedAt());
         return dto;
     }

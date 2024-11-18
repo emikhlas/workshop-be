@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -83,7 +84,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(empTechSkillDto);
         empTechSkill.setUser(user);
         empTechSkill.setTechSkill(techSkill);
-        empTechSkill.setCreatedAt(LocalDate.now());
+        empTechSkill.setCreatedAt(LocalDateTime.now());
         empTechSkillRepo.save(empTechSkill);
         Log.info("End save in EmpTechSkillServImpl");
         return EmpTechSkillDto.fromEntity(empTechSkill);
@@ -106,7 +107,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         if(empTechSkillDto.getTechSkillId() != null) empTechSkill.setTechSkill(techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found")));
         if(empTechSkillDto.getScore() != null) empTechSkill.setScore(empTechSkillDto.getScore());
         if(empTechSkillDto.getAssessmentYear() != null) empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
-        empTechSkill.setUpdatedAt(LocalDate.now());
+        empTechSkill.setUpdatedAt(LocalDateTime.now());
         empTechSkillRepo.save(empTechSkill);
         Log.info("End update in EmpTechSkillServImpl");
         return EmpTechSkillDto.fromEntity(empTechSkill);

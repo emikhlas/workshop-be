@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,10 +53,9 @@ public class RoleServImpl implements RoleServ {
     @Override
     public RoleDto createRole(RoleReqDto roleDto) {
         Log.info("Start createRole in RoleServImpl");
-        Log.info("roleDto: {}", roleDto);
         Role role = RoleReqDto.toEntity(roleDto);
         Log.info("role: {}", role);
-        role.setCreatedAt(LocalDate.now());
+        role.setCreatedAt(LocalDateTime.now());
         roleRepo.save(role);
         Log.info("End createRole in RoleServImpl");
         return RoleDto.fromEntity(role);
@@ -65,19 +64,12 @@ public class RoleServImpl implements RoleServ {
     @Override
     public RoleDto updateRole(UUID id,RoleReqDto roleDto) {
         Log.info("Start updateRole in RoleServImpl");
-        Optional<Role> currentRole = roleRepo.findById(id);
-        if(currentRole.isEmpty()){
-            throw new RuntimeException("Role not found");
-        }
-
-        Role newRole = RoleReqDto.toEntity(roleDto);
-        newRole.setId(id);
-        newRole.setCreatedBy(currentRole.get().getCreatedBy());
-        newRole.setCreatedAt(currentRole.get().getCreatedAt());
-        newRole.setUpdatedAt(LocalDate.now());
-        roleRepo.save(newRole);
+        Role currentRole = roleRepo.findById(id).orElseThrow(() -> new RuntimeException("Role not found"));
+        if(roleDto.getRolename() != null) currentRole.setRolename(roleDto.getRolename());
+        currentRole.setUpdatedAt(LocalDateTime.now());
+        roleRepo.save(currentRole);
         Log.info("End updateRole in RoleServImpl");
-        return RoleDto.fromEntity(newRole);
+        return RoleDto.fromEntity(currentRole);
     }
 
     @Override

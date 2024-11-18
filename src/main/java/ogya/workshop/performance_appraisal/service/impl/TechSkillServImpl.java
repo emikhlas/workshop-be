@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +49,7 @@ public class TechSkillServImpl implements TechSkillServ {
     public TechSkillDto save(TechSkillCreateDto dto) {
         Log.info("Start save in TechSkillServImpl");
         TechSkill techSkill = TechSkillCreateDto.toEntity(dto);
-        techSkill.setCreatedAt(LocalDate.now());
+        techSkill.setCreatedAt(LocalDateTime.now());
         techSkillRepo.save(techSkill);
         Log.info("End save in TechSkillServImpl");
         return TechSkillDto.fromEntity(techSkill);
@@ -60,7 +61,7 @@ public class TechSkillServImpl implements TechSkillServ {
         TechSkill currentTechSkill = techSkillRepo.findById(id).orElseThrow(() -> new RuntimeException("TechSkill not found"));
         if(dto.getTechSkill() != null) currentTechSkill.setTechSkill(dto.getTechSkill());
         if(dto.getEnabled() != null) currentTechSkill.setEnabled(dto.getEnabled());
-        currentTechSkill.setUpdatedAt(LocalDate.now());
+        currentTechSkill.setUpdatedAt(LocalDateTime.now());
         techSkillRepo.save(currentTechSkill);
         Log.info("End update in TechSkillServImpl");
         return TechSkillDto.fromEntity(currentTechSkill);
