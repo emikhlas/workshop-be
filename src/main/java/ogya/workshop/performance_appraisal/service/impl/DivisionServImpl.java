@@ -7,8 +7,10 @@ import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.service.DivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +27,7 @@ public class DivisionServImpl implements DivisionServ {
     @Override
     public DivisionDto createDivision(DivisionDto divisionDto) {
         Division division = convertToEntity(divisionDto);
-        division.setCreatedAt(new Date());  // Set the creation date
+        division.setCreatedAt(LocalDate.now());  // Set the creation date
         Division savedDivision = divisionRepo.save(division);
         return convertToDto(savedDivision);
     }
@@ -39,11 +41,11 @@ public class DivisionServImpl implements DivisionServ {
 
         Division division = convertToEntity(divisionDto);
         division.setId(id);  // Use the ID from the URL path
-        division.setUpdatedAt(new Date());  // Set the updated date
+        division.setUpdatedAt(LocalDate.now());  // Set the updated date
 
         // Ensure 'createdAt' is set if it's null during the update
         if (division.getCreatedAt() == null) {
-            division.setCreatedAt(new Date());  // Set current date if null
+            division.setCreatedAt(LocalDate.now());  // Set current date if null
         }
 
         Division updatedDivision = divisionRepo.save(division);

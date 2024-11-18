@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.DivisionDto;
 import ogya.workshop.performance_appraisal.entity.User;
 
 import java.sql.Date;
@@ -34,8 +35,8 @@ public class UserDto {
     private String password;
     @JsonProperty("role")
     private Set<String> role;
-    @JsonProperty("division_id")
-    private UUID divisionId;
+    @JsonProperty("division")
+    private DivisionDto division;
 
 
     public static UserDto fromEntity(User user) {
@@ -49,7 +50,7 @@ public class UserDto {
         userDto.setJoinDate(Date.valueOf(user.getJoinDate()));
         userDto.setEnabled(user.getEnabled());
         userDto.setPassword(user.getPassword());
-        userDto.setDivisionId(user.getDivisionId());
+        userDto.setDivision(DivisionDto.fromEntity(user.getDivision()));
         return userDto;
     }
 
@@ -64,7 +65,7 @@ public class UserDto {
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setDivisionId(userDto.getDivisionId());
+        user.setDivision(DivisionDto.toEntity(userDto.getDivision()));
         return user;
     }
 }

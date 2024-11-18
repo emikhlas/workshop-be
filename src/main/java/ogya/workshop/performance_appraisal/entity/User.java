@@ -45,8 +45,9 @@ public class User {
     @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "DIVISION_ID", nullable = false)
-    private UUID divisionId;
+    @ManyToOne
+    @JoinColumn(name = "DIVISION_ID", nullable = false)
+    private Division division;
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

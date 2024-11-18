@@ -2,9 +2,11 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
+import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.entity.UserRole;
+import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.repository.RoleRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.repository.UserRoleRepo;
@@ -29,6 +31,9 @@ public class UserServImpl implements UserServ {
 
     @Autowired
     private RoleRepo roleRepo;
+
+    @Autowired
+    private DivisionRepo divisionRepo;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -69,8 +74,10 @@ public class UserServImpl implements UserServ {
     public UserDto createUser(UserReqDto userDto) {
         Log.info("Start createUser in UserServImpl");
 
-        User user = UserReqDto.toEntity(userDto);
+        Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
 
+        User user = UserReqDto.toEntity(userDto);
+        user.setDivision(division);
 
         userRepo.save(user);
         for(UUID roleId : userDto.getRole()) {
@@ -89,8 +96,11 @@ public class UserServImpl implements UserServ {
     public UserDto updateUser (UUID id, UserReqDto userDto) {
         Log.info("Start updateUser in UserServImpl");
         User findUser  = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User  not found"));
+        if (userDto.getDivisionId() != null) {
+            Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
+            findUser.setDivision(division);
+        }
 
-        // Update fields based on userDto, falling back to findUser  if userDto field is null
         updateUserFields(findUser , userDto);
 
         userRepo.save(findUser);
@@ -133,9 +143,6 @@ public class UserServImpl implements UserServ {
         }
         if (userDto.getPassword() != null) {
             existingUser.setPassword(userDto.getPassword());
-        }
-        if (userDto.getDivisionId() != null) {
-            existingUser.setDivisionId(userDto.getDivisionId());
         }
     }
 }
