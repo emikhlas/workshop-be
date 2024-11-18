@@ -74,7 +74,7 @@ public class AchieveServImpl implements AchieveServ {
         achieveDto.setId(achieve.getId());
         achieveDto.setAchievementName(achieve.getAchievementName());
         achieveDto.setGroupAchievementId(achieve.getGroupAchievementId());
-        achieveDto.setEnabled(achieve.getEnabled() != null ? achieve.getEnabled().toString() : null);
+        achieveDto.setEnabled(achieve.getEnabled());
         return achieveDto;
     }
 
@@ -84,7 +84,7 @@ public class AchieveServImpl implements AchieveServ {
         achieve.setId(achieveDto.getId());
         achieve.setAchievementName(achieveDto.getAchievementName());
         achieve.setGroupAchievementId(achieveDto.getGroupAchievementId());
-        achieve.setEnabled(achieveDto.getEnabled() != null ? Integer.parseInt(achieveDto.getEnabled()) : 1);
+        achieve.setEnabled(achieveDto.getEnabled());
         return achieve;
     }
 }

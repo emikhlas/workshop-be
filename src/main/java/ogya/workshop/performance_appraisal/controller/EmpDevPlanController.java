@@ -1,0 +1,59 @@
+package ogya.workshop.performance_appraisal.controller;
+
+import ogya.workshop.performance_appraisal.dto.DevPlanDto;
+import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
+import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/emp-dev-plan")
+public class EmpDevPlanController {
+
+    @Autowired
+    private EmpDevPlanServ empDevPlanServ;
+
+    // Create a new Achievement
+    @PostMapping
+    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanDto empDevPlanDto) {
+        EmpDevPlanDto newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDto);
+        return ResponseEntity.ok(newEmpDevPlan);
+    }
+
+    // Update an existing Achievement
+    @PutMapping("/{id}")
+    public ResponseEntity<EmpDevPlanDto> updateEmpDevPlan(@PathVariable UUID id, @RequestBody EmpDevPlanDto empDevPlanDto) {
+        try {
+            EmpDevPlanDto updateEmpDevPlan = empDevPlanServ.updateEmpDevPlan(id, empDevPlanDto);
+            return ResponseEntity.ok(updateEmpDevPlan);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    // Retrieve by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<EmpDevPlanDto> getEmpDevPlanById(@PathVariable UUID id) {
+        Optional<EmpDevPlanDto> empDevPlan = empDevPlanServ.getEmpDevPlanById(id);
+        return empDevPlan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Retrieve all Achievements
+    @GetMapping
+    public List<EmpDevPlanDto> getAllEmpDevPlan() {
+        return empDevPlanServ.getAllEmpDevPlan();
+    }
+
+    // Delete an Achievement by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteEmpDevPlan(@PathVariable UUID id) {
+        Boolean response = empDevPlanServ.deleteEmpDevPlan(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+}

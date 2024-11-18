@@ -19,14 +19,14 @@ public class AttitudeSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "ATTITUDE_SKILL_NAME", length = 32, nullable = false)
+    @Column(name = "ATTITUDE_SKILL_NAME", length = 100, nullable = false)
     private String attitudeSkillName;
 
     @Column(name = "GROUP_ATTITUDE_SKILL_ID")
     private UUID groupAttitudeSkillId;
 
     @Column(name = "ENABLED", nullable = false)
-    private Integer enabled = 1;
+    private int enabled = 1;
 
     @Column(name = "CREATED_BY")
     private UUID createdBy;
