@@ -80,4 +80,12 @@ public class OpenApiConfig implements WebMvcConfigurer {
                 .pathsToMatch("/tech-skill/**")
                 .build();
     }
+
+    @Bean
+    GroupedOpenApi allEmpTechSkillApis() {
+        return GroupedOpenApi.builder()
+                .group("EmpTechSkill")
+                .pathsToMatch("/emp-tech-skill/**")
+                .build();
+    }
 }
