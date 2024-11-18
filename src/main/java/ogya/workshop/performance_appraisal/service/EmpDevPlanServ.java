@@ -1,8 +1,6 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
-import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
-import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 
 import java.util.List;
 import java.util.Optional;

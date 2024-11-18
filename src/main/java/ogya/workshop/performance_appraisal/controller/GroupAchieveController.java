@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
 
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.service.GroupAchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
-import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -82,6 +81,10 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             empDevPlanDto.setDevPlanId(empDevPlan.getDevPlan().getId());
         }
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
+        empDevPlanDto.setCreatedAt(empDevPlan.getCreatedAt());
+        empDevPlanDto.setCreatedBy(empDevPlan.getCreatedBy());
+        empDevPlanDto.setUpdatedAt(empDevPlan.getUpdatedAt());
+        empDevPlanDto.setUpdatedBy(empDevPlan.getUpdatedBy());
         return empDevPlanDto;
     }
 

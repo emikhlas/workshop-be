@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
@@ -82,6 +81,10 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         }
         empAttitudeSkillDto.setScore(empAttitudeSkill.getScore());
         empAttitudeSkillDto.setAssessmentYear(empAttitudeSkill.getAssessmentYear());
+        empAttitudeSkillDto.setCreatedAt(empAttitudeSkill.getCreatedAt());
+        empAttitudeSkillDto.setCreatedBy(empAttitudeSkill.getCreatedBy());
+        empAttitudeSkillDto.setUpdatedAt(empAttitudeSkill.getUpdatedAt());
+        empAttitudeSkillDto.setUpdatedBy(empAttitudeSkill.getUpdatedBy());
         return empAttitudeSkillDto;
     }
 

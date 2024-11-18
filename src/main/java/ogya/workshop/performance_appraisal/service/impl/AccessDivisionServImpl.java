@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AccessDivisionDto;
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionDto;
 import ogya.workshop.performance_appraisal.entity.AccessDivision;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -10,7 +9,6 @@ import ogya.workshop.performance_appraisal.service.AccessDivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

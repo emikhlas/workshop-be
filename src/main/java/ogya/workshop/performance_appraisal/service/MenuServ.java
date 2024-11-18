@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
-import ogya.workshop.performance_appraisal.dto.MenuDto;
+import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 
 import java.util.List;
 import java.util.Optional;

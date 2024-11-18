@@ -1,6 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
@@ -76,6 +76,10 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkillDto.setGroupName(groupAttitudeSkill.getGroupName());
         groupAttitudeSkillDto.setPercentage(groupAttitudeSkill.getPercentage());
         groupAttitudeSkillDto.setEnabled(groupAttitudeSkill.getEnabled());
+        groupAttitudeSkillDto.setCreatedAt(groupAttitudeSkill.getCreatedAt());
+        groupAttitudeSkillDto.setCreatedBy(groupAttitudeSkill.getCreatedBy());
+        groupAttitudeSkillDto.setUpdatedAt(groupAttitudeSkill.getUpdatedAt());
+        groupAttitudeSkillDto.setUpdatedBy(groupAttitudeSkill.getUpdatedBy());
         return groupAttitudeSkillDto;
     }
 

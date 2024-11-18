@@ -1,8 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
-import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
+import ogya.workshop.performance_appraisal.dto.devplan.DevPlanDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
 import ogya.workshop.performance_appraisal.service.DevPlanServ;
@@ -77,6 +75,10 @@ public class DevPlanServImpl implements DevPlanServ {
         devPlanDto.setId(devPlan.getId());
         devPlanDto.setPlan(devPlan.getPlan());
         devPlanDto.setEnabled(devPlan.getEnabled());
+        devPlanDto.setCreatedAt(devPlan.getCreatedAt());
+        devPlanDto.setCreatedBy(devPlan.getCreatedBy());
+        devPlanDto.setUpdatedAt(devPlan.getUpdatedAt());
+        devPlanDto.setUpdatedBy(devPlan.getUpdatedBy());
         return devPlanDto;
     }
 

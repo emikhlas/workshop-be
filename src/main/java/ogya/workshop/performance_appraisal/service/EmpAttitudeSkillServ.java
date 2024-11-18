@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 
 import java.util.List;
 import java.util.Optional;

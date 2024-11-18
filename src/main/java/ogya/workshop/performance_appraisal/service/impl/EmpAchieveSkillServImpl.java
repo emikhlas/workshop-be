@@ -1,10 +1,8 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.EmpAchieveSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpAchieveSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
@@ -91,6 +89,10 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         }
         empAchieveSkillDto.setScore(empAchieveSkill.getScore());
         empAchieveSkillDto.setAssessmentYear(empAchieveSkill.getAssessmentYear());
+        empAchieveSkillDto.setCreatedAt(empAchieveSkill.getCreatedAt());
+        empAchieveSkillDto.setCreatedBy(empAchieveSkill.getCreatedBy());
+        empAchieveSkillDto.setUpdatedAt(empAchieveSkill.getUpdatedAt());
+        empAchieveSkillDto.setUpdatedBy(empAchieveSkill.getUpdatedBy());
         return empAchieveSkillDto;
     }
 

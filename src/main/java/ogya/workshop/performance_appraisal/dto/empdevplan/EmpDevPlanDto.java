@@ -1,9 +1,8 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.empdevplan;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -12,15 +11,15 @@ import java.util.UUID;
 @Builder
 @Data
 @ToString
-public class AttitudeSkillDto {
+public class EmpDevPlanDto {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("attitude_skill_name")
-    private String attitudeSkillName;
-    @JsonProperty("group_attitude_skill_id")
-    private UUID groupAttitudeSkillId;
-    @JsonProperty("enabled")
-    private Integer enabled;
+    @JsonProperty("user_id")
+    private UUID userId;
+    @JsonProperty("dev_plan_id")
+    private UUID devPlanId;
+    @JsonProperty("assessment_year")
+    private Integer assessmentYear;
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("created_by")

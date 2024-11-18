@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.AccessDivisionDto;
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionDto;
 import ogya.workshop.performance_appraisal.service.AccessDivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
@@ -78,6 +78,10 @@ public class AchieveServImpl implements AchieveServ {
             achieveDto.setGroupAchievementId(achieve.getGroupAchieve().getId());
         }
         achieveDto.setEnabled(achieve.getEnabled());
+        achieveDto.setCreatedAt(achieve.getCreatedAt());
+        achieveDto.setCreatedBy(achieve.getCreatedBy());
+        achieveDto.setUpdatedAt(achieve.getUpdatedAt());
+        achieveDto.setUpdatedBy(achieve.getUpdatedBy());
         return achieveDto;
     }
 

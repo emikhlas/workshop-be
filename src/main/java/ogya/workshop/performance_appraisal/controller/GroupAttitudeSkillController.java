@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

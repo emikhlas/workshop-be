@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
 import ogya.workshop.performance_appraisal.service.GroupAchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +74,10 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         groupAchieveDto.setId(groupAchieve.getId());
         groupAchieveDto.setGroupAchievementName(groupAchieve.getGroupAchievementName());
         groupAchieveDto.setEnabled(groupAchieve.getEnabled());
+        groupAchieveDto.setCreatedAt(groupAchieve.getCreatedAt());
+        groupAchieveDto.setCreatedBy(groupAchieve.getCreatedBy());
+        groupAchieveDto.setUpdatedAt(groupAchieve.getUpdatedAt());
+        groupAchieveDto.setUpdatedBy(groupAchieve.getUpdatedBy());
         return groupAchieveDto;
     }
 

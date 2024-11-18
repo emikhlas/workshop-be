@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.MenuDto;
-import ogya.workshop.performance_appraisal.dto.RoleMenuDto;
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuDto;
 import ogya.workshop.performance_appraisal.service.RoleMenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

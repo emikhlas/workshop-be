@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.MenuDto;
-import ogya.workshop.performance_appraisal.dto.RoleMenuDto;
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuDto;
 
 import java.util.List;
 import java.util.Optional;

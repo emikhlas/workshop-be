@@ -1,9 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.repository.AttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
@@ -81,6 +79,10 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
             attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkill().getId());
         }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
+        attitudeSkillDto.setCreatedAt(attitudeSkill.getCreatedAt());
+        attitudeSkillDto.setCreatedBy(attitudeSkill.getCreatedBy());
+        attitudeSkillDto.setUpdatedAt(attitudeSkill.getUpdatedAt());
+        attitudeSkillDto.setUpdatedBy(attitudeSkill.getUpdatedBy());
         return attitudeSkillDto;
     }
 
