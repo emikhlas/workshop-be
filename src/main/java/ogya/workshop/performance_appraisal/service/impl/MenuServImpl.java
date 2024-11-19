@@ -1,8 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
-import ogya.workshop.performance_appraisal.dto.MenuDto;
-import ogya.workshop.performance_appraisal.entity.Division;
+import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
+import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 import ogya.workshop.performance_appraisal.entity.Menu;
 import ogya.workshop.performance_appraisal.repository.MenuRepo;
 import ogya.workshop.performance_appraisal.service.MenuServ;
@@ -23,7 +22,7 @@ public class MenuServImpl implements MenuServ {
 
     // Create a new Group Achieve
     @Override
-    public MenuDto createMenu(MenuDto menuDto) {
+    public MenuDto createMenu(MenuCreateDto menuDto) {
         Menu menu = convertToEntity(menuDto);
         menu.setCreatedAt(new Date());  // Set the creation date
         Menu savedMenu = menuRepo.save(menu);
@@ -32,7 +31,7 @@ public class MenuServImpl implements MenuServ {
 
     // Update an existing Achieve
     @Override
-    public MenuDto updateMenu(UUID id, MenuDto menuDto) {
+    public MenuDto updateMenu(UUID id, MenuCreateDto menuDto) {
         if (!menuRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -76,13 +75,16 @@ public class MenuServImpl implements MenuServ {
         MenuDto menuDto = new MenuDto();
         menuDto.setId(menu.getId());
         menuDto.setMenuName(menu.getMenuName());
+        menuDto.setCreatedAt(menu.getCreatedAt());
+        menuDto.setCreatedBy(menu.getCreatedBy());
+        menuDto.setUpdatedAt(menu.getUpdatedAt());
+        menuDto.setUpdatedBy(menu.getUpdatedBy());
         return menuDto;
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private Menu convertToEntity(MenuDto menuDto) {
+    private Menu convertToEntity(MenuCreateDto menuDto) {
         Menu menu = new Menu();
-        menu.setId(menuDto.getId());
         menu.setMenuName(menuDto.getMenuName());
         return menu;
     }

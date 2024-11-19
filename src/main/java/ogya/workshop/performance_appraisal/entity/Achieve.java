@@ -23,8 +23,9 @@ public class Achieve {
     @Column(name = "ACHIEVEMENT_NAME", length = 100, nullable = false)
     private String achievementName;
 
-    @Column(name = "GROUP_ACHIEVEMENT_ID")
-    private UUID groupAchievementId;
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ACHIEVEMENT_ID")
+    private GroupAchieve groupAchieve;
 
     @Column(name = "ENABLED", nullable = false)
     private int enabled = 1;

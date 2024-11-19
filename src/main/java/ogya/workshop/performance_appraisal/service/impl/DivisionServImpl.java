@@ -1,8 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
 import ogya.workshop.performance_appraisal.dto.DivisionDto;
-import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.service.DivisionServ;

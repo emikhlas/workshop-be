@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.AccessDivisionDto;
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionCreateDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionDto;
 import ogya.workshop.performance_appraisal.service.AccessDivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class AccessDivisionController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<AccessDivisionDto> createAccessDivision(@RequestBody AccessDivisionDto accessDivisionDto) {
+    public ResponseEntity<AccessDivisionDto> createAccessDivision(@RequestBody AccessDivisionCreateDto accessDivisionDto) {
         AccessDivisionDto newAccessDivision = accessDivisionServ.createAccessDivision(accessDivisionDto);
         return ResponseEntity.ok(newAccessDivision);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<AccessDivisionDto> updateAccessDivision(@PathVariable UUID id, @RequestBody AccessDivisionDto accessDivisionDto) {
+    public ResponseEntity<AccessDivisionDto> updateAccessDivision(@PathVariable UUID id, @RequestBody AccessDivisionCreateDto accessDivisionDto) {
         try {
             AccessDivisionDto updateAccessDivision = accessDivisionServ.updateAccessDivision(id, accessDivisionDto);
             return ResponseEntity.ok(updateAccessDivision);

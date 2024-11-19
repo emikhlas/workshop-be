@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
-import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class EmpDevPlanController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanDto empDevPlanDto) {
+    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlanDto newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDto);
         return ResponseEntity.ok(newEmpDevPlan);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<EmpDevPlanDto> updateEmpDevPlan(@PathVariable UUID id, @RequestBody EmpDevPlanDto empDevPlanDto) {
+    public ResponseEntity<EmpDevPlanDto> updateEmpDevPlan(@PathVariable UUID id, @RequestBody EmpDevPlanCreateDto empDevPlanDto) {
         try {
             EmpDevPlanDto updateEmpDevPlan = empDevPlanServ.updateEmpDevPlan(id, empDevPlanDto);
             return ResponseEntity.ok(updateEmpDevPlan);

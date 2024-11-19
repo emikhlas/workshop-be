@@ -1,6 +1,5 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
 import ogya.workshop.performance_appraisal.dto.DivisionDto;
 import ogya.workshop.performance_appraisal.service.DivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;

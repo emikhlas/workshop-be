@@ -22,8 +22,9 @@ public class AttitudeSkill {
     @Column(name = "ATTITUDE_SKILL_NAME", length = 100, nullable = false)
     private String attitudeSkillName;
 
-    @Column(name = "GROUP_ATTITUDE_SKILL_ID")
-    private UUID groupAttitudeSkillId;
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ATTITUDE_SKILL_ID")
+    private GroupAttitudeSkill groupAttitudeSkill;
 
     @Column(name = "ENABLED", nullable = false)
     private int enabled = 1;

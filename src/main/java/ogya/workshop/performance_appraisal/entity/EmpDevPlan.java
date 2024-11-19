@@ -19,11 +19,13 @@ public class EmpDevPlan {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "USER_ID")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Column(name = "DEV_PLAN_ID")
-    private UUID devPlanId;
+    @ManyToOne
+    @JoinColumn(name = "DEV_PLAN_ID")
+    private DevPlan devPlan;
 
     @Column(name = "ASSESSMENT_YEAR", length = 4)
     private int assessmentYear;

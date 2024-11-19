@@ -19,11 +19,13 @@ public class EmpAttitudeSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "USER_ID")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Column(name = "ATTITUDE_SKILL_ID")
-    private UUID attitudeSkillId;
+    @ManyToOne
+    @JoinColumn(name = "ATTITUDE_SKILL_ID")
+    private AttitudeSkill attitudeSkill;
 
     @Column(name = "SCORE", length = 3)
     private int score;

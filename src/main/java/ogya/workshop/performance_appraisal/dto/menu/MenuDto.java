@@ -1,9 +1,8 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -12,11 +11,11 @@ import java.util.UUID;
 @Builder
 @Data
 @ToString
-public class DivisionDto {
+public class MenuDto {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("division_name")
-    private String divisionName;
+    @JsonProperty("menu_name")
+    private String menuName;
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("created_by")

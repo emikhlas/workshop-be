@@ -1,20 +1,16 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.groupachieve;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @ToString
-public class DevPlanDto {
-    @JsonProperty("id")
-    private UUID id;
-    @JsonProperty("plan")
-    private String plan;
+public class GroupAchieveCreateDto {
+    @JsonProperty("group_achievement_name")
+    private String groupAchievementName;
     @JsonProperty("enabled")
     private Integer enabled;
 }

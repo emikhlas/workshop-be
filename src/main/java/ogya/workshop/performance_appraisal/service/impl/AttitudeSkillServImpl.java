@@ -1,9 +1,9 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.repository.AttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
 
     // Create a new Group Achieve
     @Override
-    public AttitudeSkillDto createAttitudeSkill(AttitudeSkillDto attitudeSkillDto) {
+    public AttitudeSkillDto createAttitudeSkill(AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill attitudeSkill = convertToEntity(attitudeSkillDto);
         attitudeSkill.setCreatedAt(new Date());  // Set the creation date
         AttitudeSkill savedAttitudeSkill = attitudeSkillRepo.save(attitudeSkill);
@@ -32,7 +32,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
 
     // Update an existing Achieve
     @Override
-    public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillDto attitudeSkillDto) {
+    public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillCreateDto attitudeSkillDto) {
         if (!attitudeSkillRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -76,17 +76,26 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         AttitudeSkillDto attitudeSkillDto = new AttitudeSkillDto();
         attitudeSkillDto.setId(attitudeSkill.getId());
         attitudeSkillDto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
-        attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkillId());
+        if (attitudeSkill.getGroupAttitudeSkill() != null) {
+            attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkill().getId());
+        }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
+        attitudeSkillDto.setCreatedAt(attitudeSkill.getCreatedAt());
+        attitudeSkillDto.setCreatedBy(attitudeSkill.getCreatedBy());
+        attitudeSkillDto.setUpdatedAt(attitudeSkill.getUpdatedAt());
+        attitudeSkillDto.setUpdatedBy(attitudeSkill.getUpdatedBy());
         return attitudeSkillDto;
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private AttitudeSkill convertToEntity(AttitudeSkillDto attitudeSkillDto) {
+    private AttitudeSkill convertToEntity(AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill attitudeSkill = new AttitudeSkill();
-        attitudeSkill.setId(attitudeSkillDto.getId());
         attitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
-        attitudeSkill.setGroupAttitudeSkillId(attitudeSkillDto.getGroupAttitudeSkillId());
+        if (attitudeSkillDto.getGroupAttitudeSkillId() != null) {
+            GroupAttitudeSkill groupAttitudeSkill = new GroupAttitudeSkill();
+            groupAttitudeSkill.setId(attitudeSkillDto.getGroupAttitudeSkillId());
+            attitudeSkill.setGroupAttitudeSkill(groupAttitudeSkill);
+        }
         attitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
         return attitudeSkill;
     }

@@ -1,4 +1,4 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.accessdivision;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -10,13 +10,11 @@ import java.util.UUID;
 @Builder
 @Data
 @ToString
-public class EmpDevPlanDto {
+public class AccessDivisionDto {
     @JsonProperty("id")
     private UUID id;
     @JsonProperty("user_id")
     private UUID userId;
-    @JsonProperty("dev_plan_id")
-    private UUID devPlanId;
-    @JsonProperty("assessment_year")
-    private Integer assessmentYear;
+    @JsonProperty("division_id")
+    private UUID divisionId;
 }

@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,14 @@ public class AchieveController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<AchieveDto> createAchievement(@RequestBody AchieveDto achieveDto) {
+    public ResponseEntity<AchieveDto> createAchievement(@RequestBody AchieveCreateDto achieveDto) {
         AchieveDto newAchievement = achieveServ.createAchievement(achieveDto);
         return ResponseEntity.ok(newAchievement);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<AchieveDto> updateAchievement(@PathVariable UUID id, @RequestBody AchieveDto achieveDto) {
+    public ResponseEntity<AchieveDto> updateAchievement(@PathVariable UUID id, @RequestBody AchieveCreateDto achieveDto) {
         try {
             AchieveDto updatedAchievement = achieveServ.updateAchievement(id, achieveDto);
             return ResponseEntity.ok(updatedAchievement);

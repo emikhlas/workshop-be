@@ -21,11 +21,13 @@ public class EmpAchieveSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "USER_ID")
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Column(name = "ACHIEVEMENT_ID")
-    private UUID achievementId;
+    @ManyToOne
+    @JoinColumn(name = "ACHIEVEMENT_ID")
+    private Achieve achieve;
 
     @Column(name = "SCORE", length = 3)
     private int score;
