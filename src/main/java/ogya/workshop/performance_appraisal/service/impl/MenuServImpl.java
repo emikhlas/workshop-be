@@ -85,7 +85,6 @@ public class MenuServImpl implements MenuServ {
     // Helper method to convert AchieveDto to Achieve entity
     private Menu convertToEntity(MenuCreateDto menuDto) {
         Menu menu = new Menu();
-        menu.setId(menuDto.getId());
         menu.setMenuName(menuDto.getMenuName());
         return menu;
     }
