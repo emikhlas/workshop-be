@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
 import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -95,5 +96,13 @@ public class UserDto {
         user.setCreatedAt(userDto.getCreatedAt());
         user.setUpdatedAt(userDto.getUpdatedAt());
         return user;
+    }
+
+    public static UserDto fromAuthenticatedUser(AuthUser authUser) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(authUser.getUser().getUsername());
+        userDto.setFullName(authUser.getUser().getFullName());
+        userDto.setEmailAddress(authUser.getUser().getEmailAddress());
+        return userDto;
     }
 }

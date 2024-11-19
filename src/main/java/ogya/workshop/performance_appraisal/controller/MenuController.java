@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 import ogya.workshop.performance_appraisal.service.MenuServ;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/menu")
+@SecurityRequirement(name = "bearerAuth")
 public class MenuController {
 
     @Autowired
