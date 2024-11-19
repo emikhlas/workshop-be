@@ -1,15 +1,15 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface EmpAttitudeSkillServ {
-    EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillDto empAttitudeSkillDto);
-    EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillDto empAttitudeSkillDto);
+    EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto);
+    EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto);
     Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id);
     List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills();
     boolean deleteEmpAttitudeSkill(UUID id);

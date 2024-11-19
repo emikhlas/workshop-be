@@ -1,4 +1,4 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.empattitudeskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -10,9 +10,7 @@ import java.util.UUID;
 @Builder
 @Data
 @ToString
-public class EmpAttitudeSkillDto {
-    @JsonProperty("id")
-    private UUID id;
+public class EmpAttitudeSkillCreateDto {
     @JsonProperty("user_id")
     private UUID userId;
     @JsonProperty("attitude_skill_id")

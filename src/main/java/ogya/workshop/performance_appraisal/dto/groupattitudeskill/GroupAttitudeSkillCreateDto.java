@@ -1,18 +1,14 @@
-package ogya.workshop.performance_appraisal.dto;
+package ogya.workshop.performance_appraisal.dto.groupattitudeskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @ToString
-public class GroupAttitudeSkillDto {
-    @JsonProperty("id")
-    private UUID id;
+public class GroupAttitudeSkillCreateDto {
     @JsonProperty("group_name")
     private String groupName;
     @JsonProperty("percentage")

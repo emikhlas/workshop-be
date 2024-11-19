@@ -19,9 +19,11 @@ public class RoleMenu {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "ROLE_ID")
-    private UUID roleId;
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID")
+    private Role role;
 
-    @Column(name = "MENU_ID")
-    private UUID menuId;
+    @ManyToOne
+    @JoinColumn(name = "MENU_ID")
+    private Menu menu;
 }

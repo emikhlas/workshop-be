@@ -1,9 +1,10 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.DevPlanDto;
-import ogya.workshop.performance_appraisal.dto.EmpDevPlanDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
 import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
 
     // Create a new Group Achieve
     @Override
-    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanDto empDevPlanDto) {
+    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
         empDevPlan.setCreatedAt(new Date());  // Set the creation date
         EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
@@ -31,7 +32,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
 
     // Update an existing Achieve
     @Override
-    public EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanDto empDevPlanDto) {
+    public EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanCreateDto empDevPlanDto) {
         if (!empDevPlanRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -74,18 +75,33 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     private EmpDevPlanDto convertToDto(EmpDevPlan empDevPlan) {
         EmpDevPlanDto empDevPlanDto = new EmpDevPlanDto();
         empDevPlanDto.setId(empDevPlan.getId());
-        empDevPlanDto.setUserId(empDevPlan.getUserId());
-        empDevPlanDto.setDevPlanId(empDevPlan.getDevPlanId());
+        if (empDevPlan.getUser() != null) {
+            empDevPlanDto.setUserId(empDevPlan.getUser().getId());
+        }
+        if (empDevPlan.getDevPlan() != null) {
+            empDevPlanDto.setDevPlanId(empDevPlan.getDevPlan().getId());
+        }
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
+        empDevPlanDto.setCreatedAt(empDevPlan.getCreatedAt());
+        empDevPlanDto.setCreatedBy(empDevPlan.getCreatedBy());
+        empDevPlanDto.setUpdatedAt(empDevPlan.getUpdatedAt());
+        empDevPlanDto.setUpdatedBy(empDevPlan.getUpdatedBy());
         return empDevPlanDto;
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private EmpDevPlan convertToEntity(EmpDevPlanDto empDevPlanDto) {
+    private EmpDevPlan convertToEntity(EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan empDevPlan = new EmpDevPlan();
-        empDevPlan.setId(empDevPlanDto.getId());
-        empDevPlan.setUserId(empDevPlanDto.getUserId());
-        empDevPlan.setDevPlanId(empDevPlanDto.getDevPlanId());
+        if (empDevPlanDto.getUserId() != null) {
+            User user = new User();
+            user.setId(empDevPlanDto.getUserId());
+            empDevPlan.setUser(user);
+        }
+        if (empDevPlanDto.getDevPlanId() != null) {
+            DevPlan devPlan = new DevPlan();
+            devPlan.setId(empDevPlanDto.getDevPlanId());
+            empDevPlan.setDevPlan(devPlan);
+        }
         empDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
         return empDevPlan;
     }

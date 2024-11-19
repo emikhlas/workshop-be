@@ -1,7 +1,10 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.AccessDivisionDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionCreateDto;
+import ogya.workshop.performance_appraisal.dto.accessdivision.AccessDivisionDto;
 import ogya.workshop.performance_appraisal.entity.AccessDivision;
+import ogya.workshop.performance_appraisal.entity.Division;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AccessDivisionRepo;
 import ogya.workshop.performance_appraisal.service.AccessDivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,7 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
 
     // Create a new Group Achieve
     @Override
-    public AccessDivisionDto createAccessDivision(AccessDivisionDto accessDivisionDto) {
+    public AccessDivisionDto createAccessDivision(AccessDivisionCreateDto accessDivisionDto) {
         AccessDivision accessDivision = convertToEntity(accessDivisionDto);
         AccessDivision savedAccessDivision = accessDivisionRepo.save(accessDivision);
         return convertToDto(savedAccessDivision);
@@ -28,7 +31,7 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
 
     // Update an existing Achieve
     @Override
-    public AccessDivisionDto updateAccessDivision(UUID id, AccessDivisionDto accessDivisionDto) {
+    public AccessDivisionDto updateAccessDivision(UUID id, AccessDivisionCreateDto accessDivisionDto) {
         if (!accessDivisionRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -65,17 +68,26 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
     private AccessDivisionDto convertToDto(AccessDivision accessDivision) {
         AccessDivisionDto accessDivisionDto = new AccessDivisionDto();
         accessDivisionDto.setId(accessDivision.getId());
-        accessDivisionDto.setUserId(accessDivision.getUserId());
-        accessDivisionDto.setDivisionId(accessDivision.getDivisionId());
+        if (accessDivision.getUser() != null) {
+            accessDivisionDto.setUserId(accessDivision.getUser().getId());
+        }
+        if (accessDivision.getDivision() != null) {
+            accessDivisionDto.setDivisionId(accessDivision.getDivision().getId());
+        }
         return accessDivisionDto;
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private AccessDivision convertToEntity(AccessDivisionDto accessDivisionDto) {
+    private AccessDivision convertToEntity(AccessDivisionCreateDto accessDivisionDto) {
         AccessDivision accessDivision = new AccessDivision();
-        accessDivision.setId(accessDivisionDto.getId());
-        accessDivision.setUserId(accessDivisionDto.getUserId());
-        accessDivision.setDivisionId(accessDivisionDto.getDivisionId());
+
+        User user = new User();
+        user.setId(accessDivisionDto.getUserId());
+        accessDivision.setUser(user);
+
+        Division division = new Division();
+        division.setId(accessDivisionDto.getDivisionId());
+        accessDivision.setDivision(division);
         return accessDivision;
     }
 

@@ -1,7 +1,8 @@
 package ogya.workshop.performance_appraisal.controller;
 
 
-import ogya.workshop.performance_appraisal.dto.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.service.GroupAchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,14 @@ public class GroupAchieveController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<GroupAchieveDto> createGroupAchieve(@RequestBody GroupAchieveDto groupAchieveDto) {
+    public ResponseEntity<GroupAchieveDto> createGroupAchieve(@RequestBody GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieveDto newGroupAchievement = groupAchieveServ.createGroupAchieve(groupAchieveDto);
         return ResponseEntity.ok(newGroupAchievement);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<GroupAchieveDto> updateGroupAchieve(@PathVariable UUID id, @RequestBody GroupAchieveDto groupAchieveDto) {
+    public ResponseEntity<GroupAchieveDto> updateGroupAchieve(@PathVariable UUID id, @RequestBody GroupAchieveCreateDto groupAchieveDto) {
         try {
             GroupAchieveDto updatedGroupAchieve = groupAchieveServ.updateGroupAchieve(id, groupAchieveDto);
             return ResponseEntity.ok(updatedGroupAchieve);

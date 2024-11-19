@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.AttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.EmpAchieveSkillDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class AttitudeSkillController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<AttitudeSkillDto> createAttitudeSkill(@RequestBody AttitudeSkillDto attitudeSkillDto) {
+    public ResponseEntity<AttitudeSkillDto> createAttitudeSkill(@RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkillDto newAttitudeSkill = attitudeSkillServ.createAttitudeSkill(attitudeSkillDto);
         return ResponseEntity.ok(newAttitudeSkill);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<AttitudeSkillDto> updateAttitudeSkill(@PathVariable UUID id, @RequestBody AttitudeSkillDto attitudeSkillDto) {
+    public ResponseEntity<AttitudeSkillDto> updateAttitudeSkill(@PathVariable UUID id, @RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
         try {
             AttitudeSkillDto updateAttitudeSkill = attitudeSkillServ.updateAttitudeSkill(id, attitudeSkillDto);
             return ResponseEntity.ok(updateAttitudeSkill);

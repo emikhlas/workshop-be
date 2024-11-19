@@ -1,7 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
-import ogya.workshop.performance_appraisal.dto.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +21,14 @@ public class EmpAttitudeSkillController {
 
     // Create a new Achievement
     @PostMapping
-    public ResponseEntity<EmpAttitudeSkillDto> createEmpAttitudeSkill(@RequestBody EmpAttitudeSkillDto empAttitudeSkillDto) {
+    public ResponseEntity<EmpAttitudeSkillDto> createEmpAttitudeSkill(@RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkillDto newEmpAttitudeSkill = empAttitudeSkillServ.createEmpAttitudeSkill(empAttitudeSkillDto);
         return ResponseEntity.ok(newEmpAttitudeSkill);
     }
 
     // Update an existing Achievement
     @PutMapping("/{id}")
-    public ResponseEntity<EmpAttitudeSkillDto> updateEmpAttitudeSkill(@PathVariable UUID id, @RequestBody EmpAttitudeSkillDto empAttitudeSkillDto) {
+    public ResponseEntity<EmpAttitudeSkillDto> updateEmpAttitudeSkill(@PathVariable UUID id, @RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         try {
             EmpAttitudeSkillDto updateEmpAttitudeSkill = empAttitudeSkillServ.updateEmpAttitudeSkill(id, empAttitudeSkillDto);
             return ResponseEntity.ok(updateEmpAttitudeSkill);
