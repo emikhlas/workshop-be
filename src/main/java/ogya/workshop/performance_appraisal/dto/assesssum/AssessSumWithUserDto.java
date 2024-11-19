@@ -3,10 +3,12 @@ package ogya.workshop.performance_appraisal.dto.assesssum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.entity.User;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,13 +30,13 @@ public class AssessSumWithUserDto {
     @JsonProperty("status")
     private int status;
     @JsonProperty("created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UUID createdBy;
+    private UserDto createdBy;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UUID updatedBy;
+    private UserDto updatedBy;
 
     public static AssessSumWithUserDto fromEntity(AssessSum assessSum) {
         AssessSumWithUserDto dto = new AssessSumWithUserDto();
@@ -43,14 +45,8 @@ public class AssessSumWithUserDto {
         dto.setYear(assessSum.getYear());
         dto.setScore(assessSum.getScore());
         dto.setStatus(assessSum.getStatus());
-        dto.setCreatedAt(Optional.ofNullable(assessSum.getCreatedAt())
-                .map(Date::valueOf)
-                .orElse(null));
-        dto.setCreatedBy(assessSum.getCreatedBy());
-        dto.setUpdatedAt(Optional.ofNullable(assessSum.getUpdatedAt())
-                .map(Date::valueOf)
-                .orElse(null));
-        dto.setUpdatedBy(assessSum.getUpdatedBy());
+        dto.setCreatedAt(assessSum.getCreatedAt());
+        dto.setUpdatedAt(assessSum.getUpdatedAt());
         return dto;
     }
 
@@ -61,10 +57,8 @@ public class AssessSumWithUserDto {
         assessSum.setYear(assessSumDto.getYear());
         assessSum.setScore(assessSumDto.getScore());
         assessSum.setStatus(assessSumDto.getStatus());
-        assessSum.setCreatedAt(assessSumDto.getCreatedAt().toLocalDate());
-        assessSum.setCreatedBy(assessSumDto.getCreatedBy());
-        assessSum.setUpdatedAt(assessSumDto.getUpdatedAt().toLocalDate());
-        assessSum.setUpdatedBy(assessSumDto.getUpdatedBy());
+        assessSum.setCreatedAt(assessSumDto.getCreatedAt());
+        assessSum.setUpdatedAt(assessSumDto.getUpdatedAt());
         return assessSum;
     }
 }

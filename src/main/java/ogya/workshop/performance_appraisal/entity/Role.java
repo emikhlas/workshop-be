@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -21,11 +22,13 @@ public class Role {
     @Column(name = "ROLENAME", nullable = false)
     private String rolename;
     @Column(name = "CREATED_AT", nullable = false)
-    private LocalDate createdAt;
-    @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
+    private User createdBy;
     @Column(name = "UPDATED_AT")
-    private LocalDate updatedAt;
-    @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    private LocalDateTime updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
+    private User updatedBy;
 }

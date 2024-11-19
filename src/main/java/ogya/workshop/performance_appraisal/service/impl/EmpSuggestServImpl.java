@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -67,7 +68,7 @@ public class EmpSuggestServImpl implements EmpSuggestServ {
         EmpSuggest empSuggest = EmpSuggestCreateDto.toEntity(empSuggestCreateDto);
         User user = userRepo.findById(empSuggestCreateDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         empSuggest.setUser(user);
-        empSuggest.setCreatedAt(LocalDate.now());
+        empSuggest.setCreatedAt(LocalDateTime.now());
         empSuggestRepo.save(empSuggest);
         Log.info("End save in EmpSuggestServImpl");
         return EmpSuggestDto.fromEntity(empSuggest);
@@ -80,7 +81,7 @@ public class EmpSuggestServImpl implements EmpSuggestServ {
         if(empSuggestCreateDto.getUserId() != null) curentEmpSuggest.setUser(userRepo.findById(empSuggestCreateDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found")));
         if(empSuggestCreateDto.getSuggestion() != null) curentEmpSuggest.setSuggestion(empSuggestCreateDto.getSuggestion());
         if(empSuggestCreateDto.getAssessmentYear() != null) curentEmpSuggest.setAssessmentYear(empSuggestCreateDto.getAssessmentYear());
-        curentEmpSuggest.setUpdatedAt(LocalDate.now());
+        curentEmpSuggest.setUpdatedAt(LocalDateTime.now());
         empSuggestRepo.save(curentEmpSuggest);
         Log.info("End update in EmpSuggestServImpl");
         return EmpSuggestDto.fromEntity(curentEmpSuggest);

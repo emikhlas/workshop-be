@@ -45,18 +45,21 @@ public class User {
     @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "DIVISION_ID", nullable = false)
-    private UUID divisionId;
+    @ManyToOne
+    @JoinColumn(name = "DIVISION_ID", nullable = false)
+    private Division division;
 
     @Column(name = "CREATED_AT", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
-    @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
+    private User createdBy;
 
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
 
-    @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
+    private User updatedBy;
 }

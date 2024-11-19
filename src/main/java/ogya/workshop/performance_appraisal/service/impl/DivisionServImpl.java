@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionCreateDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.service.DivisionServ;
@@ -21,7 +22,7 @@ public class DivisionServImpl implements DivisionServ {
 
     // Create a new Group Achieve
     @Override
-    public DivisionDto createDivision(DivisionDto divisionDto) {
+    public DivisionDto createDivision(DivisionCreateDto divisionDto) {
         Division division = convertToEntity(divisionDto);
         division.setCreatedAt(new Date());  // Set the creation date
         Division savedDivision = divisionRepo.save(division);
@@ -30,7 +31,7 @@ public class DivisionServImpl implements DivisionServ {
 
     // Update an existing Achieve
     @Override
-    public DivisionDto updateDivision(UUID id, DivisionDto divisionDto) {
+    public DivisionDto updateDivision(UUID id, DivisionCreateDto divisionDto) {
         if (!divisionRepo.existsById(id)) {
             throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
         }
@@ -74,13 +75,16 @@ public class DivisionServImpl implements DivisionServ {
         DivisionDto divisionDto = new DivisionDto();
         divisionDto.setId(division.getId());
         divisionDto.setDivisionName(division.getDivisionName());
+        divisionDto.setCreatedAt(division.getCreatedAt());
+        divisionDto.setCreatedBy(division.getCreatedBy());
+        divisionDto.setUpdatedAt(division.getUpdatedAt());
+        divisionDto.setUpdatedBy(division.getUpdatedBy());
         return divisionDto;
     }
 
     // Helper method to convert AchieveDto to Achieve entity
-    private Division convertToEntity(DivisionDto divisionDto) {
+    private Division convertToEntity(DivisionCreateDto divisionDto) {
         Division division = new Division();
-        division.setId(divisionDto.getId());
         division.setDivisionName(divisionDto.getDivisionName());
         return division;
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -28,12 +29,14 @@ public class EmpTechSkill {
     private int score;
     @Column(name = "ASSESSMENT_YEAR", length = 4, nullable = false)
     private int assessmentYear;
-    @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
+    private User createdBy;
     @Column(name = "CREATED_AT", nullable = false)
-    private LocalDate createdAt;
-    @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
+    private User updatedBy;
     @Column(name = "UPDATED_AT")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 }

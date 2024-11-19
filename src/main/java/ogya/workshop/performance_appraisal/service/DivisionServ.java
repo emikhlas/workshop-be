@@ -1,16 +1,16 @@
 package ogya.workshop.performance_appraisal.service;
 
 
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
-import ogya.workshop.performance_appraisal.entity.Division;
+import ogya.workshop.performance_appraisal.dto.division.DivisionCreateDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface DivisionServ {
-    DivisionDto createDivision(DivisionDto divisionDto);
-    DivisionDto updateDivision(UUID id, DivisionDto divisionDto);
+    DivisionDto createDivision(DivisionCreateDto divisionDto);
+    DivisionDto updateDivision(UUID id, DivisionCreateDto divisionDto);
     Optional<DivisionDto> getDivisionById(UUID id);
     List<DivisionDto> getAllDivision();
     boolean deleteDivision(UUID id);

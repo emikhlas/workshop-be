@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,14 +26,12 @@ public class Division {
     @Column(name = "CREATED_BY")
     private UUID createdBy;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private Date createdAt;
 
     @Column(name = "UPDATED_BY")
     private UUID updatedBy;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
 

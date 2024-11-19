@@ -45,7 +45,6 @@ public class UserReqDto {
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setDivisionId(userDto.getDivisionId());
         return user;
     }
 }

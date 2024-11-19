@@ -2,9 +2,12 @@ package ogya.workshop.performance_appraisal.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.entity.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,15 +30,23 @@ public class UserDto {
     @JsonProperty("employee_status")
     private Integer employeeStatus;
     @JsonProperty("join_date")
-    private Date joinDate;
+    private LocalDate joinDate;
     @JsonProperty("enabled")
     private Integer enabled;
     @JsonProperty("password")
     private String password;
     @JsonProperty("role")
-    private Set<String> role;
-    @JsonProperty("division_id")
-    private UUID divisionId;
+    private Set<RoleDto> role;
+    @JsonProperty("division")
+    private DivisionDto division;
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+    @JsonProperty("created_by")
+    private UserDto createdBy;
+    @JsonProperty("updated_at")
+    private LocalDateTime updatedAt;
+    @JsonProperty("updated_by")
+    private UserDto updatedBy;
 
 
     public static UserDto fromEntity(User user) {
@@ -46,10 +57,27 @@ public class UserDto {
         userDto.setPosition(user.getPosition());
         userDto.setEmailAddress(user.getEmailAddress());
         userDto.setEmployeeStatus(user.getEmployeeStatus());
-        userDto.setJoinDate(Date.valueOf(user.getJoinDate()));
+        userDto.setJoinDate(user.getJoinDate());
         userDto.setEnabled(user.getEnabled());
         userDto.setPassword(user.getPassword());
-        userDto.setDivisionId(user.getDivisionId());
+        userDto.setDivision(DivisionDto.fromEntity(user.getDivision()));
+        userDto.setCreatedAt(user.getCreatedAt());
+        userDto.setUpdatedAt(user.getUpdatedAt());
+
+        if (user.getCreatedBy() != null) {
+            UserDto createdBy = new UserDto();
+            createdBy.setId(user.getCreatedBy().getId());
+            createdBy.setUsername(user.getCreatedBy().getUsername());
+            createdBy.setFullName(user.getCreatedBy().getFullName());
+            userDto.setCreatedBy(createdBy);
+        }
+        if (user.getUpdatedBy() != null) {
+            UserDto updatedBy = new UserDto();
+            updatedBy.setId(user.getUpdatedBy().getId());
+            updatedBy.setUsername(user.getUpdatedBy().getUsername());
+            updatedBy.setFullName(user.getUpdatedBy().getFullName());
+            userDto.setUpdatedBy(updatedBy);
+        }
         return userDto;
     }
 
@@ -61,10 +89,11 @@ public class UserDto {
         user.setPosition(userDto.getPosition());
         user.setEmailAddress(userDto.getEmailAddress());
         user.setEmployeeStatus(userDto.getEmployeeStatus());
-        user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
+        user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate() : null);
         user.setEnabled(userDto.getEnabled());
         user.setPassword(userDto.getPassword());
-        user.setDivisionId(userDto.getDivisionId());
+        user.setCreatedAt(userDto.getCreatedAt());
+        user.setUpdatedAt(userDto.getUpdatedAt());
         return user;
     }
 }
