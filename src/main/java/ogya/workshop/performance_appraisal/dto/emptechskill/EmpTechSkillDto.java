@@ -41,9 +41,7 @@ public class EmpTechSkillDto {
         dto.setTechSkill(TechSkillDto.fromEntity(empTechSkill.getTechSkill()));
         dto.setScore(empTechSkill.getScore());
         dto.setAssessmentYear(empTechSkill.getAssessmentYear());
-        dto.setCreatedBy(UserDto.fromEntity(empTechSkill.getCreatedBy()));
         dto.setCreatedAt(empTechSkill.getCreatedAt());
-        dto.setUpdatedBy(UserDto.fromEntity(empTechSkill.getUpdatedBy()));
         dto.setUpdatedAt(empTechSkill.getUpdatedAt());
         return dto;
     }

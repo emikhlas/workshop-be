@@ -29,11 +29,13 @@ public class EmpTechSkill {
     private int score;
     @Column(name = "ASSESSMENT_YEAR", length = 4, nullable = false)
     private int assessmentYear;
-    @Column(name = "CREATED_BY")
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
     private User createdBy;
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "UPDATED_BY")
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;

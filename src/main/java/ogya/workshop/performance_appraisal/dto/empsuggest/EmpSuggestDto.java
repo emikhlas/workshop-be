@@ -27,11 +27,11 @@ public class EmpSuggestDto {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private User createdBy;
+    private UserDto createdBy;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private User updatedBy;
+    private UserDto updatedBy;
 
     public static EmpSuggestDto fromEntity(EmpSuggest empSuggest) {
         EmpSuggestDto empSuggestDto = new EmpSuggestDto();
@@ -40,9 +40,7 @@ public class EmpSuggestDto {
         empSuggestDto.setSuggestion(empSuggest.getSuggestion());
         empSuggestDto.setAssessmentYear(empSuggest.getAssessmentYear());
         empSuggestDto.setCreatedAt(empSuggest.getCreatedAt());
-        empSuggestDto.setCreatedBy(empSuggest.getCreatedBy());
         empSuggestDto.setUpdatedAt(empSuggest.getUpdatedAt());
-        empSuggestDto.setUpdatedBy(empSuggest.getUpdatedBy());
         return empSuggestDto;
     }
 }

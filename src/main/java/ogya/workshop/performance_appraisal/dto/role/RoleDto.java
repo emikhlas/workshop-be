@@ -36,9 +36,7 @@ public class RoleDto {
         dto.setId(role.getId());
         dto.setRolename(role.getRolename());
         dto.setCreatedAt(role.getCreatedAt());
-        dto.setCreatedBy(UserDto.fromEntity(role.getCreatedBy()));
         dto.setUpdatedAt(role.getUpdatedAt());
-        dto.setUpdatedBy(UserDto.fromEntity(role.getUpdatedBy()));
         return dto;
     }
 }

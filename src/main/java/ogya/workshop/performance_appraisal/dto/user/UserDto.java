@@ -2,10 +2,10 @@ package ogya.workshop.performance_appraisal.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.entity.User;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -36,7 +36,7 @@ public class UserDto {
     @JsonProperty("password")
     private String password;
     @JsonProperty("role")
-    private Set<String> role;
+    private Set<RoleDto> role;
     @JsonProperty("division")
     private DivisionDto division;
     @JsonProperty("created_at")

@@ -23,10 +23,12 @@ public class Role {
     private String rolename;
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "CREATED_BY")
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
     private User createdBy;
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
-    @Column(name = "UPDATED_BY")
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 }

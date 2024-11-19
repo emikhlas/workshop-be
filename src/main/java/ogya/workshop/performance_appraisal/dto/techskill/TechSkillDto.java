@@ -36,9 +36,7 @@ public class TechSkillDto {
         dto.setTechSkill(techSkill.getTechSkill());
         dto.setEnabled(techSkill.getEnabled());
         dto.setCreatedAt(techSkill.getCreatedAt());
-        dto.setCreatedBy(UserDto.fromEntity(techSkill.getCreatedBy()));
         dto.setUpdatedAt(techSkill.getUpdatedAt());
-        dto.setUpdatedBy(UserDto.fromEntity(techSkill.getUpdatedBy()));
         return dto;
     }
 }

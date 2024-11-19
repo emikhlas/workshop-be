@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
 import ogya.workshop.performance_appraisal.entity.Division;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -45,6 +47,7 @@ public class UserServImpl implements UserServ {
             UserDto userDto = UserDto.fromEntity(user);
             userList.add(userDto);
         }
+
         Log.info("End getAllUsers in UserServImpl");
         return userList;
     }
@@ -54,11 +57,11 @@ public class UserServImpl implements UserServ {
         Log.info("Start getUserById in UserServImpl");
         Optional<User> user = userRepo.findById(id);
         List<UserRole> userRoles = userRoleRepo.findByUserId(id);
-        Set<String> roles = new HashSet<>();
+        Set<RoleDto> roles = new HashSet<>();
         if(!userRoles.isEmpty()) {
             for (UserRole userRole : userRoles) {
-                String rolename= userRole.getRole().getRolename();
-                roles.add(rolename);
+                Role role= userRole.getRole();
+                roles.add(RoleDto.fromEntity(role));
             }
         }
         Log.info("End getUserById in UserServImpl");
@@ -78,18 +81,23 @@ public class UserServImpl implements UserServ {
             Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
             user.setDivision(division);
         }
+        user.setCreatedAt(LocalDateTime.now());
 
         userRepo.save(user);
+        UserDto result = UserDto.fromEntity(user);
+        Set<RoleDto> roles = new HashSet<>();
         for(UUID roleId : userDto.getRole()) {
             Role role = roleRepo.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
             UserRole userRole = new UserRole();
             userRole.setUser(user);
             userRole.setRole(role);
             userRoleRepo.save(userRole);
+            roles.add(RoleDto.fromEntity(role));
         }
+        result.setRole(roles);
 
         Log.info("End createUser in UserServImpl");
-        return UserDto.fromEntity(user);
+        return result;
     }
 
     @Override

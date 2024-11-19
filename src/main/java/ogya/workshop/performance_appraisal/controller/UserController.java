@@ -39,7 +39,7 @@ public class UserController extends ServerResponseList {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<ManagerDto<UserDto>>  saveUser(@RequestBody UserReqDto userDto) {
         Log.info("Start saveUser in UserController");
         long startTime = System.currentTimeMillis();
