@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()// Allow public access to the auth endpoints
-                        .requestMatchers("/user/**").hasAnyAuthority("HR", "Admin")
+                        .requestMatchers("/user/**").hasAnyAuthority("HR", "ADMIN")
                         .anyRequest().authenticated() // All other requests need authentication
                 )
                 .sessionManagement(session -> session
