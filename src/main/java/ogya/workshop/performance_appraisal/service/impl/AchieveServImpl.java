@@ -1,12 +1,17 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +29,11 @@ public class AchieveServImpl implements AchieveServ {
     @Override
     public AchieveDto createAchievement(AchieveCreateDto achieveDto) {
         Achieve achieve = convertToEntity(achieveDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        achieve.setCreatedBy(creator);
         achieve.setCreatedAt(new Date());  // Set the creation date
         Achieve savedAchieve = achieveRepo.save(achieve);
         return convertToDto(savedAchieve);
@@ -32,20 +42,27 @@ public class AchieveServImpl implements AchieveServ {
     // Update an existing Achieve
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
-        if (!achieveRepo.existsById(id)) {
-            throw new IllegalArgumentException("Achievement with this ID does not exist.");
+        Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new RuntimeException("Achieve not found"));
+        if(achieveDto.getGroupAchievementId() != null) {
+            GroupAchieve groupAchieve = new GroupAchieve();
+            groupAchieve.setId(achieveDto.getGroupAchievementId());
+            currentAchieve.setGroupAchieve(groupAchieve);
         }
-
-        Achieve achieve = convertToEntity(achieveDto);
-        achieve.setId(id);  // Use the ID from the URL path
-        achieve.setUpdatedAt(new Date());  // Set the updated date
-
-        // Ensure 'createdAt' is set if it's null during the update
-        if (achieve.getCreatedAt() == null) {
-            achieve.setCreatedAt(new Date());  // Set current date if null
+        if(achieveDto.getAchievementName() != null) {
+            currentAchieve.setAchievementName(achieveDto.getAchievementName());
         }
+        if(achieveDto.getEnabled() != null) {
+            currentAchieve.setEnabled(achieveDto.getEnabled());
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
 
-        Achieve updatedAchieve = achieveRepo.save(achieve);
+        currentAchieve.setUpdatedBy(creator);
+        currentAchieve.setUpdatedAt(new Date());
+
+        Achieve updatedAchieve = achieveRepo.save(currentAchieve);
+
         return convertToDto(updatedAchieve);
     }
 
@@ -80,9 +97,13 @@ public class AchieveServImpl implements AchieveServ {
         }
         achieveDto.setEnabled(achieve.getEnabled());
         achieveDto.setCreatedAt(achieve.getCreatedAt());
-        achieveDto.setCreatedBy(achieve.getCreatedBy());
+        if(achieve.getCreatedAt() != null) {
+            achieveDto.setCreatedBy(UserByDto.fromEntity(achieve.getCreatedBy()));
+        }
+        if (achieve.getCreatedBy() != null) {
+            achieveDto.setCreatedBy(UserByDto.fromEntity(achieve.getCreatedBy()));
+        }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
-        achieveDto.setUpdatedBy(achieve.getUpdatedBy());
         return achieveDto;
     }
 

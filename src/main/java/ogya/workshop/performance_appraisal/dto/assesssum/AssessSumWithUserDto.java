@@ -51,7 +51,7 @@ public class AssessSumWithUserDto {
         if(assessSum.getCreatedBy() != null) {
             dto.setCreatedBy(UserByDto.fromEntity(assessSum.getCreatedBy()));
         }
-        if(assessSum.getUpdatedBy() != null) {
+        if(assessSum.getUpdatedBy() != null) { 
             dto.setUpdatedBy(UserByDto.fromEntity(assessSum.getUpdatedBy()));
         }
         return dto;

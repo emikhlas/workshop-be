@@ -30,12 +30,15 @@ public class AssessSum {
     private int status;
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;
+
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 }

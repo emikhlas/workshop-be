@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
@@ -10,6 +11,8 @@ import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -67,6 +70,10 @@ public class AssessSumServImpl implements AssessSumServ {
                 .orElseThrow(() -> new RuntimeException("User  not found"));
         AssessSum assessSum = AssessSumReqDto.toEntity(assessSumReqDto);
         assessSum.setUser(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        assessSum.setCreatedBy(creator);
         assessSum.setCreatedAt(LocalDateTime.now());
         Log.info("End createAssessSum in AssessSumServImpl");
         return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
@@ -96,7 +103,10 @@ public class AssessSumServImpl implements AssessSumServ {
         if (assessSumReqDto.getStatus() != null) {
             assessSum.setStatus(assessSumReqDto.getStatus());
         }
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        assessSum.setUpdatedBy(creator);
         assessSum.setUpdatedAt(LocalDateTime.now());
 
         Log.info("End updateAssessSum in AssessSumServImpl");
