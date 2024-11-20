@@ -1,12 +1,18 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AttitudeSkillRepo;
+import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,11 +27,21 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     @Autowired
     private AttitudeSkillRepo attitudeSkillRepo;
 
+    @Autowired
+    private GroupAttitudeSkillRepo groupAttitudeSkillRepo;
+
     // Create a new Group Achieve
     @Override
     public AttitudeSkillDto createAttitudeSkill(AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill attitudeSkill = convertToEntity(attitudeSkillDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        attitudeSkill.setCreatedBy(creator);
         attitudeSkill.setCreatedAt(new Date());  // Set the creation date
+
         AttitudeSkill savedAttitudeSkill = attitudeSkillRepo.save(attitudeSkill);
         return convertToDto(savedAttitudeSkill);
     }
@@ -33,20 +49,29 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     // Update an existing Achieve
     @Override
     public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillCreateDto attitudeSkillDto) {
-        if (!attitudeSkillRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        AttitudeSkill currentAttitudeSkill = attitudeSkillRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Attitude Skill with this ID does not exist."));
+
+        if(attitudeSkillDto.getAttitudeSkillName() != null){
+            currentAttitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
         }
 
-        AttitudeSkill attitudeSkill = convertToEntity(attitudeSkillDto);
-        attitudeSkill.setId(id);  // Use the ID from the URL path
-        attitudeSkill.setUpdatedAt(new Date());  // Set the updated date
+        if(attitudeSkillDto.getGroupAttitudeSkillId() != null){
 
-        // Ensure 'createdAt' is set if it's null during the update
-        if (attitudeSkill.getCreatedAt() == null) {
-            attitudeSkill.setCreatedAt(new Date());  // Set current date if null
+            GroupAttitudeSkill groupAttitudeSkill = groupAttitudeSkillRepo.findById(attitudeSkillDto.getGroupAttitudeSkillId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
+            currentAttitudeSkill.setGroupAttitudeSkill(groupAttitudeSkill);
         }
 
-        AttitudeSkill updatedAttitudeSkill = attitudeSkillRepo.save(attitudeSkill);
+        currentAttitudeSkill.setUpdatedAt(new Date());  // Set the updated date
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentAttitudeSkill.setUpdatedBy(creator);
+
+
+
+        AttitudeSkill updatedAttitudeSkill = attitudeSkillRepo.save(currentAttitudeSkill);
         return convertToDto(updatedAttitudeSkill);
     }
 
@@ -81,9 +106,13 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
         attitudeSkillDto.setCreatedAt(attitudeSkill.getCreatedAt());
-        attitudeSkillDto.setCreatedBy(attitudeSkill.getCreatedBy());
+        if(attitudeSkill.getCreatedBy() != null){
+            attitudeSkillDto.setCreatedBy(UserByDto.fromEntity(attitudeSkill.getCreatedBy()));
+        }
         attitudeSkillDto.setUpdatedAt(attitudeSkill.getUpdatedAt());
-        attitudeSkillDto.setUpdatedBy(attitudeSkill.getUpdatedBy());
+        if(attitudeSkill.getUpdatedBy() != null){
+            attitudeSkillDto.setUpdatedBy(UserByDto.fromEntity(attitudeSkill.getUpdatedBy()));
+        }
         return attitudeSkillDto;
     }
 

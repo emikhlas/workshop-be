@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
@@ -15,6 +16,8 @@ import ogya.workshop.performance_appraisal.service.UserServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -81,6 +84,13 @@ public class UserServImpl implements UserServ {
             Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
             user.setDivision(division);
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        Log.info("creator: {}", creator);
+
+        user.setCreatedBy(creator);
         user.setCreatedAt(LocalDateTime.now());
 
         userRepo.save(user);
@@ -110,6 +120,13 @@ public class UserServImpl implements UserServ {
         }
 
         updateUserFields(findUser , userDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        findUser.setUpdatedBy(creator);
+        findUser.setUpdatedAt(LocalDateTime.now());
 
         userRepo.save(findUser);
         Log.info("End updateUser in UserServImpl");

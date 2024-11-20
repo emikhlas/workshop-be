@@ -43,11 +43,11 @@ public class UserDto {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UserDto createdBy;
+    private UserByDto createdBy;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UserDto updatedBy;
+    private UserByDto updatedBy;
 
 
     public static UserDto fromEntity(User user) {
@@ -66,18 +66,10 @@ public class UserDto {
         userDto.setUpdatedAt(user.getUpdatedAt());
 
         if (user.getCreatedBy() != null) {
-            UserDto createdBy = new UserDto();
-            createdBy.setId(user.getCreatedBy().getId());
-            createdBy.setUsername(user.getCreatedBy().getUsername());
-            createdBy.setFullName(user.getCreatedBy().getFullName());
-            userDto.setCreatedBy(createdBy);
+            userDto.setCreatedBy(UserByDto.fromEntity(user.getCreatedBy()));
         }
         if (user.getUpdatedBy() != null) {
-            UserDto updatedBy = new UserDto();
-            updatedBy.setId(user.getUpdatedBy().getId());
-            updatedBy.setUsername(user.getUpdatedBy().getUsername());
-            updatedBy.setFullName(user.getUpdatedBy().getFullName());
-            userDto.setUpdatedBy(updatedBy);
+            userDto.setUpdatedBy(UserByDto.fromEntity(user.getUpdatedBy()));
         }
         return userDto;
     }
