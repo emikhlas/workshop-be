@@ -25,6 +25,9 @@ public class GroupAchieve {
     @Column(name = "GROUP_ACHIEVEMENT_NAME", length = 100, nullable = false)
     private String groupAchievementName;
 
+    @Column(name = "PERCENTAGE", length = 3)
+    private int percentage;
+
     @Column(name = "ENABLED", nullable = false)
     private int enabled = 1;
 

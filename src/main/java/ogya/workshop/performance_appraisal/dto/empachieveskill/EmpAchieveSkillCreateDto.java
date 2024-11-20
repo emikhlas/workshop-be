@@ -13,6 +13,8 @@ import java.util.UUID;
 public class EmpAchieveSkillCreateDto {
     @JsonProperty("user_id")
     private UUID userId;
+    @JsonProperty("notes")
+    private String notes;
     @JsonProperty("achievement_id")
     private UUID achievementId;
     @JsonProperty("score")
