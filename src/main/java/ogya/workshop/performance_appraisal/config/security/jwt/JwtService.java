@@ -5,13 +5,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import org.springframework.security.core.GrantedAuthority;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -28,16 +29,20 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public UUID extractUserId(String token) {
+        return UUID.fromString(extractClaim(token, Claims::getSubject));  // Since the ID is stored as the subject
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(AuthUser userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, AuthUser userDetails) {
         extraClaims.put("roles", userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority) // Convert roles to a list of strings
                 .toList());
@@ -50,22 +55,27 @@ public class JwtService {
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
+            AuthUser userDetails,
             long expiration
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(String.valueOf(userDetails.getId()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+//    public boolean isTokenValid(String token, UserDetails userDetails) {
+//        final String username = extractUsername(token);
+//        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+//    }
+
+    public boolean isTokenValid(String token, AuthUser userDetails) {
+        final UUID id = extractUserId(token);
+        return (id.equals(userDetails.getId())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
@@ -83,6 +93,17 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public List<String> extractRoles(String token, String secretKey) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretKey.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        // Extract roles from claims
+        return claims.get("roles", List.class); // Assumes roles were stored as a List<String>
     }
 
     private Key getSignInKey() {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -59,6 +60,34 @@ public class AuthService implements UserDetailsService {
 
         return new AuthUser(user, roles);
     }
+
+    public AuthUser loadUserById(UUID userId) throws UsernameNotFoundException {
+        log.info("Start loadUserById in AuthService");
+
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("User not found with ID: {}", userId);
+                    return new UsernameNotFoundException("User not found");
+                });
+
+        List<UserRole> userRoles = userRoleRepo.findByUserId(userId);
+        if (userRoles == null || userRoles.isEmpty()) {
+            log.warn("User roles not found for user ID: {}", userId);
+            throw new UsernameNotFoundException("No roles found for user ID: " + userId);
+        }
+
+        log.info("User roles found for user ID {}: {}", userId, userRoles);
+
+        List<Role> roles = new ArrayList<>();
+        for (UserRole role : userRoles) {
+            roles.add(role.getRole());
+        }
+
+        log.info("End loadUserById in AuthService");
+
+        return new AuthUser(user, roles);
+    }
+
 
     public AuthUser authenticate(AuthRequest authRequest) {
         String username = authRequest.getUsername();

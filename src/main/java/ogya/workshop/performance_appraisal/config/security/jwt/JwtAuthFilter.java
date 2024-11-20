@@ -4,6 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthService;
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -26,11 +30,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Autowired
-    private final UserDetailsService userDetailsService;
+    private final AuthService userDetailsService;
 
     public JwtAuthFilter(
             JwtService jwtService,
-            UserDetailsService userDetailsService,
+            AuthService userDetailsService,
             HandlerExceptionResolver handlerExceptionResolver
     ) {
         this.jwtService = jwtService;
@@ -50,7 +54,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("KONTOL KUDA");
 
         try {
             final String jwt = authHeader.substring(7);
@@ -59,9 +62,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (username != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
+                AuthUser userDetails = this.userDetailsService.loadUserById(UUID.fromString(username));
+                System.out.println(userDetails);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
+                    System.out.println("Token is valid");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -71,7 +75,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
+                System.out.println("Token is not valid");
             }
+
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {

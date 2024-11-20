@@ -19,7 +19,7 @@ public class RoleReqDto {
 
     public static Role toEntity(RoleReqDto roleDto) {
         Role role = new Role();
-        role.setRolename(roleDto.getRolename());
+        role.setRolename(roleDto.getRolename().toUpperCase());
         return role;
     }
 }

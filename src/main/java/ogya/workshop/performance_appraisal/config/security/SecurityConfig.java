@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthService;
 import ogya.workshop.performance_appraisal.config.security.jwt.JwtAuthFilter;
 import ogya.workshop.performance_appraisal.config.security.jwt.JwtService;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthFilter jwtAuthFilter(
             JwtService jwtService,
-            UserDetailsService userDetailsService,
+            AuthService userDetailsService,
             HandlerExceptionResolver handlerExceptionResolver
     ) {
         return new JwtAuthFilter(jwtService, userDetailsService, handlerExceptionResolver);
@@ -49,6 +50,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()// Allow public access to the auth endpoints
+                        .requestMatchers("/user/**").hasAnyAuthority("HR", "Admin")
                         .anyRequest().authenticated() // All other requests need authentication
                 )
                 .sessionManagement(session -> session

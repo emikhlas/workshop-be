@@ -5,7 +5,6 @@ import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.config.security.jwt.JwtService;
 import ogya.workshop.performance_appraisal.dto.auth.AuthRequest;
 import ogya.workshop.performance_appraisal.dto.auth.AuthResponse;
-import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

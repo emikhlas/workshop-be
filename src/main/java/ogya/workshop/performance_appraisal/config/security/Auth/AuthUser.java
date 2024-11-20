@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -23,6 +24,7 @@ public class AuthUser implements UserDetails {
     private final List<GrantedAuthority> authorities;
 
     public AuthUser(User user, List<Role> roles) {
+        this.user = user;
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.authorities = roles.stream()
@@ -64,5 +66,20 @@ public class AuthUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthUser{" +
+                "username='" + user.getUsername() + '\'' +
+                ", roles=" + authorities.stream()
+                .map(GrantedAuthority::getAuthority)  // Extract the role names (strings)
+                .collect(Collectors.joining(", ")) +
+                '}';
+    }
+
+
+    public UUID getId() {
+        return user.getId();
     }
 }
