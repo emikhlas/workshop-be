@@ -25,6 +25,9 @@ public class EmpAchieveSkill {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    @Column(name = "NOTES", length = 100)
+    private String notes;
+
     @ManyToOne
     @JoinColumn(name = "ACHIEVEMENT_ID")
     private Achieve achieve;

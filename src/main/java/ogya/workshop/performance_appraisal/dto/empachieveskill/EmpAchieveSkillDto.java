@@ -16,6 +16,8 @@ public class EmpAchieveSkillDto {
     private UUID id;
     @JsonProperty("user_id")
     private UUID userId;
+    @JsonProperty("notes")
+    private String notes;
     @JsonProperty("achievement_id")
     private UUID achievementId;
     @JsonProperty("score")

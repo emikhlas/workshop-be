@@ -88,6 +88,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         if (empAchieveSkill.getAchieve() != null) {
             empAchieveSkillDto.setAchievementId(empAchieveSkill.getAchieve().getId());
         }
+        empAchieveSkillDto.setNotes(empAchieveSkill.getNotes());
         empAchieveSkillDto.setScore(empAchieveSkill.getScore());
         empAchieveSkillDto.setAssessmentYear(empAchieveSkill.getAssessmentYear());
         empAchieveSkillDto.setCreatedAt(empAchieveSkill.getCreatedAt());
@@ -110,6 +111,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
             achieve.setId(empAchieveSkillDto.getAchievementId());
             empAchieveSkill.setAchieve(achieve);
         }
+        empAchieveSkill.setNotes(empAchieveSkillDto.getNotes());
         empAchieveSkill.setScore(empAchieveSkillDto.getScore());
         empAchieveSkill.setAssessmentYear(empAchieveSkillDto.getAssessmentYear());
         return empAchieveSkill;
