@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class UserController extends ServerResponseList {
     private final Logger Log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserServ userServ;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/all")
     public ResponseEntity<ManagerDto<List<UserDto>>>  getAllUsers() {
@@ -45,6 +49,7 @@ public class UserController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<UserDto> response = new ManagerDto<>();
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserDto content = userServ.createUser(userDto);
 
         response.setContent(content);
@@ -79,6 +84,7 @@ public class UserController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<UserDto> response = new ManagerDto<>();
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserDto content = userServ.updateUser(id, userDto);
 
         response.setContent(content);

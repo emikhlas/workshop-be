@@ -65,7 +65,7 @@ public class RoleServImpl implements RoleServ {
     public RoleDto updateRole(UUID id,RoleReqDto roleDto) {
         Log.info("Start updateRole in RoleServImpl");
         Role currentRole = roleRepo.findById(id).orElseThrow(() -> new RuntimeException("Role not found"));
-        if(roleDto.getRolename() != null) currentRole.setRolename(roleDto.getRolename());
+        if(roleDto.getRolename() != null) currentRole.setRolename(roleDto.getRolename().toUpperCase());
         currentRole.setUpdatedAt(LocalDateTime.now());
         roleRepo.save(currentRole);
         Log.info("End updateRole in RoleServImpl");
