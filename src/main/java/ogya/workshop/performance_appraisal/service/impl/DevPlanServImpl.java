@@ -1,11 +1,17 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.devplan.DevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.devplan.DevPlanDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
+import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
 import ogya.workshop.performance_appraisal.service.DevPlanServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +30,13 @@ public class DevPlanServImpl implements DevPlanServ {
     @Override
     public DevPlanDto createDevPlan(DevPlanCreateDto devPlanDto) {
         DevPlan devPlan = convertToEntity(devPlanDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        devPlan.setCreatedBy(creator);
+
         devPlan.setCreatedAt(new Date());  // Set the creation date
         DevPlan savedDevPlan = devPlanRepo.save(devPlan);
         return convertToDto(savedDevPlan);
@@ -32,20 +45,21 @@ public class DevPlanServImpl implements DevPlanServ {
     // Update an existing Achieve
     @Override
     public DevPlanDto updateDevPlan(UUID id, DevPlanCreateDto devPlanDto) {
-        if (!devPlanRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        DevPlan currentDevPlan = devPlanRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("DevPlan with this ID does not exist."));
+
+        if(devPlanDto.getPlan() != null){
+            currentDevPlan.setPlan(devPlanDto.getPlan());
         }
 
-        DevPlan devPlan = convertToEntity(devPlanDto);
-        devPlan.setId(id);  // Use the ID from the URL path
-        devPlan.setUpdatedAt(new Date());  // Set the updated date
+        currentDevPlan.setUpdatedAt(new Date());  // Set the updated date
 
-        // Ensure 'createdAt' is set if it's null during the update
-        if (devPlan.getCreatedAt() == null) {
-            devPlan.setCreatedAt(new Date());  // Set current date if null
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
 
-        DevPlan updatedDevPlan = devPlanRepo.save(devPlan);
+        currentDevPlan.setUpdatedBy(creator);
+
+        DevPlan updatedDevPlan = devPlanRepo.save(currentDevPlan);
         return convertToDto(updatedDevPlan);
     }
 
@@ -77,9 +91,13 @@ public class DevPlanServImpl implements DevPlanServ {
         devPlanDto.setPlan(devPlan.getPlan());
         devPlanDto.setEnabled(devPlan.getEnabled());
         devPlanDto.setCreatedAt(devPlan.getCreatedAt());
-        devPlanDto.setCreatedBy(devPlan.getCreatedBy());
+        if(devPlan.getCreatedBy() != null){
+            devPlanDto.setCreatedBy(UserByDto.fromEntity(devPlan.getCreatedBy()));
+        }
         devPlanDto.setUpdatedAt(devPlan.getUpdatedAt());
-        devPlanDto.setUpdatedBy(devPlan.getUpdatedBy());
+        if(devPlan.getUpdatedBy() != null){
+            devPlanDto.setUpdatedBy(UserByDto.fromEntity(devPlan.getUpdatedBy()));
+        }
         return devPlanDto;
     }
 

@@ -1,11 +1,17 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
 import ogya.workshop.performance_appraisal.service.GroupAchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +29,13 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     @Override
     public GroupAchieveDto createGroupAchieve(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = convertToEntity(groupAchieveDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        groupAchieve.setCreatedBy(creator);
+
         groupAchieve.setCreatedAt(new Date());  // Set the creation date
         GroupAchieve savedGroupAchieve = groupAchieveRepo.save(groupAchieve);
         return convertToDto(savedGroupAchieve);
@@ -31,20 +44,25 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     // Update an existing Achieve
     @Override
     public GroupAchieveDto updateGroupAchieve(UUID id, GroupAchieveCreateDto groupAchieveDto) {
-        if (!groupAchieveRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        GroupAchieve currentGroupAchieve = groupAchieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Group achieve with this ID does not exist."));
+
+        if(groupAchieveDto.getGroupAchievementName() != null){
+            currentGroupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
         }
 
-        GroupAchieve groupAchieve = convertToEntity(groupAchieveDto);
-        groupAchieve.setId(id);  // Use the ID from the URL path
-        groupAchieve.setUpdatedAt(new Date());  // Set the updated date
-
-        // Ensure 'createdAt' is set if it's null during the update
-        if (groupAchieve.getCreatedAt() == null) {
-            groupAchieve.setCreatedAt(new Date());  // Set current date if null
+        if(groupAchieveDto.getPercentage() != null){
+            currentGroupAchieve.setPercentage(groupAchieveDto.getPercentage());
         }
 
-        GroupAchieve updatedGroupAchieve = groupAchieveRepo.save(groupAchieve);
+        currentGroupAchieve.setUpdatedAt(new Date());  // Set the updated date
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentGroupAchieve.setUpdatedBy(creator);
+
+        GroupAchieve updatedGroupAchieve = groupAchieveRepo.save(currentGroupAchieve);
         return convertToDto(updatedGroupAchieve);
     }
 
@@ -74,12 +92,18 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         GroupAchieveDto groupAchieveDto = new GroupAchieveDto();
         groupAchieveDto.setId(groupAchieve.getId());
         groupAchieveDto.setGroupAchievementName(groupAchieve.getGroupAchievementName());
-        groupAchieveDto.setPercentage(groupAchieve.getPercentage());
+        if (groupAchieve.getPercentage() != 0) {
+            groupAchieveDto.setPercentage(groupAchieve.getPercentage());
+        }
         groupAchieveDto.setEnabled(groupAchieve.getEnabled());
         groupAchieveDto.setCreatedAt(groupAchieve.getCreatedAt());
-        groupAchieveDto.setCreatedBy(groupAchieve.getCreatedBy());
+        if(groupAchieve.getCreatedBy() != null){
+            groupAchieveDto.setCreatedBy(UserByDto.fromEntity(groupAchieve.getCreatedBy()));
+        }
         groupAchieveDto.setUpdatedAt(groupAchieve.getUpdatedAt());
-        groupAchieveDto.setUpdatedBy(groupAchieve.getUpdatedBy());
+        if(groupAchieve.getUpdatedBy() != null){
+            groupAchieveDto.setUpdatedBy(UserByDto.fromEntity(groupAchieve.getUpdatedBy()));
+        }
         return groupAchieveDto;
     }
 
@@ -87,7 +111,9 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     private GroupAchieve convertToEntity(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = new GroupAchieve();
         groupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
-        groupAchieve.setPercentage(groupAchieveDto.getPercentage());
+        if (groupAchieve.getPercentage() != 0) {
+            groupAchieve.setPercentage(groupAchieveDto.getPercentage());
+        }
         groupAchieve.setEnabled(groupAchieveDto.getEnabled());
         return groupAchieve;
     }

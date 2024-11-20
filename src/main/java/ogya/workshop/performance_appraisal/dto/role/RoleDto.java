@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.role;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -25,11 +26,11 @@ public class RoleDto {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UserDto createdBy;
+    private UserByDto createdBy;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UserDto updatedBy;
+    private UserByDto updatedBy;
 
     public static RoleDto fromEntity(Role role) {
         RoleDto dto = new RoleDto();
@@ -37,6 +38,12 @@ public class RoleDto {
         dto.setRolename(role.getRolename());
         dto.setCreatedAt(role.getCreatedAt());
         dto.setUpdatedAt(role.getUpdatedAt());
+        if(role.getCreatedBy() != null){
+            dto.setCreatedBy(UserByDto.fromEntity(role.getCreatedBy()));
+        }
+        if(role.getUpdatedBy() != null){
+            dto.setUpdatedBy(UserByDto.fromEntity(role.getUpdatedBy()));
+        }
         return dto;
     }
 }

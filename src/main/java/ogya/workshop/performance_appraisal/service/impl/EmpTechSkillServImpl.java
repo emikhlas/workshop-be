@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillDto;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
@@ -12,6 +13,8 @@ import ogya.workshop.performance_appraisal.service.EmpTechSkillServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -85,6 +88,11 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         empTechSkill.setUser(user);
         empTechSkill.setTechSkill(techSkill);
         empTechSkill.setCreatedAt(LocalDateTime.now());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        empTechSkill.setCreatedBy(creator);
         empTechSkillRepo.save(empTechSkill);
         Log.info("End save in EmpTechSkillServImpl");
         return EmpTechSkillDto.fromEntity(empTechSkill);
@@ -108,6 +116,11 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         if(empTechSkillDto.getScore() != null) empTechSkill.setScore(empTechSkillDto.getScore());
         if(empTechSkillDto.getAssessmentYear() != null) empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
         empTechSkill.setUpdatedAt(LocalDateTime.now());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        empTechSkill.setUpdatedBy(creator);
         empTechSkillRepo.save(empTechSkill);
         Log.info("End update in EmpTechSkillServImpl");
         return EmpTechSkillDto.fromEntity(empTechSkill);

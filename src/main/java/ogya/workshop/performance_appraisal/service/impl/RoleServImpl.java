@@ -1,9 +1,11 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.dto.role.RoleReqDto;
 import ogya.workshop.performance_appraisal.dto.userrole.UserRoleDto;
 import ogya.workshop.performance_appraisal.entity.Role;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.entity.UserRole;
 import ogya.workshop.performance_appraisal.repository.RoleRepo;
 import ogya.workshop.performance_appraisal.repository.UserRoleRepo;
@@ -11,6 +13,8 @@ import ogya.workshop.performance_appraisal.service.RoleServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -55,6 +59,11 @@ public class RoleServImpl implements RoleServ {
         Log.info("Start createRole in RoleServImpl");
         Role role = RoleReqDto.toEntity(roleDto);
         Log.info("role: {}", role);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        role.setCreatedBy(creator);
         role.setCreatedAt(LocalDateTime.now());
         roleRepo.save(role);
         Log.info("End createRole in RoleServImpl");
@@ -65,8 +74,15 @@ public class RoleServImpl implements RoleServ {
     public RoleDto updateRole(UUID id,RoleReqDto roleDto) {
         Log.info("Start updateRole in RoleServImpl");
         Role currentRole = roleRepo.findById(id).orElseThrow(() -> new RuntimeException("Role not found"));
-        if(roleDto.getRolename() != null) currentRole.setRolename(roleDto.getRolename().toUpperCase());
+        if(roleDto.getRolename() != null){
+            currentRole.setRolename(roleDto.getRolename());
+        }
         currentRole.setUpdatedAt(LocalDateTime.now());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentRole.setUpdatedBy(creator);
         roleRepo.save(currentRole);
         Log.info("End updateRole in RoleServImpl");
         return RoleDto.fromEntity(currentRole);

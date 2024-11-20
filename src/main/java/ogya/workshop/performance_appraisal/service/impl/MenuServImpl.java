@@ -1,11 +1,17 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.Menu;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.MenuRepo;
 import ogya.workshop.performance_appraisal.service.MenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +30,13 @@ public class MenuServImpl implements MenuServ {
     @Override
     public MenuDto createMenu(MenuCreateDto menuDto) {
         Menu menu = convertToEntity(menuDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        menu.setCreatedBy(creator);
+
         menu.setCreatedAt(new Date());  // Set the creation date
         Menu savedMenu = menuRepo.save(menu);
         return convertToDto(savedMenu);
@@ -32,20 +45,21 @@ public class MenuServImpl implements MenuServ {
     // Update an existing Achieve
     @Override
     public MenuDto updateMenu(UUID id, MenuCreateDto menuDto) {
-        if (!menuRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        Menu currentMenu = menuRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Menu with this ID does not exist."));
+
+        if(menuDto.getMenuName() != null){
+            currentMenu.setMenuName(menuDto.getMenuName());
         }
 
-        Menu menu = convertToEntity(menuDto);
-        menu.setId(id);  // Use the ID from the URL path
-        menu.setUpdatedAt(new Date());  // Set the updated date
+        currentMenu.setUpdatedAt(new Date());  // Set the updated date
 
-        // Ensure 'createdAt' is set if it's null during the update
-        if (menu.getCreatedAt() == null) {
-            menu.setCreatedAt(new Date());  // Set current date if null
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
 
-        Menu updatedMenu = menuRepo.save(menu);
+        currentMenu.setUpdatedBy(creator);
+
+        Menu updatedMenu = menuRepo.save(currentMenu);
         return convertToDto(updatedMenu);
     }
 
@@ -76,9 +90,13 @@ public class MenuServImpl implements MenuServ {
         menuDto.setId(menu.getId());
         menuDto.setMenuName(menu.getMenuName());
         menuDto.setCreatedAt(menu.getCreatedAt());
-        menuDto.setCreatedBy(menu.getCreatedBy());
+        if(menu.getCreatedBy() != null){
+            menuDto.setCreatedBy(UserByDto.fromEntity(menu.getCreatedBy()));
+        }
         menuDto.setUpdatedAt(menu.getUpdatedAt());
-        menuDto.setUpdatedBy(menu.getUpdatedBy());
+        if(menu.getUpdatedBy() != null){
+            menuDto.setUpdatedBy(UserByDto.fromEntity(menu.getUpdatedBy()));
+        }
         return menuDto;
     }
 

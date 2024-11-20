@@ -1,13 +1,17 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
-import ogya.workshop.performance_appraisal.entity.DevPlan;
-import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
-import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.entity.*;
+import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
 import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
+import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +25,23 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     @Autowired
     private EmpDevPlanRepo empDevPlanRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private DevPlanRepo devPlanRepo;
+
     // Create a new Group Achieve
     @Override
     public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        empDevPlan.setCreatedBy(creator);
+
         empDevPlan.setCreatedAt(new Date());  // Set the creation date
         EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
         return convertToDto(savedEmpDevPlan);
@@ -33,20 +50,31 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     // Update an existing Achieve
     @Override
     public EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanCreateDto empDevPlanDto) {
-        if (!empDevPlanRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        EmpDevPlan currentEmpDevPlan = empDevPlanRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("EmpDevPlan with this ID does not exist."));
+
+        if(empDevPlanDto.getUserId() != null){
+            User user = userRepo.findById(empDevPlanDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("User with this ID does not exist."));
+            currentEmpDevPlan.setUser(user);
         }
 
-        EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
-        empDevPlan.setId(id);  // Use the ID from the URL path
-        empDevPlan.setUpdatedAt(new Date());  // Set the updated date
-
-        // Ensure 'createdAt' is set if it's null during the update
-        if (empDevPlan.getCreatedAt() == null) {
-            empDevPlan.setCreatedAt(new Date());  // Set current date if null
+        if(empDevPlanDto.getDevPlanId() != null){
+            DevPlan devPlan = devPlanRepo.findById(empDevPlanDto.getDevPlanId()).orElseThrow(() -> new IllegalArgumentException("DevPlan with this ID does not exist."));
+            currentEmpDevPlan.setDevPlan(devPlan);
         }
 
-        EmpDevPlan updatedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
+        if(empDevPlanDto.getAssessmentYear() != null){
+            currentEmpDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
+        }
+
+        currentEmpDevPlan.setUpdatedAt(new Date());  // Set the updated date
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentEmpDevPlan.setUpdatedBy(creator);
+
+        EmpDevPlan updatedEmpDevPlan = empDevPlanRepo.save(currentEmpDevPlan);
         return convertToDto(updatedEmpDevPlan);
     }
 
@@ -83,9 +111,13 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         }
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
         empDevPlanDto.setCreatedAt(empDevPlan.getCreatedAt());
-        empDevPlanDto.setCreatedBy(empDevPlan.getCreatedBy());
+        if(empDevPlan.getCreatedBy() != null){
+            empDevPlanDto.setCreatedBy(UserByDto.fromEntity(empDevPlan.getCreatedBy()));
+        }
         empDevPlanDto.setUpdatedAt(empDevPlan.getUpdatedAt());
-        empDevPlanDto.setUpdatedBy(empDevPlan.getUpdatedBy());
+        if(empDevPlan.getUpdatedBy() != null){
+            empDevPlanDto.setUpdatedBy(UserByDto.fromEntity(empDevPlan.getUpdatedBy()));
+        }
         return empDevPlanDto;
     }
 
