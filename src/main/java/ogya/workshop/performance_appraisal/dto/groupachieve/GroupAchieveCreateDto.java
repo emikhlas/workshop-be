@@ -11,6 +11,8 @@ import lombok.*;
 public class GroupAchieveCreateDto {
     @JsonProperty("group_achievement_name")
     private String groupAchievementName;
+    @JsonProperty("percentage")
+    private Integer percentage;
     @JsonProperty("enabled")
     private Integer enabled;
 }

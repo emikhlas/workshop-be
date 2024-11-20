@@ -74,6 +74,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         GroupAchieveDto groupAchieveDto = new GroupAchieveDto();
         groupAchieveDto.setId(groupAchieve.getId());
         groupAchieveDto.setGroupAchievementName(groupAchieve.getGroupAchievementName());
+        groupAchieveDto.setPercentage(groupAchieve.getPercentage());
         groupAchieveDto.setEnabled(groupAchieve.getEnabled());
         groupAchieveDto.setCreatedAt(groupAchieve.getCreatedAt());
         groupAchieveDto.setCreatedBy(groupAchieve.getCreatedBy());
@@ -86,6 +87,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     private GroupAchieve convertToEntity(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = new GroupAchieve();
         groupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
+        groupAchieve.setPercentage(groupAchieveDto.getPercentage());
         groupAchieve.setEnabled(groupAchieveDto.getEnabled());
         return groupAchieve;
     }
