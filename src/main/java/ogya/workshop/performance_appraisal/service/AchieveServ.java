@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.service;
 
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface AchieveServ {
     Optional<AchieveDto> getAchievementById(UUID id);
     List<AchieveDto> getAllAchievements();
     boolean deleteAchievement(UUID id);
+    List<AchieveWithGroupNameDto> getAllAchievementsWithGroupNames();
 }

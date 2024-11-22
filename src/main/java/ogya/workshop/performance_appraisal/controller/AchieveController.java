@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200") // Allow requests from this origin
 @RequestMapping("/achievements")
 public class AchieveController {
 
@@ -55,5 +57,11 @@ public class AchieveController {
     public ResponseEntity<Boolean> deleteAchievement(@PathVariable UUID id) {
         Boolean response = achieveServ.deleteAchievement(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/with-group-names")
+    public ResponseEntity<List<AchieveWithGroupNameDto>> getAllAchievementsWithGroupNames() {
+        List<AchieveWithGroupNameDto> achievements = achieveServ.getAllAchievementsWithGroupNames();
+        return ResponseEntity.ok(achievements);
     }
 }
