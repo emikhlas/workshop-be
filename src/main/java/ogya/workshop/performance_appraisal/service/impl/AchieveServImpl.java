@@ -1,12 +1,19 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
+import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +31,11 @@ public class AchieveServImpl implements AchieveServ {
     @Override
     public AchieveDto createAchievement(AchieveCreateDto achieveDto) {
         Achieve achieve = convertToEntity(achieveDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        achieve.setCreatedBy(creator);
         achieve.setCreatedAt(new Date());  // Set the creation date
         Achieve savedAchieve = achieveRepo.save(achieve);
         return convertToDto(savedAchieve);
@@ -32,6 +44,7 @@ public class AchieveServImpl implements AchieveServ {
     // Update an existing Achieve
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
+        Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Achieve with this ID does not exist."));
         if (!achieveRepo.existsById(id)) {
             throw new IllegalArgumentException("Achievement with this ID does not exist.");
         }
@@ -44,6 +57,11 @@ public class AchieveServImpl implements AchieveServ {
         if (achieve.getCreatedAt() == null) {
             achieve.setCreatedAt(new Date());  // Set current date if null
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentAchieve.setUpdatedBy(creator);
 
         Achieve updatedAchieve = achieveRepo.save(achieve);
         return convertToDto(updatedAchieve);
@@ -70,6 +88,11 @@ public class AchieveServImpl implements AchieveServ {
         return true;
     }
 
+    @Override
+    public List<AchieveWithGroupNameDto> getAllAchievementsWithGroupNames() {
+        return achieveRepo.findAllWithGroupNames();
+    }
+
     // Helper method to convert Achieve entity to AchieveDto
     private AchieveDto convertToDto(Achieve achieve) {
         AchieveDto achieveDto = new AchieveDto();
@@ -80,9 +103,13 @@ public class AchieveServImpl implements AchieveServ {
         }
         achieveDto.setEnabled(achieve.getEnabled());
         achieveDto.setCreatedAt(achieve.getCreatedAt());
-        achieveDto.setCreatedBy(achieve.getCreatedBy());
+        if(achieve.getCreatedBy() != null){
+            achieveDto.setCreatedBy(UserByDto.fromEntity(achieve.getCreatedBy()));
+        }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
-        achieveDto.setUpdatedBy(achieve.getUpdatedBy());
+        if(achieve.getUpdatedBy() != null){
+            achieveDto.setUpdatedBy(UserByDto.fromEntity(achieve.getUpdatedBy()));
+        }
         return achieveDto;
     }
 
