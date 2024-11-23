@@ -15,6 +15,8 @@ public class AchieveWithGroupNameDto {
     private UUID id;
     @JsonProperty("achievement_name")
     private String achievementName;
+    @JsonProperty("group_achievement_id")
+    private UUID groupAchievementId;
     @JsonProperty("group_achievement_name")
     private String groupAchievementName;
 }
