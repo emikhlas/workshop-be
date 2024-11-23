@@ -1,11 +1,16 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.division.DivisionCreateDto;
 import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.Division;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.service.DivisionServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +29,10 @@ public class DivisionServImpl implements DivisionServ {
     @Override
     public DivisionDto createDivision(DivisionCreateDto divisionDto) {
         Division division = convertToEntity(divisionDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        division.setCreatedBy(creator);
         division.setCreatedAt(new Date());  // Set the creation date
         Division savedDivision = divisionRepo.save(division);
         return convertToDto(savedDivision);
@@ -32,20 +41,17 @@ public class DivisionServImpl implements DivisionServ {
     // Update an existing Achieve
     @Override
     public DivisionDto updateDivision(UUID id, DivisionCreateDto divisionDto) {
-        if (!divisionRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        Division currentDivision = divisionRepo.findById(id).orElseThrow(() -> new RuntimeException("Division not found"));
+        if (divisionDto.getDivisionName() != null) {
+            currentDivision.setDivisionName(divisionDto.getDivisionName());
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        currentDivision.setUpdatedBy(creator);
+        currentDivision.setUpdatedAt(new Date());  // Set the update date
 
-        Division division = convertToEntity(divisionDto);
-        division.setId(id);  // Use the ID from the URL path
-        division.setUpdatedAt(new Date());  // Set the updated date
-
-        // Ensure 'createdAt' is set if it's null during the update
-        if (division.getCreatedAt() == null) {
-            division.setCreatedAt(new Date());  // Set current date if null
-        }
-
-        Division updatedDivision = divisionRepo.save(division);
+        Division updatedDivision = divisionRepo.save(currentDivision);
         return convertToDto(updatedDivision);
     }
 
@@ -76,9 +82,13 @@ public class DivisionServImpl implements DivisionServ {
         divisionDto.setId(division.getId());
         divisionDto.setDivisionName(division.getDivisionName());
         divisionDto.setCreatedAt(division.getCreatedAt());
-        divisionDto.setCreatedBy(division.getCreatedBy());
+        if(division.getCreatedBy() != null) {
+            divisionDto.setCreatedBy(UserByDto.fromEntity(division.getCreatedBy()));
+        }
         divisionDto.setUpdatedAt(division.getUpdatedAt());
-        divisionDto.setUpdatedBy(division.getUpdatedBy());
+        if(division.getUpdatedBy() != null){
+            divisionDto.setUpdatedBy(UserByDto.fromEntity(division.getUpdatedBy()));
+        }
         return divisionDto;
     }
 

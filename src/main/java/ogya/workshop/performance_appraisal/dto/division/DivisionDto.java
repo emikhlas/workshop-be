@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.division;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.Division;
 
 import java.util.Date;
@@ -20,11 +21,11 @@ public class DivisionDto {
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("created_by")
-    private UUID createdBy;
+    private UserByDto createdBy;
     @JsonProperty("updated_at")
     private Date updatedAt;
     @JsonProperty("updated_by")
-    private UUID updatedBy;
+    private UserByDto updatedBy;
 
     public static DivisionDto fromEntity(Division division) {
         DivisionDto dto = new DivisionDto();
@@ -32,11 +33,11 @@ public class DivisionDto {
         dto.setDivisionName(division.getDivisionName());
         dto.setCreatedAt(division.getCreatedAt());
         if(division.getCreatedBy() != null) {
-            dto.setCreatedBy(division.getCreatedBy());
+            dto.setCreatedBy(UserByDto.fromEntity(division.getCreatedBy()));
         }
         dto.setUpdatedAt(division.getUpdatedAt());
         if(division.getUpdatedBy() != null) {
-            dto.setUpdatedBy(division.getUpdatedBy());
+            dto.setUpdatedBy(UserByDto.fromEntity(division.getUpdatedBy()));
         }
         return dto;
     }
@@ -46,13 +47,8 @@ public class DivisionDto {
         entity.setId(division.getId());
         entity.setDivisionName(division.getDivisionName());
         entity.setCreatedAt(division.getCreatedAt());
-        if(division.getCreatedBy() != null) {
-            entity.setCreatedBy(division.getCreatedBy());
-        }
         entity.setUpdatedAt(division.getUpdatedAt());
-        if(division.getUpdatedBy() != null) {
-            entity.setUpdatedBy(division.getUpdatedBy());
-        }
+
         return entity;
     }
 }

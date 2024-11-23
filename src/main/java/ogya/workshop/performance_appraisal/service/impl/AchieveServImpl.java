@@ -2,7 +2,6 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
-import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
@@ -69,11 +68,6 @@ public class AchieveServImpl implements AchieveServ {
     public boolean deleteAchievement(UUID id) {
         achieveRepo.deleteById(id);
         return true;
-    }
-
-    @Override
-    public List<AchieveWithGroupNameDto> getAllAchievementsWithGroupNames() {
-        return achieveRepo.findAllWithGroupNames();
     }
 
     // Helper method to convert Achieve entity to AchieveDto

@@ -30,15 +30,17 @@ public class Achieve {
     @Column(name = "ENABLED", nullable = false)
     private int enabled = 1;
 
-    @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CREATED_BY")
+    private User createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private Date createdAt;
 
-    @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    @ManyToOne
+    @JoinColumn(name = "UPDATED_BY")
+    private User updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UPDATED_AT")
