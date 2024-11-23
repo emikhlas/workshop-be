@@ -16,7 +16,7 @@ public class EmpAttitudeSkillCreateDto {
     @JsonProperty("attitude_skill_id")
     private UUID attitudeSkillId;
     @JsonProperty("score")
-    private int score;
+    private Integer score;
     @JsonProperty("assessment_year")
-    private int assessmentYear;
+    private Integer assessmentYear;
 }

@@ -12,7 +12,7 @@ public class GroupAttitudeSkillCreateDto {
     @JsonProperty("group_name")
     private String groupName;
     @JsonProperty("percentage")
-    private int percentage;
+    private Integer percentage;
     @JsonProperty("enabled")
     private Integer enabled;
 }

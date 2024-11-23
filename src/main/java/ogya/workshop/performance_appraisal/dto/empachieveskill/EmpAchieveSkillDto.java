@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.empachieveskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 
 import java.util.Date;
 import java.util.UUID;
@@ -27,9 +28,9 @@ public class EmpAchieveSkillDto {
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("created_by")
-    private UUID createdBy;
+    private UserByDto createdBy;
     @JsonProperty("updated_at")
     private Date updatedAt;
     @JsonProperty("updated_by")
-    private UUID updatedBy;
+    private UserByDto updatedBy;
 }

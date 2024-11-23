@@ -23,14 +23,16 @@ public class Division {
     @Column(name = "DIVISION_NAME", length = 50, nullable = false)
     private String divisionName;
 
-    @Column(name = "CREATED_BY")
-    private UUID createdBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATED_BY")
+    private User createdBy;
 
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private Date createdAt;
 
-    @Column(name = "UPDATED_BY")
-    private UUID updatedBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UPDATED_BY")
+    private User updatedBy;
 
     @Column(name = "UPDATED_AT")
     private Date updatedAt;

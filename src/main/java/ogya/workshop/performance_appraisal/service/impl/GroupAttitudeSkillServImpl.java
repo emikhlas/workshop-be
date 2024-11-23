@@ -1,11 +1,16 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,7 +29,13 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     @Override
     public GroupAttitudeSkillDto createGroupAttitudeSkill(GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill groupAttitudeSkill = convertToEntity(groupAttitudeSkillDto);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        groupAttitudeSkill.setCreatedBy(creator);
         groupAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
+
         GroupAttitudeSkill savedGroupAttitudeSkill = groupAttitudeSkillRepo.save(groupAttitudeSkill);
         return convertToDto(savedGroupAttitudeSkill);
     }
@@ -32,20 +43,26 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     // Update an existing Achieve
     @Override
     public GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
-        if (!groupAttitudeSkillRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        GroupAttitudeSkill currentGroupAttitudeSkill = groupAttitudeSkillRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
+
+        if(groupAttitudeSkillDto.getGroupName() != null){
+            currentGroupAttitudeSkill.setGroupName(groupAttitudeSkillDto.getGroupName());
+        }
+        if(groupAttitudeSkillDto.getPercentage() != null){
+            currentGroupAttitudeSkill.setPercentage(groupAttitudeSkillDto.getPercentage());
+        }
+        if(groupAttitudeSkillDto.getEnabled() != null){
+            currentGroupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
         }
 
-        GroupAttitudeSkill groupAttitudeSkill = convertToEntity(groupAttitudeSkillDto);
-        groupAttitudeSkill.setId(id);  // Use the ID from the URL path
-        groupAttitudeSkill.setUpdatedAt(new Date());  // Set the updated date
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User updater = authUser.getUser();
+        currentGroupAttitudeSkill.setUpdatedBy(updater);
+        currentGroupAttitudeSkill.setUpdatedAt(new Date());
 
-        // Ensure 'createdAt' is set if it's null during the update
-        if (groupAttitudeSkill.getCreatedAt() == null) {
-            groupAttitudeSkill.setCreatedAt(new Date());  // Set current date if null
-        }
 
-        GroupAttitudeSkill updatedGroupAttitudeSkill = groupAttitudeSkillRepo.save(groupAttitudeSkill);
+        GroupAttitudeSkill updatedGroupAttitudeSkill = groupAttitudeSkillRepo.save(currentGroupAttitudeSkill);
         return convertToDto(updatedGroupAttitudeSkill);
     }
 
@@ -78,9 +95,13 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkillDto.setPercentage(groupAttitudeSkill.getPercentage());
         groupAttitudeSkillDto.setEnabled(groupAttitudeSkill.getEnabled());
         groupAttitudeSkillDto.setCreatedAt(groupAttitudeSkill.getCreatedAt());
-        groupAttitudeSkillDto.setCreatedBy(groupAttitudeSkill.getCreatedBy());
         groupAttitudeSkillDto.setUpdatedAt(groupAttitudeSkill.getUpdatedAt());
-        groupAttitudeSkillDto.setUpdatedBy(groupAttitudeSkill.getUpdatedBy());
+        if(groupAttitudeSkill.getCreatedBy() != null){
+            groupAttitudeSkillDto.setCreatedBy(UserByDto.fromEntity(groupAttitudeSkill.getCreatedBy()));
+        }
+        if(groupAttitudeSkill.getUpdatedBy() != null){
+            groupAttitudeSkillDto.setUpdatedBy(UserByDto.fromEntity(groupAttitudeSkill.getUpdatedBy()));
+        }
         return groupAttitudeSkillDto;
     }
 

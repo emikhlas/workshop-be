@@ -1,11 +1,15 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +28,10 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     @Override
     public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+        empAttitudeSkill.setCreatedBy(creator);
         empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
         EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
         return convertToDto(savedEmpAttitudeSkill);
@@ -32,20 +40,31 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     // Update an existing Achieve
     @Override
     public EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-        if (!empAttitudeSkillRepo.existsById(id)) {
-            throw new IllegalArgumentException("Group Achievement with this ID does not exist.");
+        EmpAttitudeSkill currentEmpAttitudeSkill = empAttitudeSkillRepo.findById(id).orElseThrow( () -> new RuntimeException("EmpAttitudeSkill not found"));
+
+        if (empAttitudeSkillDto.getUserId() != null) {
+            User user = new User();
+            user.setId(empAttitudeSkillDto.getUserId());
+            currentEmpAttitudeSkill.setUser(user);
         }
-
-        EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
-        empAttitudeSkill.setId(id);  // Use the ID from the URL path
-        empAttitudeSkill.setUpdatedAt(new Date());  // Set the updated date
-
-        // Ensure 'createdAt' is set if it's null during the update
-        if (empAttitudeSkill.getCreatedAt() == null) {
-            empAttitudeSkill.setCreatedAt(new Date());  // Set current date if null
+        if (empAttitudeSkillDto.getAttitudeSkillId() != null) {
+            AttitudeSkill attitudeSkill = new AttitudeSkill();
+            attitudeSkill.setId(empAttitudeSkillDto.getAttitudeSkillId());
+            currentEmpAttitudeSkill.setAttitudeSkill(attitudeSkill);
         }
+        currentEmpAttitudeSkill.setScore(empAttitudeSkillDto.getScore());
+        currentEmpAttitudeSkill.setAssessmentYear(empAttitudeSkillDto.getAssessmentYear());
 
-        EmpAttitudeSkill updatedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentEmpAttitudeSkill.setUpdatedBy(creator);
+        currentEmpAttitudeSkill.setUpdatedAt(new Date());
+
+
+        EmpAttitudeSkill updatedEmpAttitudeSkill = empAttitudeSkillRepo.save(currentEmpAttitudeSkill);
         return convertToDto(updatedEmpAttitudeSkill);
     }
 
@@ -82,10 +101,17 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         }
         empAttitudeSkillDto.setScore(empAttitudeSkill.getScore());
         empAttitudeSkillDto.setAssessmentYear(empAttitudeSkill.getAssessmentYear());
+
         empAttitudeSkillDto.setCreatedAt(empAttitudeSkill.getCreatedAt());
-        empAttitudeSkillDto.setCreatedBy(empAttitudeSkill.getCreatedBy());
         empAttitudeSkillDto.setUpdatedAt(empAttitudeSkill.getUpdatedAt());
-        empAttitudeSkillDto.setUpdatedBy(empAttitudeSkill.getUpdatedBy());
+
+        if (empAttitudeSkill.getCreatedBy() != null) {
+            empAttitudeSkillDto.setCreatedBy(UserByDto.fromEntity(empAttitudeSkill.getCreatedBy()));
+        }
+        if (empAttitudeSkill.getUpdatedBy() != null) {
+            empAttitudeSkillDto.setUpdatedBy(UserByDto.fromEntity(empAttitudeSkill.getUpdatedBy()));
+        }
+
         return empAttitudeSkillDto;
     }
 
