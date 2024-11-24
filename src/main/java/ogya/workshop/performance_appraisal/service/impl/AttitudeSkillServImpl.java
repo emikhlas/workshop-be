@@ -1,8 +1,10 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
@@ -94,6 +96,11 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     public boolean deleteAttitudeSkill(UUID id) {
         attitudeSkillRepo.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<AttitudeWithGroupNameDto> getAllAttitudeWithGroupName() {
+        return attitudeSkillRepo.findAllWithGroupNames();
     }
 
     // Helper method to convert Achieve entity to AchieveDto

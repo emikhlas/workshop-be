@@ -1,7 +1,9 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,5 +57,11 @@ public class AttitudeSkillController {
     public ResponseEntity<Boolean> deleteAttitudeSkill(@PathVariable UUID id) {
         Boolean response = attitudeSkillServ.deleteAttitudeSkill(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/with-group-names")
+    public ResponseEntity<List<AttitudeWithGroupNameDto>> getAllAttitudeWithGroupName() {
+        List<AttitudeWithGroupNameDto> achievements = attitudeSkillServ.getAllAttitudeWithGroupName();
+        return ResponseEntity.ok(achievements);
     }
 }
