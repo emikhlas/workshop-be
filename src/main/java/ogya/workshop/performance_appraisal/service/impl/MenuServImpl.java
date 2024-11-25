@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.Menu;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -91,11 +91,11 @@ public class MenuServImpl implements MenuServ {
         menuDto.setMenuName(menu.getMenuName());
         menuDto.setCreatedAt(menu.getCreatedAt());
         if(menu.getCreatedBy() != null){
-            menuDto.setCreatedBy(UserByDto.fromEntity(menu.getCreatedBy()));
+            menuDto.setCreatedBy(UserInfoDto.fromEntity(menu.getCreatedBy()));
         }
         menuDto.setUpdatedAt(menu.getUpdatedAt());
         if(menu.getUpdatedBy() != null){
-            menuDto.setUpdatedBy(UserByDto.fromEntity(menu.getUpdatedBy()));
+            menuDto.setUpdatedBy(UserInfoDto.fromEntity(menu.getUpdatedBy()));
         }
         return menuDto;
     }

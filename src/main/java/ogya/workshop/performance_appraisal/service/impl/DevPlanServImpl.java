@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.devplan.DevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.devplan.DevPlanDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.DevPlan;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -92,11 +92,11 @@ public class DevPlanServImpl implements DevPlanServ {
         devPlanDto.setEnabled(devPlan.getEnabled());
         devPlanDto.setCreatedAt(devPlan.getCreatedAt());
         if(devPlan.getCreatedBy() != null){
-            devPlanDto.setCreatedBy(UserByDto.fromEntity(devPlan.getCreatedBy()));
+            devPlanDto.setCreatedBy(UserInfoDto.fromEntity(devPlan.getCreatedBy()));
         }
         devPlanDto.setUpdatedAt(devPlan.getUpdatedAt());
         if(devPlan.getUpdatedBy() != null){
-            devPlanDto.setUpdatedBy(UserByDto.fromEntity(devPlan.getUpdatedBy()));
+            devPlanDto.setUpdatedBy(UserInfoDto.fromEntity(devPlan.getUpdatedBy()));
         }
         return devPlanDto;
     }

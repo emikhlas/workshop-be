@@ -2,8 +2,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
-import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -96,11 +95,11 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         groupAchieveDto.setEnabled(groupAchieve.getEnabled());
         groupAchieveDto.setCreatedAt(groupAchieve.getCreatedAt());
         if(groupAchieve.getCreatedBy() != null){
-            groupAchieveDto.setCreatedBy(UserByDto.fromEntity(groupAchieve.getCreatedBy()));
+            groupAchieveDto.setCreatedBy(UserInfoDto.fromEntity(groupAchieve.getCreatedBy()));
         }
         groupAchieveDto.setUpdatedAt(groupAchieve.getUpdatedAt());
         if(groupAchieve.getUpdatedBy() != null){
-            groupAchieveDto.setUpdatedBy(UserByDto.fromEntity(groupAchieve.getUpdatedBy()));
+            groupAchieveDto.setUpdatedBy(UserInfoDto.fromEntity(groupAchieve.getUpdatedBy()));
         }
         return groupAchieveDto;
     }

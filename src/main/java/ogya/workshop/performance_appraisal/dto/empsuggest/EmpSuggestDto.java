@@ -2,12 +2,10 @@ package ogya.workshop.performance_appraisal.dto.empsuggest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.EmpSuggest;
-import ogya.workshop.performance_appraisal.entity.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -28,11 +26,11 @@ public class EmpSuggestDto {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UserByDto createdBy;
+    private UserInfoDto createdBy;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UserByDto updatedBy;
+    private UserInfoDto updatedBy;
 
     public static EmpSuggestDto fromEntity(EmpSuggest empSuggest) {
         EmpSuggestDto empSuggestDto = new EmpSuggestDto();
@@ -43,10 +41,10 @@ public class EmpSuggestDto {
         empSuggestDto.setCreatedAt(empSuggest.getCreatedAt());
         empSuggestDto.setUpdatedAt(empSuggest.getUpdatedAt());
         if(empSuggest.getCreatedBy() != null){
-            empSuggestDto.setCreatedBy(UserByDto.fromEntity(empSuggest.getCreatedBy()));
+            empSuggestDto.setCreatedBy(UserInfoDto.fromEntity(empSuggest.getCreatedBy()));
         }
         if(empSuggest.getUpdatedBy() != null){
-            empSuggestDto.setUpdatedBy(UserByDto.fromEntity(empSuggest.getUpdatedBy()));
+            empSuggestDto.setUpdatedBy(UserInfoDto.fromEntity(empSuggest.getUpdatedBy()));
         }
         return empSuggestDto;
     }
