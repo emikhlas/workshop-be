@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.service;
 
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface AttitudeSkillServ {
     Optional<AttitudeSkillDto> getAttitudeSkillById(UUID id);
     List<AttitudeSkillDto> getAllAttitudeSkills();
     boolean deleteAttitudeSkill(UUID id);
+    List<AttitudeWithGroupNameDto> getAllAttitudeWithGroupName();
 }

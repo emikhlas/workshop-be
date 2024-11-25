@@ -3,8 +3,14 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
+
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
+import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+
 import ogya.workshop.performance_appraisal.entity.Achieve;
+import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
@@ -29,10 +35,10 @@ public class AchieveServImpl implements AchieveServ {
     @Override
     public AchieveDto createAchievement(AchieveCreateDto achieveDto) {
         Achieve achieve = convertToEntity(achieveDto);
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
+
         achieve.setCreatedBy(creator);
         achieve.setCreatedAt(new Date());  // Set the creation date
         Achieve savedAchieve = achieveRepo.save(achieve);
@@ -42,27 +48,26 @@ public class AchieveServImpl implements AchieveServ {
     // Update an existing Achieve
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
-        Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new RuntimeException("Achieve not found"));
-        if(achieveDto.getGroupAchievementId() != null) {
-            GroupAchieve groupAchieve = new GroupAchieve();
-            groupAchieve.setId(achieveDto.getGroupAchievementId());
-            currentAchieve.setGroupAchieve(groupAchieve);
+        Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Achieve with this ID does not exist."));
+        if (!achieveRepo.existsById(id)) {
+            throw new IllegalArgumentException("Achievement with this ID does not exist.");
         }
-        if(achieveDto.getAchievementName() != null) {
-            currentAchieve.setAchievementName(achieveDto.getAchievementName());
-        }
-        if(achieveDto.getEnabled() != null) {
-            currentAchieve.setEnabled(achieveDto.getEnabled());
+
+        Achieve achieve = convertToEntity(achieveDto);
+        achieve.setId(id);  // Use the ID from the URL path
+        achieve.setUpdatedAt(new Date());  // Set the updated date
+
+        // Ensure 'createdAt' is set if it's null during the update
+        if (achieve.getCreatedAt() == null) {
+            achieve.setCreatedAt(new Date());  // Set current date if null
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
 
         currentAchieve.setUpdatedBy(creator);
-        currentAchieve.setUpdatedAt(new Date());
 
-        Achieve updatedAchieve = achieveRepo.save(currentAchieve);
-
+        Achieve updatedAchieve = achieveRepo.save(achieve);
         return convertToDto(updatedAchieve);
     }
 
@@ -87,6 +92,11 @@ public class AchieveServImpl implements AchieveServ {
         return true;
     }
 
+    @Override
+    public List<AchieveWithGroupNameDto> getAllAchievementsWithGroupNames() {
+        return achieveRepo.findAllWithGroupNames();
+    }
+
     // Helper method to convert Achieve entity to AchieveDto
     private AchieveDto convertToDto(Achieve achieve) {
         AchieveDto achieveDto = new AchieveDto();
@@ -97,13 +107,18 @@ public class AchieveServImpl implements AchieveServ {
         }
         achieveDto.setEnabled(achieve.getEnabled());
         achieveDto.setCreatedAt(achieve.getCreatedAt());
+
         if(achieve.getCreatedAt() != null) {
             achieveDto.setCreatedBy(UserInfoDto.fromEntity(achieve.getCreatedBy()));
         }
         if (achieve.getCreatedBy() != null) {
             achieveDto.setCreatedBy(UserInfoDto.fromEntity(achieve.getCreatedBy()));
+
         }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
+        if(achieve.getUpdatedBy() != null){
+            achieveDto.setUpdatedBy(UserByDto.fromEntity(achieve.getUpdatedBy()));
+        }
         return achieveDto;
     }
 
