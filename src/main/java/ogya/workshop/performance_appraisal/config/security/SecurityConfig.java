@@ -2,7 +2,7 @@ package ogya.workshop.performance_appraisal.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthService;
-import ogya.workshop.performance_appraisal.config.security.jwt.JwtAuthFilter;
+import ogya.workshop.performance_appraisal.config.security.jwt.JwtAuthComponent;
 import ogya.workshop.performance_appraisal.config.security.jwt.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +35,16 @@ public class SecurityConfig {
     private final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Bean
-    public JwtAuthFilter jwtAuthFilter(
+    public JwtAuthComponent JwtAuthComponent(
             JwtService jwtService,
             AuthService userDetailsService,
             HandlerExceptionResolver handlerExceptionResolver
     ) {
-        return new JwtAuthFilter(jwtService, userDetailsService, handlerExceptionResolver);
+        return new JwtAuthComponent(jwtService, userDetailsService, handlerExceptionResolver);
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthComponent JwtAuthComponent) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(authorize -> authorize
@@ -58,7 +58,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Disable sessions, stateless authentication
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before the default authentication filter
+                .addFilterBefore(JwtAuthComponent, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before the default authentication filter
 
         return http.build();
     }

@@ -6,7 +6,7 @@ import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreate
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 

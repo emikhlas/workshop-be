@@ -5,7 +5,7 @@ import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
 
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
@@ -117,7 +117,7 @@ public class AchieveServImpl implements AchieveServ {
         }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
         if(achieve.getUpdatedBy() != null){
-            achieveDto.setUpdatedBy(UserByDto.fromEntity(achieve.getUpdatedBy()));
+            achieveDto.setUpdatedBy(UserInfoDto.fromEntity(achieve.getUpdatedBy()));
         }
         return achieveDto;
     }

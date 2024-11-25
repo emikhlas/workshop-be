@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
 import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
@@ -112,11 +112,11 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
         empDevPlanDto.setCreatedAt(empDevPlan.getCreatedAt());
         if(empDevPlan.getCreatedBy() != null){
-            empDevPlanDto.setCreatedBy(UserByDto.fromEntity(empDevPlan.getCreatedBy()));
+            empDevPlanDto.setCreatedBy(UserInfoDto.fromEntity(empDevPlan.getCreatedBy()));
         }
         empDevPlanDto.setUpdatedAt(empDevPlan.getUpdatedAt());
         if(empDevPlan.getUpdatedBy() != null){
-            empDevPlanDto.setUpdatedBy(UserByDto.fromEntity(empDevPlan.getUpdatedBy()));
+            empDevPlanDto.setUpdatedBy(UserInfoDto.fromEntity(empDevPlan.getUpdatedBy()));
         }
         return empDevPlanDto;
     }
