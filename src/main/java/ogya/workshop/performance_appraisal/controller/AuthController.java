@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
 public class AuthController extends ServerResponseList {
     private final Logger Log = LoggerFactory.getLogger(AuthController.class);
 
