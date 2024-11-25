@@ -3,8 +3,10 @@ package ogya.workshop.performance_appraisal.dto.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionInfoDto;
 import ogya.workshop.performance_appraisal.dto.role.RoleDto;
+import ogya.workshop.performance_appraisal.dto.role.RoleInfoDto;
+import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
 
 import java.time.LocalDate;
@@ -37,17 +39,17 @@ public class UserDto {
     @JsonProperty("password")
     private String password;
     @JsonProperty("role")
-    private Set<RoleDto> role;
+    private Set<RoleInfoDto> role;
     @JsonProperty("division")
-    private DivisionDto division;
+    private DivisionInfoDto division;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
-    private UserByDto createdBy;
+    private UserInfoDto createdBy;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
     @JsonProperty("updated_by")
-    private UserByDto updatedBy;
+    private UserInfoDto updatedBy;
 
 
     public static UserDto fromEntity(User user) {
@@ -61,15 +63,15 @@ public class UserDto {
         userDto.setJoinDate(user.getJoinDate());
         userDto.setEnabled(user.getEnabled());
         userDto.setPassword(user.getPassword());
-        userDto.setDivision(DivisionDto.fromEntity(user.getDivision()));
+        userDto.setDivision(DivisionInfoDto.fromEntity(user.getDivision()));
         userDto.setCreatedAt(user.getCreatedAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
 
         if (user.getCreatedBy() != null) {
-            userDto.setCreatedBy(UserByDto.fromEntity(user.getCreatedBy()));
+            userDto.setCreatedBy(UserInfoDto.fromEntity(user.getCreatedBy()));
         }
         if (user.getUpdatedBy() != null) {
-            userDto.setUpdatedBy(UserByDto.fromEntity(user.getUpdatedBy()));
+            userDto.setUpdatedBy(UserInfoDto.fromEntity(user.getUpdatedBy()));
         }
         return userDto;
     }
@@ -92,6 +94,7 @@ public class UserDto {
 
     public static UserDto fromAuthenticatedUser(AuthUser authUser) {
         UserDto userDto = new UserDto();
+        userDto.setId(authUser.getUser().getId());
         userDto.setUsername(authUser.getUser().getUsername());
         userDto.setFullName(authUser.getUser().getFullName());
         userDto.setEmailAddress(authUser.getUser().getEmailAddress());

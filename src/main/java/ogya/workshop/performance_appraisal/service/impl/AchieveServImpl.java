@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -98,10 +98,10 @@ public class AchieveServImpl implements AchieveServ {
         achieveDto.setEnabled(achieve.getEnabled());
         achieveDto.setCreatedAt(achieve.getCreatedAt());
         if(achieve.getCreatedAt() != null) {
-            achieveDto.setCreatedBy(UserByDto.fromEntity(achieve.getCreatedBy()));
+            achieveDto.setCreatedBy(UserInfoDto.fromEntity(achieve.getCreatedBy()));
         }
         if (achieve.getCreatedBy() != null) {
-            achieveDto.setCreatedBy(UserByDto.fromEntity(achieve.getCreatedBy()));
+            achieveDto.setCreatedBy(UserInfoDto.fromEntity(achieve.getCreatedBy()));
         }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
         return achieveDto;

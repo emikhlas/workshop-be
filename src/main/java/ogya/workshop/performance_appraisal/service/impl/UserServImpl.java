@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.role.RoleDto;
+import ogya.workshop.performance_appraisal.dto.role.RoleInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
 import ogya.workshop.performance_appraisal.entity.Division;
@@ -48,6 +49,15 @@ public class UserServImpl implements UserServ {
 
         for (User user : response) {
             UserDto userDto = UserDto.fromEntity(user);
+            List<UserRole> userRoles = userRoleRepo.findByUserId(userDto.getId());
+            Set<RoleInfoDto> roles = new HashSet<>();
+            if(!userRoles.isEmpty()) {
+                for (UserRole userRole : userRoles) {
+                    Role role= userRole.getRole();
+                    roles.add(RoleInfoDto.fromEntity(role));
+                }
+            }
+            userDto.setRole(roles);
             userList.add(userDto);
         }
 
@@ -60,11 +70,11 @@ public class UserServImpl implements UserServ {
         Log.info("Start getUserById in UserServImpl");
         Optional<User> user = userRepo.findById(id);
         List<UserRole> userRoles = userRoleRepo.findByUserId(id);
-        Set<RoleDto> roles = new HashSet<>();
+        Set<RoleInfoDto> roles = new HashSet<>();
         if(!userRoles.isEmpty()) {
             for (UserRole userRole : userRoles) {
                 Role role= userRole.getRole();
-                roles.add(RoleDto.fromEntity(role));
+                roles.add(RoleInfoDto.fromEntity(role));
             }
         }
         Log.info("End getUserById in UserServImpl");
@@ -95,14 +105,14 @@ public class UserServImpl implements UserServ {
 
         userRepo.save(user);
         UserDto result = UserDto.fromEntity(user);
-        Set<RoleDto> roles = new HashSet<>();
+        Set<RoleInfoDto> roles = new HashSet<>();
         for(UUID roleId : userDto.getRole()) {
             Role role = roleRepo.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
             UserRole userRole = new UserRole();
             userRole.setUser(user);
             userRole.setRole(role);
             userRoleRepo.save(userRole);
-            roles.add(RoleDto.fromEntity(role));
+            roles.add(RoleInfoDto.fromEntity(role));
         }
         result.setRole(roles);
 

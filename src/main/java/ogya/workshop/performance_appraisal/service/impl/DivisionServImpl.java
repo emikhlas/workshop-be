@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.division.DivisionCreateDto;
 import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.DivisionRepo;
@@ -83,11 +83,11 @@ public class DivisionServImpl implements DivisionServ {
         divisionDto.setDivisionName(division.getDivisionName());
         divisionDto.setCreatedAt(division.getCreatedAt());
         if(division.getCreatedBy() != null) {
-            divisionDto.setCreatedBy(UserByDto.fromEntity(division.getCreatedBy()));
+            divisionDto.setCreatedBy(UserInfoDto.fromEntity(division.getCreatedBy()));
         }
         divisionDto.setUpdatedAt(division.getUpdatedAt());
         if(division.getUpdatedBy() != null){
-            divisionDto.setUpdatedBy(UserByDto.fromEntity(division.getUpdatedBy()));
+            divisionDto.setUpdatedBy(UserInfoDto.fromEntity(division.getUpdatedBy()));
         }
         return divisionDto;
     }

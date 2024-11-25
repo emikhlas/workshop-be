@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -107,11 +107,11 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         empAchieveSkillDto.setUpdatedAt(empAchieveSkill.getUpdatedAt());
 
         if(empAchieveSkill.getCreatedBy() != null) {
-            empAchieveSkillDto.setCreatedBy(UserByDto.fromEntity(empAchieveSkill.getCreatedBy()));
+            empAchieveSkillDto.setCreatedBy(UserInfoDto.fromEntity(empAchieveSkill.getCreatedBy()));
         }
 
         if(empAchieveSkill.getUpdatedBy() != null) {
-            empAchieveSkillDto.setUpdatedBy(UserByDto.fromEntity(empAchieveSkill.getUpdatedBy()));
+            empAchieveSkillDto.setUpdatedBy(UserInfoDto.fromEntity(empAchieveSkill.getUpdatedBy()));
         }
         return empAchieveSkillDto;
     }
