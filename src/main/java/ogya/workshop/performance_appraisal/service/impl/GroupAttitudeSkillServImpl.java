@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
@@ -97,10 +97,10 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkillDto.setCreatedAt(groupAttitudeSkill.getCreatedAt());
         groupAttitudeSkillDto.setUpdatedAt(groupAttitudeSkill.getUpdatedAt());
         if(groupAttitudeSkill.getCreatedBy() != null){
-            groupAttitudeSkillDto.setCreatedBy(UserByDto.fromEntity(groupAttitudeSkill.getCreatedBy()));
+            groupAttitudeSkillDto.setCreatedBy(UserInfoDto.fromEntity(groupAttitudeSkill.getCreatedBy()));
         }
         if(groupAttitudeSkill.getUpdatedBy() != null){
-            groupAttitudeSkillDto.setUpdatedBy(UserByDto.fromEntity(groupAttitudeSkill.getUpdatedBy()));
+            groupAttitudeSkillDto.setUpdatedBy(UserInfoDto.fromEntity(groupAttitudeSkill.getUpdatedBy()));
         }
         return groupAttitudeSkillDto;
     }
