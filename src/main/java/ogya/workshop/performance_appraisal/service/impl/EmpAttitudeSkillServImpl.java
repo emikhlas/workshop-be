@@ -3,7 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.user.UserByDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
@@ -106,10 +106,10 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         empAttitudeSkillDto.setUpdatedAt(empAttitudeSkill.getUpdatedAt());
 
         if (empAttitudeSkill.getCreatedBy() != null) {
-            empAttitudeSkillDto.setCreatedBy(UserByDto.fromEntity(empAttitudeSkill.getCreatedBy()));
+            empAttitudeSkillDto.setCreatedBy(UserInfoDto.fromEntity(empAttitudeSkill.getCreatedBy()));
         }
         if (empAttitudeSkill.getUpdatedBy() != null) {
-            empAttitudeSkillDto.setUpdatedBy(UserByDto.fromEntity(empAttitudeSkill.getUpdatedBy()));
+            empAttitudeSkillDto.setUpdatedBy(UserInfoDto.fromEntity(empAttitudeSkill.getUpdatedBy()));
         }
 
         return empAttitudeSkillDto;
