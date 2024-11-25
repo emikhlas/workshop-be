@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200") // Allow requests from this origin
 @RequestMapping("/achievements")
 public class AchieveController {
 
