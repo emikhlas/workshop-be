@@ -84,7 +84,9 @@ public class UserController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<UserDto> response = new ManagerDto<>();
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if(userDto.getPassword() != null){
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
         UserDto content = userServ.updateUser(id, userDto);
 
         response.setContent(content);
