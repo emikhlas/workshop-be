@@ -14,7 +14,7 @@ public class TechSkillCreateDto {
     @JsonProperty("technical_skill")
     private String techSkill;
     @JsonProperty("enabled")
-    private Boolean enabled;
+    private Integer enabled;
 
     public static TechSkill toEntity(TechSkillCreateDto dto) {
         TechSkill entity = new TechSkill();

@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/auth/**","/group-achievements/**").permitAll()
+                        .requestMatchers("/auth/**","/group-achievements/**", "/achievements/**", "/attitude-skill/**", "/group-attitude-skill/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()// Allow public access to the auth endpoints
 //                        .requestMatchers("/user/**").hasAnyAuthority("HR", "ADMIN")
                         .anyRequest().authenticated()// All other requests need authentication
