@@ -22,7 +22,7 @@ public class TechSkill {
     @Column(name = "TECHNICAL_SKILL", length = 100 ,nullable = false)
     private String techSkill;
     @Column(name = "ENABLED")
-    private Boolean enabled = true;
+    private int enabled = 1;
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
     @ManyToOne

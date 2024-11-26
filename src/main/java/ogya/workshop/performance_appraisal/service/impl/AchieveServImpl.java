@@ -9,11 +9,9 @@ import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
-import ogya.workshop.performance_appraisal.entity.Achieve;
-import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
-import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
+import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,6 +28,9 @@ public class AchieveServImpl implements AchieveServ {
 
     @Autowired
     private AchieveRepo achieveRepo;
+
+    @Autowired
+    private GroupAchieveRepo groupAchieveRepo;
 
     // Create a new Achieve
     @Override
@@ -49,25 +50,33 @@ public class AchieveServImpl implements AchieveServ {
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
         Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Achieve with this ID does not exist."));
-        if (!achieveRepo.existsById(id)) {
-            throw new IllegalArgumentException("Achievement with this ID does not exist.");
+//        if (!achieveRepo.existsById(id)) {
+//            throw new IllegalArgumentException("Achievement with this ID does not exist.");
+//        }
+        if(achieveDto.getAchievementName() != null){
+            currentAchieve.setAchievementName(achieveDto.getAchievementName());
         }
 
-        Achieve achieve = convertToEntity(achieveDto);
-        achieve.setId(id);  // Use the ID from the URL path
-        achieve.setUpdatedAt(new Date());  // Set the updated date
+        if(achieveDto.getGroupAchievementId() != null){
+
+            GroupAchieve groupAchieve = groupAchieveRepo.findById(achieveDto.getGroupAchievementId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
+            currentAchieve.setGroupAchieve(groupAchieve);
+        }
+//        Achieve achieve = convertToEntity(achieveDto);
+//        achieve.setId(id);  // Use the ID from the URL path
+        currentAchieve.setUpdatedAt(new Date());  // Set the updated date
 
         // Ensure 'createdAt' is set if it's null during the update
-        if (achieve.getCreatedAt() == null) {
-            achieve.setCreatedAt(new Date());  // Set current date if null
-        }
+//        if (achieve.getCreatedAt() == null) {
+//            achieve.setCreatedAt(new Date());  // Set current date if null
+//        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
 
         currentAchieve.setUpdatedBy(creator);
 
-        Achieve updatedAchieve = achieveRepo.save(achieve);
+        Achieve updatedAchieve = achieveRepo.save(currentAchieve);
         return convertToDto(updatedAchieve);
     }
 

@@ -21,7 +21,7 @@ public class TechSkillDto {
     @JsonProperty("technical_skill")
     private String techSkill;
     @JsonProperty("enabled")
-    private Boolean enabled;
+    private Integer enabled;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("created_by")
