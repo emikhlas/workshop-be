@@ -27,6 +27,9 @@ public class EmpDevPlan {
     @JoinColumn(name = "DEV_PLAN_ID")
     private DevPlan devPlan;
 
+    @Column(name = "TOO_BRIGHT")
+    private String tooBright;
+
     @Column(name = "ASSESSMENT_YEAR", length = 4)
     private int assessmentYear;
 
