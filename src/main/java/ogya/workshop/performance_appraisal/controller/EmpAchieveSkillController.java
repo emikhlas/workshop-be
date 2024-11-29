@@ -1,7 +1,9 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
+import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveWithUserAchieveDto;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,5 +57,11 @@ public class EmpAchieveSkillController {
     public ResponseEntity<Boolean> deleteEmpAchieveSkill(@PathVariable UUID id) {
         Boolean response = empAchieveSkillServ.deleteEmpAchieveSkill(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/with-group-names")
+    public ResponseEntity<List<EmpAchieveWithUserAchieveDto>> getAllEmpUserAchieve() {
+        List<EmpAchieveWithUserAchieveDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieve();
+        return ResponseEntity.ok(empAchieves);
     }
 }

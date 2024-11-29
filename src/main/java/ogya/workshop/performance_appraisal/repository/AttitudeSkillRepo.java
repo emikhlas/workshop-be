@@ -11,7 +11,10 @@ import java.util.UUID;
 
 @Repository
 public interface AttitudeSkillRepo extends JpaRepository<AttitudeSkill, UUID> {
-    @Query("SELECT new ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto(a.id, a.attitudeSkillName, g.id, g.groupName) " +
+    @Query("SELECT new ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto(a.id, a.attitudeSkillName, g.id, g.groupName, a.enabled, a.createdAt, a.updatedAt) " +
             "FROM AttitudeSkill a JOIN a.groupAttitudeSkill g")
     List<AttitudeWithGroupNameDto> findAllWithGroupNames();
 }
+
+
+

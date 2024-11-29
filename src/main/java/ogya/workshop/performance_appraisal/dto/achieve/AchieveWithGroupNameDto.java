@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.dto.achieve;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,4 +20,10 @@ public class AchieveWithGroupNameDto {
     private UUID groupAchievementId;
     @JsonProperty("group_achievement_name")
     private String groupAchievementName;
+    @JsonProperty("enabled")
+    private Integer enabled;
+    @JsonProperty("created_at")
+    private Date createdAt;
+    @JsonProperty("updated_at")
+    private Date updatedAt;
 }

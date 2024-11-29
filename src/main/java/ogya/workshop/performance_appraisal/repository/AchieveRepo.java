@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface AchieveRepo extends JpaRepository<Achieve, UUID> {
-    @Query("SELECT new ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto(a.id, a.achievementName, g.id, g.groupAchievementName) " +
+    @Query("SELECT new ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto(a.id, a.achievementName, g.id, g.groupAchievementName, a.enabled, a.createdAt, a.updatedAt) " +
             "FROM Achieve a JOIN a.groupAchieve g")
     List<AchieveWithGroupNameDto> findAllWithGroupNames();
 }
