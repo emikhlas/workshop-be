@@ -5,6 +5,7 @@ import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.dto.role.RoleInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
+import ogya.workshop.performance_appraisal.dto.userrole.UserRoleUpdateDto;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -13,6 +14,7 @@ import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.repository.RoleRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.repository.UserRoleRepo;
+import ogya.workshop.performance_appraisal.service.UserRoleServ;
 import ogya.workshop.performance_appraisal.service.UserServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class UserServImpl implements UserServ {
 
     @Autowired
     private DivisionRepo divisionRepo;
+
+    @Autowired
+    private UserRoleServ userRoleServ;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -127,6 +132,12 @@ public class UserServImpl implements UserServ {
         if (userDto.getDivisionId() != null) {
             Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
             findUser.setDivision(division);
+        }
+
+        if(userDto.getRole() != null) {
+            UserRoleUpdateDto userRoleUpdateDto = new UserRoleUpdateDto();
+            userRoleUpdateDto.setRole(userDto.getRole());
+            userRoleServ.updateUserRole(id,userRoleUpdateDto);
         }
 
         updateUserFields(findUser , userDto);
