@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
+import ogya.workshop.performance_appraisal.dto.menu.MenuInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.Menu;
@@ -14,10 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,6 +81,23 @@ public class MenuServImpl implements MenuServ {
         menuRepo.deleteById(id);
         return true;
     }
+
+    @Override
+    public List<MenuInfoDto> getMenuByUserId(UUID userId) {
+
+        List<Menu> menus = menuRepo.findMenuByUserId(userId);
+        System.out.println("userId : "+ userId);
+        return menus.stream()
+                .map(menu ->  {
+                    System.out.println(menu.getId());
+                    return new MenuInfoDto(
+                            menu.getId(),        // Cast the value to UUID
+                            menu.getMenuName() // Cast the value to String
+                    ) ;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     // Helper method to convert Achieve entity to AchieveDto
     private MenuDto convertToDto(Menu menu) {

@@ -1,7 +1,9 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuByRoleDto;
 import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuDto;
+import ogya.workshop.performance_appraisal.dto.rolemenu.RoleMenuUpdateDto;
 import ogya.workshop.performance_appraisal.service.RoleMenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +56,18 @@ public class RoleMenuController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteRoleMenu(@PathVariable UUID id) {
         Boolean response = roleMenuServ.deleteRoleMenu(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<List<RoleMenuByRoleDto>> getAllRoleMenuByRole() {
+        List<RoleMenuByRoleDto> response = roleMenuServ.getAllRoleMenuByRole();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/role/{id}")
+    public ResponseEntity<List<RoleMenuDto>> updateRoleMenuByRoleId(@PathVariable UUID id, @RequestBody RoleMenuUpdateDto roleMenuUpdateDto) {
+        List<RoleMenuDto> response = roleMenuServ.updateRoleMenuByRoleId(id, roleMenuUpdateDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
