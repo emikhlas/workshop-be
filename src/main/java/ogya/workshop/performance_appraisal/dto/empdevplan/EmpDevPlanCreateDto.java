@@ -15,6 +15,8 @@ public class EmpDevPlanCreateDto {
     private UUID userId;
     @JsonProperty("dev_plan_id")
     private UUID devPlanId;
+    @JsonProperty("plan_detail")
+    private String planDetail;
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
 }

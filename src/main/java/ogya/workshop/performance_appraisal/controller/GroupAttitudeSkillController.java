@@ -1,5 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
@@ -55,5 +57,15 @@ public class GroupAttitudeSkillController {
     public ResponseEntity<Boolean> deleteGroupAttitudeSkill(@PathVariable UUID id) {
         Boolean response = groupAttitudeSkillServ.deleteGroupAttitudeSkill(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/group-attitude-skill/{id}")
+    public GroupAttWithAttDto getGroupWithAttitudeSkills(@PathVariable UUID id) {
+        return groupAttitudeSkillServ.getGroupWithAttitudeSkills(id);
+    }
+
+    @GetMapping("/all")
+    public List<GroupAttWithAttDto> getAllGroupWithAttitudeSkills() {
+        return groupAttitudeSkillServ.getAllGroupWithAttitudeSkills();
     }
 }

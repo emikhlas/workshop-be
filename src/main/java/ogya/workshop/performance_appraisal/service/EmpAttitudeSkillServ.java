@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EmpAttitudeSkillServ {
-    EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto);
+    List<EmpAttitudeSkillDto> createEmpAttitudeSkills(List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos);
     EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto);
     Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id);
     List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills();

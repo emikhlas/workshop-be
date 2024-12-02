@@ -1,6 +1,8 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
@@ -86,6 +88,21 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     public boolean deleteGroupAttitudeSkill(UUID id) {
         groupAttitudeSkillRepo.deleteById(id);
         return true;
+    }
+
+    @Override
+    public GroupAttWithAttDto getGroupWithAttitudeSkills(UUID id) {
+        GroupAttitudeSkill groupAttitudeSkill = groupAttitudeSkillRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Group not found"));
+        return GroupAttWithAttDto.fromEntity(groupAttitudeSkill);
+    }
+
+    @Override
+    public List<GroupAttWithAttDto> getAllGroupWithAttitudeSkills() {
+        List<GroupAttitudeSkill> groupAttitudeSkills = groupAttitudeSkillRepo.findAll();
+        return groupAttitudeSkills.stream()
+                .map(GroupAttWithAttDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
     // Helper method to convert Achieve entity to AchieveDto

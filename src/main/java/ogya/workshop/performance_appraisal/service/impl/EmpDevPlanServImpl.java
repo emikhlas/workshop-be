@@ -1,6 +1,8 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
@@ -13,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,19 +32,36 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     private DevPlanRepo devPlanRepo;
 
     // Create a new Group Achieve
+//    @Override
+//    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
+//        EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+//        User creator = authUser.getUser();
+//
+//        empDevPlan.setCreatedBy(creator);
+//
+//        empDevPlan.setCreatedAt(new Date());  // Set the creation date
+//        EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
+//        return convertToDto(savedEmpDevPlan);
+//    }
+
     @Override
-    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
-        EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
+    public List<EmpDevPlanDto> createEmpDevPlan(List<EmpDevPlanCreateDto> empDevPlanDtos) {
+        List<EmpDevPlanDto> result = new ArrayList<>();
+        for (EmpDevPlanCreateDto empDevPlanDto : empDevPlanDtos) {
+            EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            AuthUser authUser = (AuthUser) authentication.getPrincipal();
+            User creator = authUser.getUser();
+            empDevPlan.setCreatedBy(creator);
+            empDevPlan.setCreatedAt(new Date());  // Set the creation date
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-        User creator = authUser.getUser();
-
-        empDevPlan.setCreatedBy(creator);
-
-        empDevPlan.setCreatedAt(new Date());  // Set the creation date
-        EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
-        return convertToDto(savedEmpDevPlan);
+            EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
+            result.add(convertToDto(savedEmpDevPlan));
+        }
+        return result;
     }
 
     // Update an existing Achieve
@@ -118,6 +135,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         if(empDevPlan.getUpdatedBy() != null){
             empDevPlanDto.setUpdatedBy(UserInfoDto.fromEntity(empDevPlan.getUpdatedBy()));
         }
+        empDevPlanDto.setPlanDetail(empDevPlan.getPlanDetail());  // Include planDetail
         return empDevPlanDto;
     }
 
@@ -134,6 +152,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             devPlan.setId(empDevPlanDto.getDevPlanId());
             empDevPlan.setDevPlan(devPlan);
         }
+        empDevPlan.setPlanDetail(empDevPlanDto.getPlanDetail());  // Include planDetail
         empDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
         return empDevPlan;
     }

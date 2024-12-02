@@ -20,11 +20,20 @@ public class EmpAttitudeSkillController {
     private EmpAttitudeSkillServ empAttitudeSkillServ;
 
     // Create a new Achievement
+//    @PostMapping
+//    public ResponseEntity<EmpAttitudeSkillDto> createEmpAttitudeSkill(@RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
+//        EmpAttitudeSkillDto newEmpAttitudeSkill = empAttitudeSkillServ.createEmpAttitudeSkill(empAttitudeSkillDto);
+//        return ResponseEntity.ok(newEmpAttitudeSkill);
+//    }
+
+    // Create new EmpAttitudeSkills
     @PostMapping
-    public ResponseEntity<EmpAttitudeSkillDto> createEmpAttitudeSkill(@RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-        EmpAttitudeSkillDto newEmpAttitudeSkill = empAttitudeSkillServ.createEmpAttitudeSkill(empAttitudeSkillDto);
-        return ResponseEntity.ok(newEmpAttitudeSkill);
+    public ResponseEntity<List<EmpAttitudeSkillDto>> createEmpAttitudeSkills(@RequestBody List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
+        List<EmpAttitudeSkillDto> newEmpAttitudeSkills = empAttitudeSkillServ.createEmpAttitudeSkills(empAttitudeSkillDtos);
+        return ResponseEntity.ok(newEmpAttitudeSkills);
     }
+
+
 
     // Update an existing Achievement
     @PutMapping("/{id}")
