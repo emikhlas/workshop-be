@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
@@ -97,11 +96,6 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     public List<EmpAchieveSkillDto> getAllEmpAchieveSkill() {
         List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findAll();
         return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<EmpAchieveWithUserAchieveDto> getAllEmpUserAchieve() {
-        return empAchieveSkillRepo.findEmpAchieveUser();
     }
 
     // Delete an Achieve by ID
