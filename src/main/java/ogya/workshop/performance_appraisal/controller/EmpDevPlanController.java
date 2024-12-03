@@ -1,5 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.service.EmpDevPlanServ;
@@ -20,9 +22,15 @@ public class EmpDevPlanController {
     private EmpDevPlanServ empDevPlanServ;
 
     // Create a new Achievement
+//    @PostMapping
+//    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanCreateDto empDevPlanDto) {
+//        EmpDevPlanDto newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDto);
+//        return ResponseEntity.ok(newEmpDevPlan);
+//    }
+
     @PostMapping
-    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanCreateDto empDevPlanDto) {
-        EmpDevPlanDto newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDto);
+    public ResponseEntity<List<EmpDevPlanDto>> createEmpDevPlan(@RequestBody List<EmpDevPlanCreateDto> empDevPlanDtos) {
+        List<EmpDevPlanDto> newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDtos);
         return ResponseEntity.ok(newEmpDevPlan);
     }
 

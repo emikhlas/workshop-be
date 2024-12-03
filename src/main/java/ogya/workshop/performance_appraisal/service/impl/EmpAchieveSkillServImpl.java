@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
@@ -8,7 +9,9 @@ import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.EmpAchieveSkill;
 import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.repository.EmpAchieveSkillRepo;
+import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,12 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     @Autowired
     private EmpAchieveSkillRepo empAchieveSkillRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private AchieveRepo achieveRepo;
+
     // Create a new Group Achieve
     @Override
     public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto) {
@@ -49,9 +58,9 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     // Update an existing Achieve
     @Override
     public EmpAchieveSkillDto updateEmpAchieveSkill(UUID id, EmpAchieveSkillCreateDto empAchieveSkillDto) {
-
         EmpAchieveSkill currentEAchieveSkill = empAchieveSkillRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Achieve ID: " + id));
+
         if (empAchieveSkillDto.getUserId() != null) {
             User user = new User();
             user.setId(empAchieveSkillDto.getUserId());
@@ -65,6 +74,12 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         currentEAchieveSkill.setNotes(empAchieveSkillDto.getNotes());
         currentEAchieveSkill.setScore(empAchieveSkillDto.getScore());
         currentEAchieveSkill.setAssessmentYear(empAchieveSkillDto.getAssessmentYear());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        currentEAchieveSkill.setUpdatedBy(creator);
 
         EmpAchieveSkill updatedEmpAchieveSkill = empAchieveSkillRepo.save(currentEAchieveSkill);
         return convertToDto(updatedEmpAchieveSkill);
@@ -82,6 +97,11 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     public List<EmpAchieveSkillDto> getAllEmpAchieveSkill() {
         List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findAll();
         return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmpAchieveWithUserAchieveDto> getAllEmpUserAchieve() {
+        return empAchieveSkillRepo.findEmpAchieveUser();
     }
 
     // Delete an Achieve by ID

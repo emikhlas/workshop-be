@@ -105,6 +105,14 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         return attitudeSkillRepo.findAllWithGroupNames();
     }
 
+//    @Override
+//    public List<AttitudeWithGroupNameDto> getAllAttitudeWithGroupName() {
+//        List<AttitudeSkill> attitudeSkills = attitudeSkillRepo.findAll(); // Fetch all attitude skills
+//        return attitudeSkills.stream()
+//                .map(this::convertToAttitudeWithGroupNameDto) // Convert each to AttitudeWithGroupNameDto
+//                .collect(Collectors.toList()); // Collect as a list
+//    }
+
     // Helper method to convert Achieve entity to AchieveDto
     private AttitudeSkillDto convertToDto(AttitudeSkill attitudeSkill) {
         AttitudeSkillDto attitudeSkillDto = new AttitudeSkillDto();
@@ -124,6 +132,37 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         }
         return attitudeSkillDto;
     }
+
+//    private AttitudeWithGroupNameDto convertToAttitudeWithGroupNameDto(AttitudeSkill attitudeSkill) {
+//        AttitudeWithGroupNameDto dto = new AttitudeWithGroupNameDto();
+//
+//        dto.setId(attitudeSkill.getId());
+//        dto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
+//
+//        // Cek keberadaan GroupAttitudeSkill
+//        if (attitudeSkill.getGroupAttitudeSkill() != null) {
+//            dto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkill().getId());
+//            dto.setGroupName(attitudeSkill.getGroupAttitudeSkill().getGroupName()); // Set groupName
+//        }
+//
+//        dto.setEnabled(attitudeSkill.getEnabled());
+//        dto.setCreatedAt(attitudeSkill.getCreatedAt());
+//
+//        // Cek keberadaan CreatedBy
+//        if (attitudeSkill.getCreatedBy() != null) {
+//            dto.setCreatedBy(UserInfoDto.fromEntity(attitudeSkill.getCreatedBy()));
+//        }
+//
+//        dto.setUpdatedAt(attitudeSkill.getUpdatedAt());
+//
+//        // Cek keberadaan UpdatedBy
+//        if (attitudeSkill.getUpdatedBy() != null) {
+//            dto.setUpdatedBy(UserInfoDto.fromEntity(attitudeSkill.getUpdatedBy()));
+//        }
+//
+//        return dto;
+//    }
+
 
     // Helper method to convert AchieveDto to Achieve entity
     private AttitudeSkill convertToEntity(AttitudeSkillCreateDto attitudeSkillDto) {

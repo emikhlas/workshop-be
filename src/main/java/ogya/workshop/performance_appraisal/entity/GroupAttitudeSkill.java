@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -43,6 +44,9 @@ public class GroupAttitudeSkill {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "groupAttitudeSkill", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AttitudeSkill> attitudeSkills;
 
     @PrePersist
     public void prePersist() {

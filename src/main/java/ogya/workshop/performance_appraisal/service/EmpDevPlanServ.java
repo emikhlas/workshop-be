@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EmpDevPlanServ {
-    EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto);
+    List<EmpDevPlanDto> createEmpDevPlan(List<EmpDevPlanCreateDto> empDevPlanDtos);
     EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanCreateDto empDevPlanDto);
     Optional<EmpDevPlanDto> getEmpDevPlanById(UUID id);
     List<EmpDevPlanDto> getAllEmpDevPlan();

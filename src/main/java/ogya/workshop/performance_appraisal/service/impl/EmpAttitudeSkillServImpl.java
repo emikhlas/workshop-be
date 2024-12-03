@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,16 +22,33 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     private EmpAttitudeSkillRepo empAttitudeSkillRepo;
 
     // Create a new Group Achieve
+//    @Override
+//    public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
+//        EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+//        User creator = authUser.getUser();
+//        empAttitudeSkill.setCreatedBy(creator);
+//        empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
+//        EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
+//        return convertToDto(savedEmpAttitudeSkill);
+//    }
+
     @Override
-    public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-        EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-        User creator = authUser.getUser();
-        empAttitudeSkill.setCreatedBy(creator);
-        empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
-        EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
-        return convertToDto(savedEmpAttitudeSkill);
+    public List<EmpAttitudeSkillDto> createEmpAttitudeSkills(List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
+        List<EmpAttitudeSkillDto> result = new ArrayList<>();
+        for (EmpAttitudeSkillCreateDto empAttitudeSkillDto : empAttitudeSkillDtos) {
+            EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            AuthUser authUser = (AuthUser) authentication.getPrincipal();
+            User creator = authUser.getUser();
+            empAttitudeSkill.setCreatedBy(creator);
+            empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
+
+            EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
+            result.add(convertToDto(savedEmpAttitudeSkill));
+        }
+        return result;
     }
 
     // Update an existing Achieve
