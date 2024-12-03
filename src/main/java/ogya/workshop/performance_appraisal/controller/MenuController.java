@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
+import ogya.workshop.performance_appraisal.dto.menu.MenuInfoDto;
 import ogya.workshop.performance_appraisal.service.MenuServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,5 +58,11 @@ public class MenuController {
     public ResponseEntity<Boolean> deleteMenu(@PathVariable UUID id) {
         Boolean response = menuServ.deleteMenu(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{user-id}")
+    public ResponseEntity<List<MenuInfoDto>> getMenuByUserId(@PathVariable("user-id") UUID userId) {
+        List<MenuInfoDto> menu = menuServ.getMenuByUserId(userId);
+        return ResponseEntity.ok(menu);
     }
 }
