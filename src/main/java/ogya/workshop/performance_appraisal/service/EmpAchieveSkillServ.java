@@ -2,7 +2,7 @@ package ogya.workshop.performance_appraisal.service;
 
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
-import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveWithUserAchieveDto;
+import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,5 +14,5 @@ public interface EmpAchieveSkillServ {
     Optional<EmpAchieveSkillDto> getEmpAchieveSkillById(UUID id);
     List<EmpAchieveSkillDto> getAllEmpAchieveSkill();
     boolean deleteEmpAchieveSkill(UUID id);
-    List<EmpAchieveWithUserAchieveDto> getAllEmpUserAchieve();
+    List<EmpAchieveSkillWithUserDto> getAllEmpUserAchieve();
 }

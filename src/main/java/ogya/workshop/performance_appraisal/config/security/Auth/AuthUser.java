@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.config.security.Auth;
 
-import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Getter;
 import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
 import org.springframework.security.core.GrantedAuthority;
