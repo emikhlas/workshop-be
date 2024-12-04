@@ -22,6 +22,8 @@ public class EmpTechSkillDto {
     private UserDto user;
     @JsonProperty("tech_skill")
     private TechSkillDto techSkill;
+    @JsonProperty("tech_detail")
+    private String techDetail;
     @JsonProperty("score")
     private Integer score;
     @JsonProperty("assessment_year")
@@ -40,6 +42,7 @@ public class EmpTechSkillDto {
         dto.setId(empTechSkill.getId());
         dto.setUser(UserDto.fromEntity(empTechSkill.getUser()));
         dto.setTechSkill(TechSkillDto.fromEntity(empTechSkill.getTechSkill()));
+        dto.setTechDetail(empTechSkill.getTechDetail());
         dto.setScore(empTechSkill.getScore());
         dto.setAssessmentYear(empTechSkill.getAssessmentYear());
         dto.setCreatedAt(empTechSkill.getCreatedAt());

@@ -16,6 +16,8 @@ public class EmpTechSkillCreateDto {
     private UUID userId;
     @JsonProperty("tech_skill_id")
     private UUID techSkillId;
+    @JsonProperty("tech_detail")
+    private String techDetail;
     @JsonProperty("score")
     private Integer score;
     @JsonProperty("assessment_year")
@@ -23,6 +25,7 @@ public class EmpTechSkillCreateDto {
 
     public static EmpTechSkill toEntity(EmpTechSkillCreateDto empTechSkillDto) {
         EmpTechSkill empTechSkill = new EmpTechSkill();
+        empTechSkill.setTechDetail(empTechSkillDto.getTechDetail());
         empTechSkill.setScore(empTechSkillDto.getScore());
         empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
         return empTechSkill;

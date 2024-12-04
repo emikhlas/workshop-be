@@ -25,6 +25,8 @@ public class EmpTechSkill {
     @ManyToOne
     @JoinColumn(name = "TECHNICAL_SKILL_ID", nullable = false)
     private TechSkill techSkill;
+    @Column(name = "TECH_DETAIL")
+    private String techDetail;
     @Column(name = "SCORE", length = 3, nullable = false)
     private int score;
     @Column(name = "ASSESSMENT_YEAR", length = 4, nullable = false)
