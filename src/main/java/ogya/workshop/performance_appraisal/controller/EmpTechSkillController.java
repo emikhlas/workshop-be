@@ -58,22 +58,43 @@ public class EmpTechSkillController extends ServerResponseList {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+//    @PostMapping("/save")
+//    public ResponseEntity<ManagerDto<EmpTechSkillDto>> save(@RequestBody EmpTechSkillCreateDto empTechSkillDto) {
+//        Log.info("Start save in EmpTechSkillController");
+//
+//        Long startTime = System.currentTimeMillis();
+//
+//        ManagerDto<EmpTechSkillDto> result = new ManagerDto<>();
+//        EmpTechSkillDto content = empTechSkillServ.save(empTechSkillDto);
+//        result.setContent(content);
+//        result.setTotalRows(1);
+//
+//        Long endTime = System.currentTimeMillis();
+//        result.setInfo(getInfoOk("Success save data", endTime - startTime));
+//        Log.info("End save in EmpTechSkillController");
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
+
     @PostMapping("/save")
-    public ResponseEntity<ManagerDto<EmpTechSkillDto>> save(@RequestBody EmpTechSkillCreateDto empTechSkillDto) {
-        Log.info("Start save in EmpTechSkillController");
+    public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>> save(@RequestBody List<EmpTechSkillCreateDto> empTechSkillDtos) {
+        Log.info("Start bulk save in EmpTechSkillController");
 
         Long startTime = System.currentTimeMillis();
 
-        ManagerDto<EmpTechSkillDto> result = new ManagerDto<>();
-        EmpTechSkillDto content = empTechSkillServ.save(empTechSkillDto);
+        ManagerDto<List<EmpTechSkillDto>> result = new ManagerDto<>();
+        List<EmpTechSkillDto> content = empTechSkillServ.save(empTechSkillDtos);
         result.setContent(content);
-        result.setTotalRows(1);
+        result.setTotalRows(content.size());
 
         Long endTime = System.currentTimeMillis();
         result.setInfo(getInfoOk("Success save data", endTime - startTime));
-        Log.info("End save in EmpTechSkillController");
+        Log.info("End bulk save in EmpTechSkillController");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ManagerDto<EmpTechSkillDto>> update(@PathVariable("id") UUID id,@RequestBody EmpTechSkillCreateDto empTechSkillDto) {

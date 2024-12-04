@@ -79,24 +79,61 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         return result;
     }
 
+//    @Override
+//    public EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto) {
+//        Log.info("Start save in EmpTechSkillServImpl");
+//        User user = userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+//        TechSkill techSkill = techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found"));
+//        EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(empTechSkillDto);
+//        empTechSkill.setUser(user);
+//        empTechSkill.setTechSkill(techSkill);
+//        empTechSkill.setCreatedAt(LocalDateTime.now());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+//        User creator = authUser.getUser();
+//
+//        empTechSkill.setCreatedBy(creator);
+//        empTechSkillRepo.save(empTechSkill);
+//        Log.info("End save in EmpTechSkillServImpl");
+//        return EmpTechSkillDto.fromEntity(empTechSkill);
+//    }
+
     @Override
-    public EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto) {
-        Log.info("Start save in EmpTechSkillServImpl");
-        User user = userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        TechSkill techSkill = techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found"));
-        EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(empTechSkillDto);
-        empTechSkill.setUser(user);
-        empTechSkill.setTechSkill(techSkill);
-        empTechSkill.setCreatedAt(LocalDateTime.now());
+    public List<EmpTechSkillDto> save(List<EmpTechSkillCreateDto> empTechSkillDtos) {
+        Log.info("Start bulk save in EmpTechSkillServImpl");
+
+        List<EmpTechSkill> empTechSkills = new ArrayList<>();
+        List<EmpTechSkillDto> resultDtos = new ArrayList<>();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
 
-        empTechSkill.setCreatedBy(creator);
-        empTechSkillRepo.save(empTechSkill);
-        Log.info("End save in EmpTechSkillServImpl");
-        return EmpTechSkillDto.fromEntity(empTechSkill);
+        for (EmpTechSkillCreateDto dto : empTechSkillDtos) {
+            User user = userRepo.findById(dto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+            TechSkill techSkill = techSkillRepo.findById(dto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found"));
+
+            EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(dto);
+            empTechSkill.setUser(user);
+            empTechSkill.setTechSkill(techSkill);
+            empTechSkill.setCreatedAt(LocalDateTime.now());
+            empTechSkill.setCreatedBy(creator);
+
+            empTechSkills.add(empTechSkill);
+        }
+
+        empTechSkillRepo.saveAll(empTechSkills);  // Save all at once
+
+        for (EmpTechSkill empTechSkill : empTechSkills) {
+            resultDtos.add(EmpTechSkillDto.fromEntity(empTechSkill));
+        }
+
+        Log.info("End bulk save in EmpTechSkillServImpl");
+        return resultDtos;
     }
+
+
+
 
     @Override
     public Boolean deleteById(UUID id) {

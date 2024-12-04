@@ -109,6 +109,12 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlan.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<EmpDevPlanDto> getEmpDevPlanByUserId(UUID userId) {
+        List<EmpDevPlan> empDevPlans = empDevPlanRepo.findByUserId(userId);
+        return empDevPlans.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
     // Delete an Achieve by ID
     @Override
     public boolean deleteEmpDevPlan(UUID id) {
