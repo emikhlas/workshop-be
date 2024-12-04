@@ -86,8 +86,9 @@ public class MenuServImpl implements MenuServ {
     public List<MenuInfoDto> getMenuByUserId(UUID userId) {
 
         List<Menu> menus = menuRepo.findMenuByUserId(userId);
+        Set<Menu> menuSets = new HashSet<>(menuRepo.findMenuByUserId(userId));
         System.out.println("userId : "+ userId);
-        return menus.stream()
+        return menuSets.stream()
                 .map(menu ->  {
                     System.out.println(menu.getId());
                     return new MenuInfoDto(
