@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.empachieveskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import java.util.Date;
@@ -15,12 +16,12 @@ import java.util.UUID;
 public class EmpAchieveSkillDto {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("user_id")
-    private UUID userId;
+    @JsonProperty("user")
+    private UserInfoDto user;
     @JsonProperty("notes")
     private String notes;
-    @JsonProperty("achievement_id")
-    private UUID achievementId;
+    @JsonProperty("achievement")
+    private AchieveInfoDto achievement;
     @JsonProperty("score")
     private int score;
     @JsonProperty("assessment_year")

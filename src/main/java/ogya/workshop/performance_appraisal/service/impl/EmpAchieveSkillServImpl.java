@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.achieve.AchieveInfoDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
@@ -19,10 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -110,10 +108,10 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         EmpAchieveSkillDto empAchieveSkillDto = new EmpAchieveSkillDto();
         empAchieveSkillDto.setId(empAchieveSkill.getId());
         if (empAchieveSkill.getUser() != null) {
-            empAchieveSkillDto.setUserId(empAchieveSkill.getUser().getId());
+            empAchieveSkillDto.setUser(UserInfoDto.fromEntity(empAchieveSkill.getUser()));
         }
         if (empAchieveSkill.getAchieve() != null) {
-            empAchieveSkillDto.setAchievementId(empAchieveSkill.getAchieve().getId());
+            empAchieveSkillDto.setAchievement(AchieveInfoDto.fromEntity(empAchieveSkill.getAchieve()));
         }
         empAchieveSkillDto.setNotes(empAchieveSkill.getNotes());
         empAchieveSkillDto.setScore(empAchieveSkill.getScore());
@@ -153,5 +151,11 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     @Override
     public List<EmpAchieveSkillWithUserDto> getAllEmpUserAchieve() {
         return empAchieveSkillRepo.findEmpAchieveUser();
+    }
+
+    @Override
+    public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId) {
+        List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserId(userId);
+        return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 }

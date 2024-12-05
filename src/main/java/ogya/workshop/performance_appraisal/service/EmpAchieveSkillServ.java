@@ -15,4 +15,5 @@ public interface EmpAchieveSkillServ {
     List<EmpAchieveSkillDto> getAllEmpAchieveSkill();
     boolean deleteEmpAchieveSkill(UUID id);
     List<EmpAchieveSkillWithUserDto> getAllEmpUserAchieve();
+    List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID id);
 }
