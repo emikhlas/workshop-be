@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,14 @@ public class EmpAttitudeSkillController {
     @GetMapping
     public List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills() {
         return empAttitudeSkillServ.getAllEmpAttitudeSkills();
+    }
+
+
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(@PathVariable UUID userId){
+        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId);
+        return ResponseEntity.ok(empAttitudeSkills);
     }
 
     // Delete an Achievement by ID

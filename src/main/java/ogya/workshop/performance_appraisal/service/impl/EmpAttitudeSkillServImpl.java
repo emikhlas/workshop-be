@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
@@ -94,6 +95,22 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     public List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills() {
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findAll();
         return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId){
+        List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserId(userId);
+
+        List<EmpAttitudeSkillDto> empAttitudeSkillDtos = empAttitudeSkills.stream().map(empAttitudeSkill -> {
+            EmpAttitudeSkillDto empAttitudeSkillDto = convertToDto(empAttitudeSkill);
+            if (empAttitudeSkill.getAttitudeSkill() != null) {
+                empAttitudeSkillDto.setAttitudeSkillName(empAttitudeSkill.getAttitudeSkill().getAttitudeSkillName());  // Assuming DevPlan has a 'plan' attribute
+            }
+            return empAttitudeSkillDto;
+        }).collect(Collectors.toList());
+
+        return empAttitudeSkillDtos;
+
     }
 
     // Delete an Achieve by ID
