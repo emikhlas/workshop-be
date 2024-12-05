@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.config.security.Auth;
 
-import ogya.workshop.performance_appraisal.dto.auth.AuthRequest;
+import ogya.workshop.performance_appraisal.dto.auth.AuthRequestDto;
+import ogya.workshop.performance_appraisal.dto.auth.ChangePasswordDto;
 import ogya.workshop.performance_appraisal.entity.Role;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.entity.UserRole;
@@ -89,9 +90,9 @@ public class AuthService implements UserDetailsService {
     }
 
 
-    public AuthUser authenticate(AuthRequest authRequest) {
-        String username = authRequest.getUsername();
-        String password = authRequest.getPassword();
+    public AuthUser authenticate(AuthRequestDto authRequestDto) {
+        String username = authRequestDto.getUsername();
+        String password = authRequestDto.getPassword();
 
         User user = userRepo.findByUsername(username);
         if (user == null) {
@@ -116,6 +117,17 @@ public class AuthService implements UserDetailsService {
         }
 
         return  new AuthUser(user, roles);
+    }
+
+    public AuthUser changePassword(UUID id, ChangePasswordDto changePasswordDto) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        if(passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+            userRepo.save(user);
+            return loadUserById(id);
+        } else {
+            throw new RuntimeException("Incorrect password");
+        }
     }
 }
 
