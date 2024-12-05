@@ -64,6 +64,15 @@ public class EmpDevPlanController {
         return ResponseEntity.ok(empDevPlans);
     }
 
+    // Add this method in EmpDevPlanController class
+
+    @GetMapping("/user/{userId}/with-plan")
+    public ResponseEntity<List<EmpDevPlanDto>> getEmpDevPlanWithPlanByUserId(@PathVariable UUID userId) {
+        List<EmpDevPlanDto> empDevPlansWithPlan = empDevPlanServ.getEmpDevPlanWithPlan(userId);
+        return ResponseEntity.ok(empDevPlansWithPlan);
+    }
+
+
     // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpDevPlan(@PathVariable UUID id) {

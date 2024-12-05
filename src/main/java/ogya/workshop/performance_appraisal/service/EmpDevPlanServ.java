@@ -14,4 +14,5 @@ public interface EmpDevPlanServ {
     List<EmpDevPlanDto> getAllEmpDevPlan();
     boolean deleteEmpDevPlan(UUID id);
     List<EmpDevPlanDto> getEmpDevPlanByUserId(UUID userId);
+    List<EmpDevPlanDto> getEmpDevPlanWithPlan(UUID userId);
 }

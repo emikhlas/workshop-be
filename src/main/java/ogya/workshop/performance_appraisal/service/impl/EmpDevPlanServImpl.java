@@ -115,6 +115,22 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlans.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<EmpDevPlanDto> getEmpDevPlanWithPlan(UUID userId) {
+        List<EmpDevPlan> empDevPlans = empDevPlanRepo.findByUserId(userId);
+
+        List<EmpDevPlanDto> empDevPlanDtos = empDevPlans.stream().map(empDevPlan -> {
+            EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
+            // Fetch the DevPlan and include the plan in the DTO
+            if (empDevPlan.getDevPlan() != null) {
+                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());  // Assuming DevPlan has a 'plan' attribute
+            }
+            return empDevPlanDto;
+        }).collect(Collectors.toList());
+
+        return empDevPlanDtos;
+    }
+
     // Delete an Achieve by ID
     @Override
     public boolean deleteEmpDevPlan(UUID id) {
