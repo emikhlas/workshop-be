@@ -1,11 +1,13 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
 
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
+import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/emp-achievements-skill")
-public class EmpAchieveSkillController {
+public class EmpAchieveSkillController extends ServerResponseList {
 
     @Autowired
     private EmpAchieveSkillServ empAchieveSkillServ;
@@ -64,5 +66,18 @@ public class EmpAchieveSkillController {
     public ResponseEntity<List<EmpAchieveSkillWithUserDto>> getAllEmpUserAchieve() {
         List<EmpAchieveSkillWithUserDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieve();
         return ResponseEntity.ok(empAchieves);
+    }
+
+    @GetMapping("/user/{user-id}")
+    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(@PathVariable("user-id") UUID userId) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<EmpAchieveSkillDto>> response = new ManagerDto<>();
+        List<EmpAchieveSkillDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId);
+        response.setContent(empAchieves);
+        response.setTotalRows(empAchieves.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -21,7 +21,7 @@ public class EmpAchieveSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 

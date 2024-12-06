@@ -114,4 +114,21 @@ public class UserController extends ServerResponseList {
         Log.info("End deleteUser in UserController");
         return new ResponseEntity<>(response, HttpStatus.OK) ;
     }
+
+    @PostMapping("/reset-password/{id}")
+    public ResponseEntity<ManagerDto<String>>  resetPassword(@PathVariable("id") UUID id) {
+        Log.info("Start resetPassword in UserController");
+        long startTime = System.currentTimeMillis();
+
+        ManagerDto<String> response = new ManagerDto<>();
+        String content = userServ.resetPassword(id);
+
+        response.setContent(content);
+        response.setTotalRows(1);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success reset password", executionTime));
+        Log.info("End resetPassword in UserController");
+        return new ResponseEntity<>(response, HttpStatus.OK) ;
+    }
 }

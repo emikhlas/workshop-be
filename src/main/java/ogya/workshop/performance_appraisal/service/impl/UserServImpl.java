@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,6 +46,9 @@ public class UserServImpl implements UserServ {
 
     @Autowired
     private UserRoleServ userRoleServ;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -167,7 +171,20 @@ public class UserServImpl implements UserServ {
         return true;
     }
 
+    @Override
+    public String resetPassword(UUID id) {
+        Log.info("Start resetPassword in UserServImpl");
+        User findUser = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User  not found"));
+        String newPassword = generatePassword();
+        findUser.setPassword(passwordEncoder.encode(newPassword));
+        userRepo.save(findUser);
+        Log.info("End resetPassword in UserServImpl");
+        return newPassword;
+    }
 
+    public static String generatePassword() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+    }
 
     private void updateUserFields(User existingUser, UserReqDto userDto) {
         if (userDto.getUsername() != null) {
