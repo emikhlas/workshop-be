@@ -19,6 +19,8 @@ public class EmpAttitudeSkillDto {
     private UUID userId;
     @JsonProperty("attitude_skill_id")
     private UUID attitudeSkillId;
+    @JsonProperty("attitude_skill_name")
+    private String attitudeSkillName;
     @JsonProperty("score")
     private int score;
     @JsonProperty("assessment_year")
