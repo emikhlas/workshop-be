@@ -5,6 +5,7 @@ import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNa
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -16,10 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,14 +74,12 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         return groupAttitudeSkill.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills() {
         List<GroupAttitudeSkill> groupAttitudeSkill = groupAttitudeSkillRepo.findAll();
         return groupAttitudeSkill.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteGroupAttitudeSkill(UUID id) {
         groupAttitudeSkillRepo.deleteById(id);
@@ -105,7 +101,20 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
                 .collect(Collectors.toList());
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
+    @Override
+    public List<GroupAttitudeSkillInfoWithCountDto> getGroupAttitudeSkillWithCount() {
+
+        List<Map<String, Object>> result = groupAttitudeSkillRepo.getGroupAttitudeSkillWithCount();
+
+        return result.stream()
+                .map(map -> new GroupAttitudeSkillInfoWithCountDto(
+                        UUID.nameUUIDFromBytes((byte[]) map.get("id")),
+                        (String) map.get("group_name"),
+                        (Long) map.get("count")
+                ))
+                .collect(Collectors.toList());
+    }
+
     private GroupAttitudeSkillDto convertToDto(GroupAttitudeSkill groupAttitudeSkill) {
         GroupAttitudeSkillDto groupAttitudeSkillDto = new GroupAttitudeSkillDto();
         groupAttitudeSkillDto.setId(groupAttitudeSkill.getId());
@@ -123,7 +132,6 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         return groupAttitudeSkillDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private GroupAttitudeSkill convertToEntity(GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill groupAttitudeSkill = new GroupAttitudeSkill();
         groupAttitudeSkill.setGroupName(groupAttitudeSkillDto.getGroupName());

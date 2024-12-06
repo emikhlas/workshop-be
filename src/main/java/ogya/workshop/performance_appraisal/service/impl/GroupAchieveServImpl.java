@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
@@ -12,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,6 +83,19 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     public boolean deleteGroupAchieve(UUID id) {
         groupAchieveRepo.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<GroupAchieveInfoWithCountDto> getGroupAchieveInfoWithCount() {
+        List<Map<String,Object>> result = groupAchieveRepo.getGroupAchieveWithCount();
+
+        return result.stream()
+                .map(map -> new GroupAchieveInfoWithCountDto(
+                        UUID.nameUUIDFromBytes((byte[]) map.get("id")),
+                        (String) map.get("group_achievement_name"),
+                        (Long) map.get("count")
+                ))
+                .collect(Collectors.toList());
     }
 
     // Helper method to convert Achieve entity to AchieveDto

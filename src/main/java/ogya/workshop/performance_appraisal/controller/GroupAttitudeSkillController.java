@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNa
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,5 +68,10 @@ public class GroupAttitudeSkillController {
     @GetMapping("/all")
     public List<GroupAttWithAttDto> getAllGroupWithAttitudeSkills() {
         return groupAttitudeSkillServ.getAllGroupWithAttitudeSkills();
+    }
+
+    @GetMapping("/count")
+    public List<GroupAttitudeSkillInfoWithCountDto> getGroupAttitudeSkillWithCount() {
+        return groupAttitudeSkillServ.getGroupAttitudeSkillWithCount();
     }
 }

@@ -1,6 +1,7 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillInfoDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
@@ -101,15 +102,10 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId){
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserId(userId);
 
-        List<EmpAttitudeSkillDto> empAttitudeSkillDtos = empAttitudeSkills.stream().map(empAttitudeSkill -> {
+        return empAttitudeSkills.stream().map(empAttitudeSkill -> {
             EmpAttitudeSkillDto empAttitudeSkillDto = convertToDto(empAttitudeSkill);
-            if (empAttitudeSkill.getAttitudeSkill() != null) {
-                empAttitudeSkillDto.setAttitudeSkillName(empAttitudeSkill.getAttitudeSkill().getAttitudeSkillName());  // Assuming DevPlan has a 'plan' attribute
-            }
             return empAttitudeSkillDto;
         }).collect(Collectors.toList());
-
-        return empAttitudeSkillDtos;
 
     }
 
@@ -125,10 +121,10 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         EmpAttitudeSkillDto empAttitudeSkillDto = new EmpAttitudeSkillDto();
         empAttitudeSkillDto.setId(empAttitudeSkill.getId());
         if (empAttitudeSkill.getUser() != null) {
-            empAttitudeSkillDto.setUserId(empAttitudeSkill.getUser().getId());
+            empAttitudeSkillDto.setUser(UserInfoDto.fromEntity(empAttitudeSkill.getUser()));
         }
         if (empAttitudeSkill.getAttitudeSkill() != null) {
-            empAttitudeSkillDto.setAttitudeSkillId(empAttitudeSkill.getAttitudeSkill().getId());
+            empAttitudeSkillDto.setAttitudeSkill(AttitudeSkillInfoDto.fromEntity(empAttitudeSkill.getAttitudeSkill()));
         }
         empAttitudeSkillDto.setScore(empAttitudeSkill.getScore());
         empAttitudeSkillDto.setAssessmentYear(empAttitudeSkill.getAssessmentYear());

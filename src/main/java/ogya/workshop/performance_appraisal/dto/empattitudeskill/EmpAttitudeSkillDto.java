@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.dto.empattitudeskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import java.util.Date;
@@ -15,12 +16,10 @@ import java.util.UUID;
 public class EmpAttitudeSkillDto {
     @JsonProperty("id")
     private UUID id;
-    @JsonProperty("user_id")
-    private UUID userId;
-    @JsonProperty("attitude_skill_id")
-    private UUID attitudeSkillId;
-    @JsonProperty("attitude_skill_name")
-    private String attitudeSkillName;
+    @JsonProperty("user")
+    private UserInfoDto user;
+    @JsonProperty("attitude_skill")
+    private AttitudeSkillInfoDto attitudeSkill;
     @JsonProperty("score")
     private int score;
     @JsonProperty("assessment_year")
