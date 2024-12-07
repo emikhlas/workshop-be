@@ -19,4 +19,6 @@ public class EmpDevPlanCreateDto {
     private String planDetail;
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
+    @JsonProperty("status")
+    private String status;
 }
