@@ -1,8 +1,11 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillDto;
+import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
 import ogya.workshop.performance_appraisal.entity.TechSkill;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpTechSkillServImpl implements EmpTechSkillServ {
@@ -64,6 +68,8 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         Log.info("End findAllByEmpId in EmpTechSkillServImpl");
         return result;
     }
+
+    
 
     @Override
     public List<EmpTechSkillDto> findAllByTechSkillId(UUID techSkillId) {

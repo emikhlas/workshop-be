@@ -13,4 +13,5 @@ public interface EmpTechSkillRepo extends JpaRepository<EmpTechSkill, UUID> {
     List<EmpTechSkill> findByUserId(UUID empId);
 
     List<EmpTechSkill> findByTechSkillId(UUID techSkillId);
+
 }

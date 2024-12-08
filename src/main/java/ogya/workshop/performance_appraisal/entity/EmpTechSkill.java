@@ -31,6 +31,8 @@ public class EmpTechSkill {
     private int score;
     @Column(name = "ASSESSMENT_YEAR", length = 4, nullable = false)
     private int assessmentYear;
+    @Column(name = "STATUS")
+    private String status;
     @ManyToOne
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;

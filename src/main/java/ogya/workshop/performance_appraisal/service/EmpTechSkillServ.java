@@ -14,4 +14,5 @@ public interface EmpTechSkillServ {
     List<EmpTechSkillDto> save(List<EmpTechSkillCreateDto> empTechSkillDtos);
     Boolean deleteById(UUID id);
     EmpTechSkillDto update(UUID id, EmpTechSkillCreateDto empTechSkillDto);
+
 }

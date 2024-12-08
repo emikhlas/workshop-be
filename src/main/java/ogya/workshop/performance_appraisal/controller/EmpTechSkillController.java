@@ -113,6 +113,8 @@ public class EmpTechSkillController extends ServerResponseList {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ManagerDto<Boolean>> delete(@PathVariable("id") UUID id) {
         Log.info("Start delete in EmpTechSkillController");
