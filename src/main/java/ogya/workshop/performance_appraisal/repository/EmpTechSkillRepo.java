@@ -10,8 +10,9 @@ import java.util.UUID;
 @Repository
 public interface EmpTechSkillRepo extends JpaRepository<EmpTechSkill, UUID> {
 
-    List<EmpTechSkill> findByUserId(UUID empId);
-
+//    List<EmpTechSkill> findByUserId(UUID empId);
+    List<EmpTechSkill> findByUserId(UUID userId);
     List<EmpTechSkill> findByTechSkillId(UUID techSkillId);
+
 
 }
