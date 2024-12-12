@@ -10,7 +10,7 @@ public interface EmpSuggestServ {
     List<EmpSuggestDto> findAll();
     List<EmpSuggestDto> findByUserId(UUID userId);
     EmpSuggestDto findById(UUID id);
-    EmpSuggestDto save(EmpSuggestCreateDto dto);
+    List<EmpSuggestDto> saveAll(List<EmpSuggestCreateDto> empSuggestCreateDtos);
     EmpSuggestDto update(UUID id,EmpSuggestCreateDto dto);
     Boolean deleteById(UUID id);
 }

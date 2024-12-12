@@ -33,6 +33,9 @@ public class EmpDevPlan {
     @Column(name = "ASSESSMENT_YEAR", length = 4)
     private int assessmentYear;
 
+    @Column(name = "STATUS")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;

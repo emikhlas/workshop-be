@@ -22,12 +22,15 @@ public class EmpTechSkillCreateDto {
     private Integer score;
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
+    @JsonProperty("status")
+    private String status;
 
     public static EmpTechSkill toEntity(EmpTechSkillCreateDto empTechSkillDto) {
         EmpTechSkill empTechSkill = new EmpTechSkill();
         empTechSkill.setTechDetail(empTechSkillDto.getTechDetail());
         empTechSkill.setScore(empTechSkillDto.getScore());
         empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
+        empTechSkill.setStatus(empTechSkillDto.getStatus());
         return empTechSkill;
     }
 }

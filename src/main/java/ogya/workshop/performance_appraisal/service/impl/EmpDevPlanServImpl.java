@@ -157,7 +157,8 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         if(empDevPlan.getUpdatedBy() != null){
             empDevPlanDto.setUpdatedBy(UserInfoDto.fromEntity(empDevPlan.getUpdatedBy()));
         }
-        empDevPlanDto.setPlanDetail(empDevPlan.getPlanDetail());  // Include planDetail
+        empDevPlanDto.setPlanDetail(empDevPlan.getPlanDetail());
+        empDevPlanDto.setStatus(empDevPlan.getStatus());
         return empDevPlanDto;
     }
 
@@ -174,8 +175,9 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             devPlan.setId(empDevPlanDto.getDevPlanId());
             empDevPlan.setDevPlan(devPlan);
         }
-        empDevPlan.setPlanDetail(empDevPlanDto.getPlanDetail());  // Include planDetail
+        empDevPlan.setPlanDetail(empDevPlanDto.getPlanDetail());
         empDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
+        empDevPlan.setStatus(empDevPlanDto.getStatus());
         return empDevPlan;
     }
 }

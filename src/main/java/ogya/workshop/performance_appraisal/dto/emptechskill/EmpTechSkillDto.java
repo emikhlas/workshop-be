@@ -28,6 +28,8 @@ public class EmpTechSkillDto {
     private Integer score;
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
+    @JsonProperty("status")
+    private String status;
     @JsonProperty("created_by")
     private UserInfoDto createdBy;
     @JsonProperty("created_at")
@@ -45,6 +47,7 @@ public class EmpTechSkillDto {
         dto.setTechDetail(empTechSkill.getTechDetail());
         dto.setScore(empTechSkill.getScore());
         dto.setAssessmentYear(empTechSkill.getAssessmentYear());
+        dto.setStatus(empTechSkill.getStatus());
         dto.setCreatedAt(empTechSkill.getCreatedAt());
         dto.setUpdatedAt(empTechSkill.getUpdatedAt());
         if(empTechSkill.getCreatedBy() != null){

@@ -1,8 +1,13 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillDto;
+import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillUserDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
 import ogya.workshop.performance_appraisal.entity.TechSkill;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -22,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpTechSkillServImpl implements EmpTechSkillServ {
@@ -51,18 +57,32 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         return result;
     }
 
+//    @Override
+//    public List<EmpTechSkillDto> findAllByEmpId(UUID empId) {
+//        Log.info("Start findAllByEmpId in EmpTechSkillServImpl");
+//        List<EmpTechSkill> response = empTechSkillRepo.findByUserId(empId);
+//        Log.info("Received response: {}", response);
+//        List<EmpTechSkillDto> result = new ArrayList<>();
+//        for (EmpTechSkill empTechSkill : response) {
+//            EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
+//            result.add(empTechSkillDto);
+//        }
+//        Log.info("End findAllByEmpId in EmpTechSkillServImpl");
+//        return result;
+//    }
+
     @Override
-    public List<EmpTechSkillDto> findAllByEmpId(UUID empId) {
-        Log.info("Start findAllByEmpId in EmpTechSkillServImpl");
-        List<EmpTechSkill> response = empTechSkillRepo.findByUserId(empId);
-        Log.info("Received response: {}", response);
-        List<EmpTechSkillDto> result = new ArrayList<>();
-        for (EmpTechSkill empTechSkill : response) {
-            EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-            result.add(empTechSkillDto);
-        }
-        Log.info("End findAllByEmpId in EmpTechSkillServImpl");
-        return result;
+    public List<EmpTechSkillUserDto> findByUserId(UUID userId){
+        List<EmpTechSkill> empTechSkills = empTechSkillRepo.findByUserId(userId);
+
+        List<EmpTechSkillUserDto> empTechSkillUserDtos = empTechSkills.stream().map(empTechSkill -> {
+            EmpTechSkillUserDto empTechSkillUserDto = convertToDto(empTechSkill);
+            if (empTechSkill.getTechSkill() != null) {
+                empTechSkillUserDto.setTechSkill(empTechSkill.getTechSkill().getTechSkill());  // Assuming DevPlan has a 'plan' attribute
+            }
+            return empTechSkillUserDto;
+        }).collect(Collectors.toList());
+        return empTechSkillUserDtos;
     }
 
     @Override
@@ -78,6 +98,8 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         Log.info("End findAllByTechSkillId in EmpTechSkillServImpl");
         return result;
     }
+
+
 
 //    @Override
 //    public EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto) {
@@ -161,5 +183,29 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         empTechSkillRepo.save(empTechSkill);
         Log.info("End update in EmpTechSkillServImpl");
         return EmpTechSkillDto.fromEntity(empTechSkill);
+    }
+
+    private EmpTechSkillUserDto convertToDto(EmpTechSkill empTechSkill) {
+        EmpTechSkillUserDto empTechSkillUserDto = new EmpTechSkillUserDto();
+        empTechSkillUserDto.setId(empTechSkill.getId());
+        if (empTechSkill.getUser() !=null){
+            empTechSkillUserDto.setUserId(empTechSkill.getUser().getId());
+        }
+        if (empTechSkill.getTechSkill() !=null){
+            empTechSkillUserDto.setTechSkillId(empTechSkill.getTechSkill().getId());
+        }
+        empTechSkillUserDto.setTechDetail(empTechSkill.getTechDetail());
+        empTechSkillUserDto.setScore(empTechSkill.getScore());
+        empTechSkillUserDto.setAssessmentYear(empTechSkill.getAssessmentYear());
+        empTechSkillUserDto.setStatus(empTechSkill.getStatus());
+        empTechSkillUserDto.setCreatedAt(empTechSkill.getCreatedAt());
+        empTechSkillUserDto.setUpdatedAt(empTechSkill.getUpdatedAt());
+        if(empTechSkill.getCreatedBy() != null){
+            empTechSkillUserDto.setCreatedBy(UserInfoDto.fromEntity(empTechSkill.getCreatedBy()));
+        }
+        if(empTechSkill.getUpdatedBy() != null){
+            empTechSkillUserDto.setUpdatedBy(UserInfoDto.fromEntity(empTechSkill.getUpdatedBy()));
+        }
+        return empTechSkillUserDto;
     }
 }

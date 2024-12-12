@@ -25,6 +25,8 @@ public class EmpDevPlanDto {
     private String planDetail;
     @JsonProperty("assessment_year")
     private Integer assessmentYear;
+    @JsonProperty("status")
+    private String status;
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("created_by")

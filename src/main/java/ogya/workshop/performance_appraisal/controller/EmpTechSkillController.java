@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.controller;
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillDto;
+import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillUserDto;
 import ogya.workshop.performance_appraisal.service.EmpTechSkillServ;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
@@ -41,21 +42,27 @@ public class EmpTechSkillController extends ServerResponseList {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/detail/{user-id}")
-    public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>>  getAllEmpTechSkillByUserId(@PathVariable("user-id") UUID userId) {
-        Log.info("Start getAllEmpTechSkillByUserId in EmpTechSkillController");
+//    @GetMapping("/detail/{user-id}")
+//    public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>>  getAllEmpTechSkillByUserId(@PathVariable("user-id") UUID userId) {
+//        Log.info("Start getAllEmpTechSkillByUserId in EmpTechSkillController");
+//
+//        Long startTime = System.currentTimeMillis();
+//
+//        ManagerDto<List<EmpTechSkillDto>> result = new ManagerDto<>();
+//        List<EmpTechSkillDto> content = empTechSkillServ.findAllByEmpId(userId);
+//        result.setContent(content);
+//        result.setTotalRows(content.size());
+//
+//        Long endTime = System.currentTimeMillis();
+//        result.setInfo(getInfoOk("Success get data", endTime - startTime));
+//        Log.info("End getAllEmpTechSkillByUserId in EmpTechSkillController");
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
-        Long startTime = System.currentTimeMillis();
-
-        ManagerDto<List<EmpTechSkillDto>> result = new ManagerDto<>();
-        List<EmpTechSkillDto> content = empTechSkillServ.findAllByEmpId(userId);
-        result.setContent(content);
-        result.setTotalRows(content.size());
-
-        Long endTime = System.currentTimeMillis();
-        result.setInfo(getInfoOk("Success get data", endTime - startTime));
-        Log.info("End getAllEmpTechSkillByUserId in EmpTechSkillController");
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EmpTechSkillUserDto>> getAllUserEmpTech(@PathVariable UUID userId){
+        List<EmpTechSkillUserDto> empTechSkills = empTechSkillServ.findByUserId(userId);
+        return ResponseEntity.ok(empTechSkills);
     }
 
 //    @PostMapping("/save")
@@ -112,6 +119,8 @@ public class EmpTechSkillController extends ServerResponseList {
         Log.info("End update in EmpTechSkillController");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ManagerDto<Boolean>> delete(@PathVariable("id") UUID id) {
