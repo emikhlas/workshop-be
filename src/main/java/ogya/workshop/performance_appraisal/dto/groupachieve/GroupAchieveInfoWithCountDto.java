@@ -15,6 +15,8 @@ public class GroupAchieveInfoWithCountDto {
     private UUID id;
     @JsonProperty("group_achievement_name")
     private String groupAchievementName;
+    @JsonProperty("percentage")
+    private Integer percentage;
     @JsonProperty("achievement_count")
-    private Long achievementCount;
+    private Integer achievementCount;
 }

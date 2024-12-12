@@ -4,7 +4,6 @@ import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillInfoDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
@@ -23,19 +22,6 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     @Autowired
     private EmpAttitudeSkillRepo empAttitudeSkillRepo;
 
-    // Create a new Group Achieve
-//    @Override
-//    public EmpAttitudeSkillDto createEmpAttitudeSkill(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-//        EmpAttitudeSkill empAttitudeSkill = convertToEntity(empAttitudeSkillDto);
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-//        User creator = authUser.getUser();
-//        empAttitudeSkill.setCreatedBy(creator);
-//        empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
-//        EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
-//        return convertToDto(savedEmpAttitudeSkill);
-//    }
-
     @Override
     public List<EmpAttitudeSkillDto> createEmpAttitudeSkills(List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
         List<EmpAttitudeSkillDto> result = new ArrayList<>();
@@ -45,7 +31,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
             AuthUser authUser = (AuthUser) authentication.getPrincipal();
             User creator = authUser.getUser();
             empAttitudeSkill.setCreatedBy(creator);
-            empAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
+            empAttitudeSkill.setCreatedAt(new Date());
 
             EmpAttitudeSkill savedEmpAttitudeSkill = empAttitudeSkillRepo.save(empAttitudeSkill);
             result.add(convertToDto(savedEmpAttitudeSkill));
@@ -84,14 +70,13 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         return convertToDto(updatedEmpAttitudeSkill);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id) {
         Optional<EmpAttitudeSkill> empAttitudeSkill = empAttitudeSkillRepo.findById(id);
         return empAttitudeSkill.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
+
     @Override
     public List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills() {
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findAll();
@@ -99,24 +84,18 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     }
 
     @Override
-    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId){
-        List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserId(userId);
-
-        return empAttitudeSkills.stream().map(empAttitudeSkill -> {
-            EmpAttitudeSkillDto empAttitudeSkillDto = convertToDto(empAttitudeSkill);
-            return empAttitudeSkillDto;
-        }).collect(Collectors.toList());
-
+    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year){
+        List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserIdAndAssessmentYear(userId, year);
+        return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
+
     @Override
     public boolean deleteEmpAttitudeSkill(UUID id) {
         empAttitudeSkillRepo.deleteById(id);
         return true;
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private EmpAttitudeSkillDto convertToDto(EmpAttitudeSkill empAttitudeSkill) {
         EmpAttitudeSkillDto empAttitudeSkillDto = new EmpAttitudeSkillDto();
         empAttitudeSkillDto.setId(empAttitudeSkill.getId());
@@ -142,7 +121,6 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         return empAttitudeSkillDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private EmpAttitudeSkill convertToEntity(EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkill empAttitudeSkill = new EmpAttitudeSkill();
         if (empAttitudeSkillDto.getUserId() != null) {

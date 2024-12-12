@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface GroupAchieveRepo extends JpaRepository<GroupAchieve, UUID> {
-    @Query(value = "SELECT g.id, g.group_achievement_name, count(a.id) as count " +
+    @Query(value = "SELECT g.id, g.group_achievement_name, g.percentage ,count(a.id) as count " +
             "from group_achievement g join achievement a " +
             "on g.id = a.group_achievement_id group by g.id, g.group_achievement_name;",
             nativeQuery = true)

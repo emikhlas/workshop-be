@@ -14,7 +14,9 @@ public class GroupAttitudeSkillInfoWithCountDto {
     @JsonProperty("id")
     private UUID id;
     @JsonProperty("group_name")
-    private String groupName;
+    private String groupAttitudeName;
+    @JsonProperty("percentage")
+    private Integer percentage;
     @JsonProperty("attitude_count")
-    private Long attitudeCount;
+    private Integer attitudeCount;
 }

@@ -154,8 +154,8 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     }
 
     @Override
-    public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId) {
-        List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserId(userId);
+    public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year) {
+        List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserIdAndAssessmentYear(userId, year);
         return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 }

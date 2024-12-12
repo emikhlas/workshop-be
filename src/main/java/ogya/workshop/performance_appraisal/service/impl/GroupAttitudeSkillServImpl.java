@@ -10,7 +10,9 @@ import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
+import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
+import ogya.workshop.performance_appraisal.service.SharedService;
 import ogya.workshop.performance_appraisal.service.UserServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,7 +28,9 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     @Autowired
     private GroupAttitudeSkillRepo groupAttitudeSkillRepo;
 
-//     Create a new Group Achieve
+    @Autowired
+    private SharedService sharedService;
+
     @Override
     public GroupAttitudeSkillDto createGroupAttitudeSkill(GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill groupAttitudeSkill = convertToEntity(groupAttitudeSkillDto);
@@ -35,9 +39,10 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
         groupAttitudeSkill.setCreatedBy(creator);
-        groupAttitudeSkill.setCreatedAt(new Date());  // Set the creation date
+        groupAttitudeSkill.setCreatedAt(new Date());
 
         GroupAttitudeSkill savedGroupAttitudeSkill = groupAttitudeSkillRepo.save(groupAttitudeSkill);
+        sharedService.updateAllAssessSums();
         return convertToDto(savedGroupAttitudeSkill);
     }
 
@@ -64,6 +69,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
 
         GroupAttitudeSkill updatedGroupAttitudeSkill = groupAttitudeSkillRepo.save(currentGroupAttitudeSkill);
+        sharedService.updateAllAssessSums();
         return convertToDto(updatedGroupAttitudeSkill);
     }
 
@@ -110,7 +116,8 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
                 .map(map -> new GroupAttitudeSkillInfoWithCountDto(
                         UUID.nameUUIDFromBytes((byte[]) map.get("id")),
                         (String) map.get("group_name"),
-                        (Long) map.get("count")
+                        (Integer) map.get("percentage"),
+                        Math.toIntExact((Long) map.get("count"))
                 ))
                 .collect(Collectors.toList());
     }

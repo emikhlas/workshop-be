@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface GroupAttitudeSkillRepo extends JpaRepository<GroupAttitudeSkill, UUID> {
-    @Query(value = "SELECT g.id, g.group_name, COUNT(a.id) as count " +
+    @Query(value = "SELECT g.id, g.group_name, g.percentage,COUNT(a.id) as count " +
             "from group_attitude_skill g join attitude_skill a " +
             "on g.id = a.group_attitude_skill_id GROUP by g.id, g.group_name;",
             nativeQuery = true)

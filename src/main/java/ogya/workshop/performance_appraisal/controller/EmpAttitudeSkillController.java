@@ -27,7 +27,6 @@ public class EmpAttitudeSkillController {
 //        return ResponseEntity.ok(newEmpAttitudeSkill);
 //    }
 
-    // Create new EmpAttitudeSkills
     @PostMapping
     public ResponseEntity<List<EmpAttitudeSkillDto>> createEmpAttitudeSkills(@RequestBody List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
         List<EmpAttitudeSkillDto> newEmpAttitudeSkills = empAttitudeSkillServ.createEmpAttitudeSkills(empAttitudeSkillDtos);
@@ -36,7 +35,6 @@ public class EmpAttitudeSkillController {
 
 
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<EmpAttitudeSkillDto> updateEmpAttitudeSkill(@PathVariable UUID id, @RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         try {
@@ -47,14 +45,14 @@ public class EmpAttitudeSkillController {
         }
     }
 
-    // Retrieve by ID
+
     @GetMapping("/{id}")
     public ResponseEntity<EmpAttitudeSkillDto> getEmpAttitudeSkillById(@PathVariable UUID id) {
         Optional<EmpAttitudeSkillDto> achievement = empAttitudeSkillServ.getEmpAttitudeSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
+
     @GetMapping
     public List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills() {
         return empAttitudeSkillServ.getAllEmpAttitudeSkills();
@@ -62,13 +60,13 @@ public class EmpAttitudeSkillController {
 
 
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(@PathVariable UUID userId){
-        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId);
+    @GetMapping("/user/{userId}/{year}")
+    public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(@PathVariable UUID userId, @PathVariable Integer year) {
+        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year);
         return ResponseEntity.ok(empAttitudeSkills);
     }
 
-    // Delete an Achievement by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpAttitudeSkill(@PathVariable UUID id) {
         Boolean response = empAttitudeSkillServ.deleteEmpAttitudeSkill(id);

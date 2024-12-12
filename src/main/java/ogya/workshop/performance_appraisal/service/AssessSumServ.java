@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service;
 
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 
@@ -14,4 +15,8 @@ public interface AssessSumServ {
     AssessSumWithUserDto createAssessSum(AssessSumReqDto assessSumReqDto);
     AssessSumWithUserDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto);
     Boolean deleteAssessSum(UUID id);
+    AssessSumWithUserDto generateAssessSum(UUID userId, Integer year);
+    AssessSumDetailDto getAssessSumDetail(UUID userId, Integer year);
+    void generateAssessSumsForAllUsers(Integer year);
+    List<AssessSumWithUserDto> getAllAssessSumByYear(Integer year);
 }

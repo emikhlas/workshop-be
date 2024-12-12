@@ -1,0 +1,42 @@
+package ogya.workshop.performance_appraisal.service.impl;
+
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
+import ogya.workshop.performance_appraisal.entity.AssessSum;
+import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
+import ogya.workshop.performance_appraisal.service.AssessSumServ;
+import ogya.workshop.performance_appraisal.service.SharedService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class SharedServiceImpl implements SharedService {
+
+    @Autowired
+    private AssessSumRepo assessSumRepo;
+
+    private final AssessSumServ assessSumServ;
+
+    @Autowired
+    public SharedServiceImpl(@Lazy AssessSumServ assessSumServ) {
+        this.assessSumServ = assessSumServ;
+    }
+
+    @Override
+    public List<AssessSumWithUserDto> updateAllAssessSums() {
+
+        List<AssessSum> allAssessSums = assessSumRepo.findAll();
+
+        List<AssessSumWithUserDto> updatedAssessSums = new ArrayList<>();
+
+        for (AssessSum existingSum : allAssessSums) {
+            AssessSumWithUserDto updatedSummary = assessSumServ.generateAssessSum(existingSum.getUser().getId(), existingSum.getYear());
+            updatedAssessSums.add(updatedSummary);
+        }
+
+        return updatedAssessSums;
+    }
+}
