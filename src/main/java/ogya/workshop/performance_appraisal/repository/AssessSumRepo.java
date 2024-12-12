@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface AssessSumRepo extends JpaRepository<AssessSum, UUID> {
 
     List<AssessSum> findByUserId(UUID userId);
+
+    AssessSum findByUserIdAndYear(UUID userId, Integer year);
+
+    List<AssessSum> findByYear(Integer year);
 }

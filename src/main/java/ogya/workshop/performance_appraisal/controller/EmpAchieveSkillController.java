@@ -68,11 +68,11 @@ public class EmpAchieveSkillController extends ServerResponseList {
         return ResponseEntity.ok(empAchieves);
     }
 
-    @GetMapping("/user/{user-id}")
-    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(@PathVariable("user-id") UUID userId) {
+    @GetMapping("/user/{userId}/{year}")
+    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(@PathVariable("userId") UUID userId, @PathVariable("year") Integer year) {
         long startTime = System.currentTimeMillis();
         ManagerDto<List<EmpAchieveSkillDto>> response = new ManagerDto<>();
-        List<EmpAchieveSkillDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId);
+        List<EmpAchieveSkillDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year);
         response.setContent(empAchieves);
         response.setTotalRows(empAchieves.size());
         long endTime = System.currentTimeMillis();
