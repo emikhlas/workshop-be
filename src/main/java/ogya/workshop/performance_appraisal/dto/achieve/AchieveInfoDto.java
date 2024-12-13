@@ -26,7 +26,12 @@ public class AchieveInfoDto {
         return AchieveInfoDto.builder()
                 .id(achieve.getId())
                 .achievementName(achieve.getAchievementName())
-                .groupAchievement(GroupAchieveInfoDto.fromEntity(achieve.getGroupAchieve()))
+                .groupAchievement(
+                        achieve.getGroupAchieve() != null
+                                ? GroupAchieveInfoDto.fromEntity(achieve.getGroupAchieve())
+                                : null
+                )
                 .build();
     }
+
 }

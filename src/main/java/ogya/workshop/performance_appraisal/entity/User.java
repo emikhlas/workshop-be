@@ -2,6 +2,8 @@ package ogya.workshop.performance_appraisal.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,13 +35,13 @@ public class User{
     private String emailAddress;
 
     @Column(name = "EMPLOYEE_STATUS", nullable = false)
-    private int employeeStatus; // 1: kontrak, 2: permanen
+    private int employeeStatus;
 
     @Column(name = "JOIN_DATE", nullable = false)
     private LocalDate joinDate;
 
     @Column(name = "ENABLED", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
-    private int enabled = 1; // 0: disabled, 1: enabled
+    private int enabled = 1;
 
     @Column(name = "PASSWORD", length = 100, nullable = false)
     private String password;
@@ -52,6 +54,7 @@ public class User{
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;
 
@@ -59,6 +62,7 @@ public class User{
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 }

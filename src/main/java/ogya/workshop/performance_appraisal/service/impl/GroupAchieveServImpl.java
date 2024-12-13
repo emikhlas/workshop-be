@@ -83,6 +83,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     @Override
     public boolean deleteGroupAchieve(UUID id) {
         groupAchieveRepo.deleteById(id);
+        sharedService.updateAllAssessSums();
         return true;
     }
 

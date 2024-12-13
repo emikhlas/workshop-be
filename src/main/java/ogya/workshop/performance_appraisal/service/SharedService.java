@@ -1,9 +1,9 @@
 package ogya.workshop.performance_appraisal.service;
 
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
-
-import java.util.List;
+import java.util.UUID;
 
 public interface SharedService {
-    List<AssessSumWithUserDto> updateAllAssessSums();
+    void updateAllAssessSums();
+
+    void generateAssessSum(UUID userId, Integer year);
 }

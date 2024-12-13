@@ -7,7 +7,9 @@ import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkill
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.*;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
+import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
+import ogya.workshop.performance_appraisal.service.SharedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,9 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
 
     @Autowired
     private EmpAttitudeSkillRepo empAttitudeSkillRepo;
+
+    @Autowired
+    private SharedService sharedService;
 
     @Override
     public List<EmpAttitudeSkillDto> createEmpAttitudeSkills(List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {

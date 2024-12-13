@@ -23,10 +23,13 @@ public class AttitudeSkillInfoDto {
     private Integer enabled;
 
     public static AttitudeSkillInfoDto fromEntity(AttitudeSkill attitudeSkill) {
-        return AttitudeSkillInfoDto.builder ().id (attitudeSkill.getId ())
-                .attitudeSkillName (attitudeSkill.getAttitudeSkillName ())
-                .groupAttitudeSkill (GroupAttitudeSkillInfoDto.fromEntity (attitudeSkill.getGroupAttitudeSkill ()))
-                .enabled (attitudeSkill.getEnabled ())
-                .build ();
+        AttitudeSkillInfoDto dto = new AttitudeSkillInfoDto();
+        dto.setId(attitudeSkill.getId());
+        dto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
+        if(attitudeSkill.getGroupAttitudeSkill() != null){
+            dto.setGroupAttitudeSkill(GroupAttitudeSkillInfoDto.fromEntity(attitudeSkill.getGroupAttitudeSkill()));
+        }
+        dto.setEnabled(attitudeSkill.getEnabled());
+        return dto;
     }
 }

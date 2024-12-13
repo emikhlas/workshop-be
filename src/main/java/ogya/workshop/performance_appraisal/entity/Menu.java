@@ -2,6 +2,8 @@ package ogya.workshop.performance_appraisal.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class Menu {
     private String menuName;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;
 
@@ -31,6 +34,7 @@ public class Menu {
     private Date createdAt;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 
@@ -38,7 +42,6 @@ public class Menu {
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
 
-    // Set createdAt before the entity is persisted
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
@@ -46,7 +49,6 @@ public class Menu {
         }
     }
 
-    // Set updatedAt before the entity is updated
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = new Date();
