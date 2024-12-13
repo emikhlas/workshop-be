@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
@@ -10,10 +9,8 @@ import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
-import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import ogya.workshop.performance_appraisal.service.SharedService;
-import ogya.workshop.performance_appraisal.service.UserServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +43,6 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         return convertToDto(savedGroupAttitudeSkill);
     }
 
-    // Update an existing Achieve
     @Override
     public GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill currentGroupAttitudeSkill = groupAttitudeSkillRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
@@ -73,7 +69,6 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         return convertToDto(updatedGroupAttitudeSkill);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<GroupAttitudeSkillDto> getGroupAttitudeSkillById(UUID id) {
         Optional<GroupAttitudeSkill> groupAttitudeSkill = groupAttitudeSkillRepo.findById(id);
@@ -89,6 +84,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     @Override
     public boolean deleteGroupAttitudeSkill(UUID id) {
         groupAttitudeSkillRepo.deleteById(id);
+        sharedService.updateAllAssessSums();
         return true;
     }
 

@@ -1,8 +1,10 @@
 package ogya.workshop.performance_appraisal.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,6 +33,7 @@ public class Achieve {
     private int enabled = 1;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;
 
@@ -39,6 +42,7 @@ public class Achieve {
     private Date createdAt;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 
@@ -46,7 +50,6 @@ public class Achieve {
     @Column(name = "UPDATED_AT")
     private Date updatedAt;
 
-    // Set createdAt before the entity is persisted
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
@@ -54,7 +57,6 @@ public class Achieve {
         }
     }
 
-    // Set updatedAt before the entity is updated
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = new Date();

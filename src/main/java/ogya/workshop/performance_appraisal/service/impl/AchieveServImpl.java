@@ -3,20 +3,20 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveDto;
-
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-
-import ogya.workshop.performance_appraisal.entity.*;
+import ogya.workshop.performance_appraisal.entity.Achieve;
+import ogya.workshop.performance_appraisal.entity.GroupAchieve;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
 import ogya.workshop.performance_appraisal.service.AchieveServ;
+import ogya.workshop.performance_appraisal.service.SharedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,9 @@ public class AchieveServImpl implements AchieveServ {
     @Autowired
     private GroupAchieveRepo groupAchieveRepo;
 
-    // Create a new Achieve
+    @Autowired
+    private SharedService sharedService;
+
     @Override
     public AchieveDto createAchievement(AchieveCreateDto achieveDto) {
         Achieve achieve = convertToEntity(achieveDto);
@@ -41,18 +43,15 @@ public class AchieveServImpl implements AchieveServ {
         User creator = authUser.getUser();
 
         achieve.setCreatedBy(creator);
-        achieve.setCreatedAt(new Date());  // Set the creation date
+        achieve.setCreatedAt(new Date());
         Achieve savedAchieve = achieveRepo.save(achieve);
+        sharedService.updateAllAssessSums();
         return convertToDto(savedAchieve);
     }
 
-    // Update an existing Achieve
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
         Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Achieve with this ID does not exist."));
-//        if (!achieveRepo.existsById(id)) {
-//            throw new IllegalArgumentException("Achievement with this ID does not exist.");
-//        }
         if(achieveDto.getAchievementName() != null){
             currentAchieve.setAchievementName(achieveDto.getAchievementName());
         }
@@ -62,14 +61,9 @@ public class AchieveServImpl implements AchieveServ {
             GroupAchieve groupAchieve = groupAchieveRepo.findById(achieveDto.getGroupAchievementId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
             currentAchieve.setGroupAchieve(groupAchieve);
         }
-//        Achieve achieve = convertToEntity(achieveDto);
-//        achieve.setId(id);  // Use the ID from the URL path
-        currentAchieve.setUpdatedAt(new Date());  // Set the updated date
 
-        // Ensure 'createdAt' is set if it's null during the update
-//        if (achieve.getCreatedAt() == null) {
-//            achieve.setCreatedAt(new Date());  // Set current date if null
-//        }
+        currentAchieve.setUpdatedAt(new Date());
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
@@ -94,10 +88,10 @@ public class AchieveServImpl implements AchieveServ {
         return achieves.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteAchievement(UUID id) {
         achieveRepo.deleteById(id);
+        sharedService.updateAllAssessSums();
         return true;
     }
 
@@ -106,7 +100,6 @@ public class AchieveServImpl implements AchieveServ {
         return achieveRepo.findAllWithGroupNames();
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private AchieveDto convertToDto(Achieve achieve) {
         AchieveDto achieveDto = new AchieveDto();
         achieveDto.setId(achieve.getId());
@@ -131,7 +124,6 @@ public class AchieveServImpl implements AchieveServ {
         return achieveDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private Achieve convertToEntity(AchieveCreateDto achieveDto) {
         Achieve achieve = new Achieve();
         achieve.setAchievementName(achieveDto.getAchievementName());

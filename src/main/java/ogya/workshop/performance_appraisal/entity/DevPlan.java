@@ -2,6 +2,8 @@ package ogya.workshop.performance_appraisal.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.UUID;
@@ -26,6 +28,7 @@ public class DevPlan {
     private int enabled = 1;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")
     private User createdBy;
 
@@ -34,6 +37,7 @@ public class DevPlan {
     private Date createdAt;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "UPDATED_BY")
     private User updatedBy;
 

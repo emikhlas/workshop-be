@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class SharedServiceImpl implements SharedService {
@@ -26,7 +29,7 @@ public class SharedServiceImpl implements SharedService {
     }
 
     @Override
-    public List<AssessSumWithUserDto> updateAllAssessSums() {
+    public void updateAllAssessSums() {
 
         List<AssessSum> allAssessSums = assessSumRepo.findAll();
 
@@ -37,6 +40,11 @@ public class SharedServiceImpl implements SharedService {
             updatedAssessSums.add(updatedSummary);
         }
 
-        return updatedAssessSums;
+    }
+
+    @Override
+    public void generateAssessSum(UUID userId, Integer year) {
+        System.out.println("Generate AssessSum for user ID: " + userId + " and year: " + year);
+        assessSumServ.generateAssessSum(userId, year);
     }
 }
