@@ -22,6 +22,7 @@ public class EmpAchieveSkill {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -29,6 +30,7 @@ public class EmpAchieveSkill {
     private String notes;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ACHIEVEMENT_ID")
     private Achieve achieve;
 

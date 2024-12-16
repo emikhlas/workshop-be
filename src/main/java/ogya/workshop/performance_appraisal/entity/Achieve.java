@@ -26,6 +26,7 @@ public class Achieve {
     private String achievementName;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "GROUP_ACHIEVEMENT_ID")
     private GroupAchieve groupAchieve;
 

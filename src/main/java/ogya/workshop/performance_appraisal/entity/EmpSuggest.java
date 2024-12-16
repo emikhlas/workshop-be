@@ -21,6 +21,7 @@ public class EmpSuggest {
     @Column(name = "ID", nullable = false)
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
     @Column(name = "SUGGESTION", length = 200,nullable = false)
