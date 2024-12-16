@@ -54,6 +54,9 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         if(groupAchieveDto.getPercentage() != null){
             currentGroupAchieve.setPercentage(groupAchieveDto.getPercentage());
         }
+        if(groupAchieveDto.getEnabled() != null){
+            currentGroupAchieve.setEnabled(groupAchieveDto.getEnabled());
+        }
 
         currentGroupAchieve.setUpdatedAt(new Date());
 
