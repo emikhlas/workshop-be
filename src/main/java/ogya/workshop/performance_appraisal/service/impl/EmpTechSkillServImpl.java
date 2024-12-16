@@ -86,6 +86,20 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     }
 
     @Override
+    public List<EmpTechSkillUserDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
+        List<EmpTechSkill> empTechSkills = empTechSkillRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
+
+        List<EmpTechSkillUserDto> empTechSkillUserDtos = empTechSkills.stream().map(empTechSkill -> {
+            EmpTechSkillUserDto empTechSkillUserDto = convertToDto(empTechSkill);
+            if (empTechSkill.getTechSkill() != null) {
+                empTechSkillUserDto.setTechSkill(empTechSkill.getTechSkill().getTechSkill());  // Assuming DevPlan has a 'plan' attribute
+            }
+            return empTechSkillUserDto;
+        }).collect(Collectors.toList());
+        return empTechSkillUserDtos;
+    }
+
+    @Override
     public List<EmpTechSkillDto> findAllByTechSkillId(UUID techSkillId) {
         Log.info("Start findAllByTechSkillId in EmpTechSkillServImpl");
         List<EmpTechSkill> response = empTechSkillRepo.findByTechSkillId(techSkillId);
@@ -153,6 +167,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         Log.info("End bulk save in EmpTechSkillServImpl");
         return resultDtos;
     }
+
 
 
 

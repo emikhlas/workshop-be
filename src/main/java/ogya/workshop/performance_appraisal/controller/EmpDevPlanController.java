@@ -65,13 +65,19 @@ public class EmpDevPlanController {
     }
 
     // Add this method in EmpDevPlanController class
-
     @GetMapping("/user/{userId}/with-plan")
     public ResponseEntity<List<EmpDevPlanDto>> getEmpDevPlanWithPlanByUserId(@PathVariable UUID userId) {
         List<EmpDevPlanDto> empDevPlansWithPlan = empDevPlanServ.getEmpDevPlanWithPlan(userId);
         return ResponseEntity.ok(empDevPlansWithPlan);
     }
 
+    @GetMapping("/getByUserIdAndYear")
+    public ResponseEntity<List<EmpDevPlanDto>> getEmpDevPlanByUserIdAndYear(
+            @RequestParam UUID userId,
+            @RequestParam Integer assessmentYear) {
+        List<EmpDevPlanDto> empDevPlans = empDevPlanServ.getEmpDevPlanByUserIdAndYear(userId, assessmentYear);
+        return ResponseEntity.ok(empDevPlans);
+    }
 
     // Delete an Achievement by ID
     @DeleteMapping("/{id}")

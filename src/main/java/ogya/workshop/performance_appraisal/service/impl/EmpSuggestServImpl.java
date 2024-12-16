@@ -109,6 +109,28 @@ public class EmpSuggestServImpl implements EmpSuggestServ {
     }
 
     @Override
+    public List<EmpSuggestDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
+        Log.info("Start findByUserIdAndAssessmentYear in EmpSuggestServImpl");
+        List<EmpSuggestDto> result = new ArrayList<>();
+        List<EmpSuggest> response = empSuggestRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
+        for (EmpSuggest empSuggest : response) {
+            EmpSuggestDto empSuggestDto = EmpSuggestDto.fromEntity(empSuggest);
+            result.add(empSuggestDto);
+        }
+        Log.info("End findByUserIdAndAssessmentYear in EmpSuggestServImpl");
+        return result;
+    }
+
+    @Override
+    public List<Integer> getDistinctAssessmentYears() {
+        Log.info("Start getDistinctAssessmentYears in EmpSuggestServImpl");
+        List<Integer> years = empSuggestRepo.findDistinctAssessmentYears();
+        Log.info("End getDistinctAssessmentYears in EmpSuggestServImpl");
+        return years;
+    }
+
+
+    @Override
     public Boolean deleteById(UUID id) {
         Log.info("Start deleteById in EmpSuggestServImpl");
         findById(id);
