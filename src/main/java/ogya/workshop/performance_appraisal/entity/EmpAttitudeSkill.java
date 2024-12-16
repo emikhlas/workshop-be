@@ -26,6 +26,7 @@ public class EmpAttitudeSkill {
     private User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ATTITUDE_SKILL_ID")
     private AttitudeSkill attitudeSkill;
 

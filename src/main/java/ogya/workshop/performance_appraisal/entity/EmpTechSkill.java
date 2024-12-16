@@ -22,6 +22,7 @@ public class EmpTechSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
     @ManyToOne

@@ -2,6 +2,8 @@ package ogya.workshop.performance_appraisal.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -19,10 +21,12 @@ public class RoleMenu {
     private UUID id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ROLE_ID")
     private Role role;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "MENU_ID")
     private Menu menu;
 }

@@ -22,7 +22,7 @@ public class User{
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "USERNAME", length = 30, nullable = false)
+    @Column(name = "USERNAME", length = 30, nullable = false, unique = true)
     private String username;
 
     @Column(name = "FULL_NAME", length = 60, nullable = false)
@@ -31,7 +31,7 @@ public class User{
     @Column(name = "POSITION", length = 50, nullable = false)
     private String position;
 
-    @Column(name = "EMAIL_ADDRESS", length = 60, nullable = false)
+    @Column(name = "EMAIL_ADDRESS", length = 60, nullable = false, unique = true)
     private String emailAddress;
 
     @Column(name = "EMPLOYEE_STATUS", nullable = false)

@@ -20,7 +20,8 @@ public class AssessSum {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)
     private UUID id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
     @Column(name = "YEAR", length = 4, nullable = false)

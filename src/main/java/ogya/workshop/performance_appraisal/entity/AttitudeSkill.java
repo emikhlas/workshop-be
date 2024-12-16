@@ -25,6 +25,7 @@ public class AttitudeSkill {
     private String attitudeSkillName;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "GROUP_ATTITUDE_SKILL_ID")
     private GroupAttitudeSkill groupAttitudeSkill;
 
