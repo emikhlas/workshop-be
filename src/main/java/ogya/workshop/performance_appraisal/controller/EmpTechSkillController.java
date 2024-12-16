@@ -128,6 +128,14 @@ public class EmpTechSkillController extends ServerResponseList {
         return ResponseEntity.ok(empTechSkills);
     }
 
+    @GetMapping("/assessment-years")
+    public List<Integer> getAllAssessmentYears() {
+        Log.info("Received request to get all distinct assessment years");
+        List<Integer> assessmentYears = empTechSkillServ.getAllEmpTechSkillYears();
+        Log.info("Returning assessment years: {}", assessmentYears);
+        return assessmentYears;
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ManagerDto<Boolean>> delete(@PathVariable("id") UUID id) {
         Log.info("Start delete in EmpTechSkillController");

@@ -79,6 +79,12 @@ public class EmpDevPlanController {
         return ResponseEntity.ok(empDevPlans);
     }
 
+    @GetMapping("/assessment-years")
+    public ResponseEntity<List<Integer>> getAllEmpDevPlanYear() {
+        List<Integer> years = empDevPlanServ.getAllEmpDevPlanYear();
+        return ResponseEntity.ok(years);
+    }
+
     // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpDevPlan(@PathVariable UUID id) {

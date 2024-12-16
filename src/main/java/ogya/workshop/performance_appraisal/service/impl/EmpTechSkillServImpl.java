@@ -100,6 +100,15 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     }
 
     @Override
+    public List<Integer> getAllEmpTechSkillYears() {
+        Log.info("Fetching all distinct assessment years from EmpTechSkill");
+        List<Integer> assessmentYears = empTechSkillRepo.findDistinctAssessmentYears();
+        Log.info("Found assessment years: {}", assessmentYears);
+        return assessmentYears;
+    }
+
+
+    @Override
     public List<EmpTechSkillDto> findAllByTechSkillId(UUID techSkillId) {
         Log.info("Start findAllByTechSkillId in EmpTechSkillServImpl");
         List<EmpTechSkill> response = empTechSkillRepo.findByTechSkillId(techSkillId);
