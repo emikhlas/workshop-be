@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface EmpDevPlanRepo extends JpaRepository<EmpDevPlan, UUID> {
     List<EmpDevPlan> findByUserId(UUID userId);
+    List<EmpDevPlan> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear);
+
 }

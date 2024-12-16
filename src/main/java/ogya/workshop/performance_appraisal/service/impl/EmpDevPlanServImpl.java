@@ -138,6 +138,25 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return true;
     }
 
+    // get by userId and assessmentYear
+    @Override
+    public List<EmpDevPlanDto> getEmpDevPlanByUserIdAndYear(UUID userId, Integer assessmentYear) {
+        List<EmpDevPlan> empDevPlans = empDevPlanRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
+
+        // Transform empDevPlans to EmpDevPlanDto including the 'plan' attribute
+        List<EmpDevPlanDto> empDevPlanDtos = empDevPlans.stream().map(empDevPlan -> {
+            EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
+            // Fetch the DevPlan and include the 'plan' in the DTO
+            if (empDevPlan.getDevPlan() != null) {
+                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan()); // Assuming DevPlan has a 'plan' attribute
+            }
+            return empDevPlanDto;
+        }).collect(Collectors.toList());
+
+        return empDevPlanDtos;
+    }
+
+
     // Helper method to convert Achieve entity to AchieveDto
     private EmpDevPlanDto convertToDto(EmpDevPlan empDevPlan) {
         EmpDevPlanDto empDevPlanDto = new EmpDevPlanDto();

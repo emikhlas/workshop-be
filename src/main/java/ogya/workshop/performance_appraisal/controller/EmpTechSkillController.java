@@ -120,7 +120,13 @@ public class EmpTechSkillController extends ServerResponseList {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
+    @GetMapping("/by-user-and-year")
+    public ResponseEntity<List<EmpTechSkillUserDto>> getEmpTechSkillByUserIdAndYear(
+            @RequestParam UUID userId,
+            @RequestParam Integer assessmentYear) {
+        List<EmpTechSkillUserDto> empTechSkills = empTechSkillServ.findByUserIdAndAssessmentYear(userId, assessmentYear);
+        return ResponseEntity.ok(empTechSkills);
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ManagerDto<Boolean>> delete(@PathVariable("id") UUID id) {

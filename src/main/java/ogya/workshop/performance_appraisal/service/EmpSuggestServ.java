@@ -13,4 +13,7 @@ public interface EmpSuggestServ {
     List<EmpSuggestDto> saveAll(List<EmpSuggestCreateDto> empSuggestCreateDtos);
     EmpSuggestDto update(UUID id,EmpSuggestCreateDto dto);
     Boolean deleteById(UUID id);
+    List<EmpSuggestDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear);
+    List<Integer> getDistinctAssessmentYears();
+
 }

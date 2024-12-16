@@ -133,4 +133,19 @@ public class EmpSuggestController extends ServerResponseList {
         Log.info("End update in EmpSuggestController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/userId&Year")
+    public List<EmpSuggestDto> getEmpSuggestByUserIdAndYear(
+            @RequestParam UUID userId,
+            @RequestParam Integer assessmentYear) {
+        return empSuggestServ.findByUserIdAndAssessmentYear(userId, assessmentYear);
+    }
+
+    @GetMapping("/assessment-years")
+    public ResponseEntity<List<Integer>> getEmpTechSkillByYear() {
+        Log.info("Start getEmpTechSkillByYear in EmpSuggestController");
+        List<Integer> years = empSuggestServ.getDistinctAssessmentYears();
+        Log.info("End getEmpTechSkillByYear in EmpSuggestController");
+        return ResponseEntity.ok(years);
+    }
 }
