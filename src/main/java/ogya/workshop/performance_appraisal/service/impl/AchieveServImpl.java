@@ -74,6 +74,7 @@ public class AchieveServImpl implements AchieveServ {
         currentAchieve.setUpdatedBy(creator);
 
         Achieve updatedAchieve = achieveRepo.save(currentAchieve);
+        sharedService.updateAllAssessSums();
         return convertToDto(updatedAchieve);
     }
 

@@ -4,9 +4,11 @@ import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
 import ogya.workshop.performance_appraisal.service.GroupAchieveServ;
 import ogya.workshop.performance_appraisal.service.SharedService;
@@ -23,6 +25,9 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
 
     @Autowired
     private GroupAchieveRepo groupAchieveRepo;
+
+    @Autowired
+    private AchieveRepo achieveRepo;
 
     @Autowired
     private SharedService sharedService;
@@ -54,7 +59,13 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         if(groupAchieveDto.getPercentage() != null){
             currentGroupAchieve.setPercentage(groupAchieveDto.getPercentage());
         }
+
         if(groupAchieveDto.getEnabled() != null){
+            List<Achieve> achieves = achieveRepo.findByGroupAchieve_Id(id);
+            for(Achieve achieve : achieves){
+                achieve.setEnabled(groupAchieveDto.getEnabled());
+                achieveRepo.save(achieve);
+            }
             currentGroupAchieve.setEnabled(groupAchieveDto.getEnabled());
         }
 

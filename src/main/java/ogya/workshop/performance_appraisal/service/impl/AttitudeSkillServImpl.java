@@ -78,6 +78,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         currentAttitudeSkill.setUpdatedBy(creator);
 
         AttitudeSkill updatedAttitudeSkill = attitudeSkillRepo.save(currentAttitudeSkill);
+        sharedService.updateAllAssessSums();
         return convertToDto(updatedAttitudeSkill);
     }
 
