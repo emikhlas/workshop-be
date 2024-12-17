@@ -61,6 +61,9 @@ public class AchieveServImpl implements AchieveServ {
             GroupAchieve groupAchieve = groupAchieveRepo.findById(achieveDto.getGroupAchievementId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
             currentAchieve.setGroupAchieve(groupAchieve);
         }
+        if(achieveDto.getEnabled() != null){
+            currentAchieve.setEnabled(achieveDto.getEnabled());
+        }
 
         currentAchieve.setUpdatedAt(new Date());
 

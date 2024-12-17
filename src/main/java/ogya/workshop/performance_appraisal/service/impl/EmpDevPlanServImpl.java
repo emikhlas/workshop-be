@@ -156,6 +156,11 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlanDtos;
     }
 
+    @Override
+    public List<Integer> getAllEmpDevPlanYear() {
+        return empDevPlanRepo.findDistinctAssessmentYears();
+    }
+
 
     // Helper method to convert Achieve entity to AchieveDto
     private EmpDevPlanDto convertToDto(EmpDevPlan empDevPlan) {

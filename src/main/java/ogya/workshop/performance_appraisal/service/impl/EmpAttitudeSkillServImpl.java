@@ -94,6 +94,11 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<Integer> getAllEmpAttitudeSkillYears() {
+        return empAttitudeSkillRepo.findDistinctAssessmentYears();
+    }
+
 
     @Override
     public boolean deleteEmpAttitudeSkill(UUID id) {

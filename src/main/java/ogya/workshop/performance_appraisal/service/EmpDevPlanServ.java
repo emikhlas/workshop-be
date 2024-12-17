@@ -16,5 +16,6 @@ public interface EmpDevPlanServ {
     List<EmpDevPlanDto> getEmpDevPlanByUserId(UUID userId);
     List<EmpDevPlanDto> getEmpDevPlanWithPlan(UUID userId);
     List<EmpDevPlanDto> getEmpDevPlanByUserIdAndYear(UUID userId, Integer assessmentYear);
+    List<Integer> getAllEmpDevPlanYear();
 
 }
