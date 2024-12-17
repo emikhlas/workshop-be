@@ -89,8 +89,11 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     }
 
     @Override
-    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year){
+    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly){
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserIdAndAssessmentYear(userId, year);
+        if(enabledOnly){
+            empAttitudeSkills = empAttitudeSkills.stream().filter(e -> e.getAttitudeSkill().getGroupAttitudeSkill().getEnabled() == 1 && e.getAttitudeSkill().getEnabled() == 1).toList();
+        }
         return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 

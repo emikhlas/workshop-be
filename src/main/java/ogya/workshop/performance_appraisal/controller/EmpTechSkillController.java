@@ -121,10 +121,10 @@ public class EmpTechSkillController extends ServerResponseList {
     }
 
     @GetMapping("/by-user-and-year")
-    public ResponseEntity<List<EmpTechSkillUserDto>> getEmpTechSkillByUserIdAndYear(
+    public ResponseEntity<List<EmpTechSkillDto>> getEmpTechSkillByUserIdAndYear(
             @RequestParam UUID userId,
             @RequestParam Integer assessmentYear) {
-        List<EmpTechSkillUserDto> empTechSkills = empTechSkillServ.findByUserIdAndAssessmentYear(userId, assessmentYear);
+        List<EmpTechSkillDto> empTechSkills = empTechSkillServ.findByUserIdAndAssessmentYear(userId, assessmentYear);
         return ResponseEntity.ok(empTechSkills);
     }
 

@@ -28,11 +28,16 @@ public class TechSkillServImpl implements TechSkillServ {
     private TechSkillRepo techSkillRepo;
 
     @Override
-    public List<TechSkillDto> findAll() {
+    public List<TechSkillDto> findAll(boolean enabledOnly) {
         Log.info("Start findAll in TechSkillServImpl");
         List<TechSkillDto> result = new ArrayList<>();
-        List<TechSkill> respomse = techSkillRepo.findAll();
-        for (TechSkill techSkill : respomse) {
+        List<TechSkill> response;
+        if (enabledOnly) {
+            response = techSkillRepo.findAllByEnabled(1);
+        }else {
+            response = techSkillRepo.findAll();
+        }
+        for (TechSkill techSkill : response) {
             TechSkillDto techSkillDto = TechSkillDto.fromEntity(techSkill);
             result.add(techSkillDto);
         }

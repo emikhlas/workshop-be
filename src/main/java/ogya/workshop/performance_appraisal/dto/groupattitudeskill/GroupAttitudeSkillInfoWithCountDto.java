@@ -17,6 +17,8 @@ public class GroupAttitudeSkillInfoWithCountDto {
     private String groupAttitudeName;
     @JsonProperty("percentage")
     private Integer percentage;
+    @JsonProperty("enabled")
+    private Integer enabled;
     @JsonProperty("attitude_count")
     private Integer attitudeCount;
 }

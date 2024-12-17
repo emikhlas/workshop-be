@@ -6,8 +6,10 @@ import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeS
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.repository.AttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.repository.GroupAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
 import ogya.workshop.performance_appraisal.service.SharedService;
@@ -24,6 +26,9 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
     @Autowired
     private GroupAttitudeSkillRepo groupAttitudeSkillRepo;
+
+    @Autowired
+    private AttitudeSkillRepo attitudeSkillRepo;
 
     @Autowired
     private SharedService sharedService;
@@ -53,8 +58,14 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         if(groupAttitudeSkillDto.getPercentage() != null){
             currentGroupAttitudeSkill.setPercentage(groupAttitudeSkillDto.getPercentage());
         }
+
+        List<AttitudeSkill> attitudeSkills = attitudeSkillRepo.findByGroupAttitudeSkill_Id(id);
         if(groupAttitudeSkillDto.getEnabled() != null){
             currentGroupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
+            for (AttitudeSkill attitudeSkill : attitudeSkills) {
+                attitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
+                attitudeSkillRepo.save(attitudeSkill);
+            }
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -65,6 +76,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
 
         GroupAttitudeSkill updatedGroupAttitudeSkill = groupAttitudeSkillRepo.save(currentGroupAttitudeSkill);
+
         sharedService.updateAllAssessSums();
         return convertToDto(updatedGroupAttitudeSkill);
     }
@@ -76,9 +88,12 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     }
 
     @Override
-    public List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills() {
-        List<GroupAttitudeSkill> groupAttitudeSkill = groupAttitudeSkillRepo.findAll();
-        return groupAttitudeSkill.stream().map(this::convertToDto).collect(Collectors.toList());
+    public List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills(boolean enabledOnly) {
+        if(enabledOnly){
+            return groupAttitudeSkillRepo.findAllByEnabled(1).stream().map(this::convertToDto).collect(Collectors.toList());
+        }else{
+            return groupAttitudeSkillRepo.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        }
     }
 
     @Override
@@ -113,6 +128,7 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
                         UUID.nameUUIDFromBytes((byte[]) map.get("id")),
                         (String) map.get("group_name"),
                         (Integer) map.get("percentage"),
+                        (Integer) map.get("enabled"),
                         Math.toIntExact((Long) map.get("count"))
                 ))
                 .collect(Collectors.toList());

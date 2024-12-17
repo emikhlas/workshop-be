@@ -13,5 +13,5 @@ public interface EmpAttitudeSkillServ {
     Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id);
     List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills();
     boolean deleteEmpAttitudeSkill(UUID id);
-    List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year);
+    List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly);
 }

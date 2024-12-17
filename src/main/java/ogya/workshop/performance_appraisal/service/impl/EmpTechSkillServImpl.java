@@ -51,7 +51,9 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
             EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-            result.add(empTechSkillDto);
+            if(empTechSkillDto.getTechSkill().getEnabled() == 1) {
+                result.add(empTechSkillDto);
+            }
         }
         Log.info("End findAll in EmpTechSkillServImpl");
         return result;
@@ -78,7 +80,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         List<EmpTechSkillUserDto> empTechSkillUserDtos = empTechSkills.stream().map(empTechSkill -> {
             EmpTechSkillUserDto empTechSkillUserDto = convertToDto(empTechSkill);
             if (empTechSkill.getTechSkill() != null) {
-                empTechSkillUserDto.setTechSkill(empTechSkill.getTechSkill().getTechSkill());  // Assuming DevPlan has a 'plan' attribute
+                empTechSkillUserDto.setTechSkill(empTechSkill.getTechSkill().getTechSkill());
             }
             return empTechSkillUserDto;
         }).collect(Collectors.toList());
@@ -86,17 +88,19 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     }
 
     @Override
-    public List<EmpTechSkillUserDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
-        List<EmpTechSkill> empTechSkills = empTechSkillRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
-
-        List<EmpTechSkillUserDto> empTechSkillUserDtos = empTechSkills.stream().map(empTechSkill -> {
-            EmpTechSkillUserDto empTechSkillUserDto = convertToDto(empTechSkill);
-            if (empTechSkill.getTechSkill() != null) {
-                empTechSkillUserDto.setTechSkill(empTechSkill.getTechSkill().getTechSkill());  // Assuming DevPlan has a 'plan' attribute
+    public List<EmpTechSkillDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
+        Log.info("Start findByUserIdAndAssessmentYear in EmpTechSkillServImpl");
+        List<EmpTechSkill> response = empTechSkillRepo.findAll();
+        Log.info("Received response: {}", response);
+        List<EmpTechSkillDto> result = new ArrayList<>();
+        for (EmpTechSkill empTechSkill : response) {
+            EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
+            if(empTechSkillDto.getTechSkill().getEnabled() == 1) {
+                result.add(empTechSkillDto);
             }
-            return empTechSkillUserDto;
-        }).collect(Collectors.toList());
-        return empTechSkillUserDtos;
+        }
+        Log.info("End findByUserIdAndAssessmentYear in EmpTechSkillServImpl");
+        return result;
     }
 
     @Override

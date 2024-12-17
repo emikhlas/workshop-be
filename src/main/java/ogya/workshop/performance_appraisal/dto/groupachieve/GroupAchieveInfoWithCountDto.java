@@ -17,6 +17,8 @@ public class GroupAchieveInfoWithCountDto {
     private String groupAchievementName;
     @JsonProperty("percentage")
     private Integer percentage;
+    @JsonProperty("enabled")
+    private Integer enabled;
     @JsonProperty("achievement_count")
     private Integer achievementCount;
 }

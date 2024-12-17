@@ -1,10 +1,12 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 import ogya.workshop.performance_appraisal.service.AttitudeSkillServ;
+import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +19,19 @@ import java.util.UUID;
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/attitude-skill")
-public class AttitudeSkillController {
+public class AttitudeSkillController extends ServerResponseList {
 
     @Autowired
     private AttitudeSkillServ attitudeSkillServ;
 
-    // Create a new Achievement
+
     @PostMapping
     public ResponseEntity<AttitudeSkillDto> createAttitudeSkill(@RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkillDto newAttitudeSkill = attitudeSkillServ.createAttitudeSkill(attitudeSkillDto);
         return ResponseEntity.ok(newAttitudeSkill);
     }
 
-    // Update an existing Achievement
+
     @PutMapping("/{id}")
     public ResponseEntity<AttitudeSkillDto> updateAttitudeSkill(@PathVariable UUID id, @RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
         try {
@@ -40,20 +42,30 @@ public class AttitudeSkillController {
         }
     }
 
-    // Retrieve by ID
+
     @GetMapping("/{id}")
     public ResponseEntity<AttitudeSkillDto> getAttitudeSkillById(@PathVariable UUID id) {
         Optional<AttitudeSkillDto> achievement = attitudeSkillServ.getAttitudeSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
+
     @GetMapping
-    public List<AttitudeSkillDto> getAllAttitudeSkills() {
-        return attitudeSkillServ.getAllAttitudeSkills();
+    public ResponseEntity<ManagerDto<List<AttitudeSkillDto>>> getAllAttitudeSkills(
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<AttitudeSkillDto>> response = new ManagerDto<>();
+
+        List<AttitudeSkillDto> content = attitudeSkillServ.getAllAttitudeSkills(enabledOnly);
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Delete an Achievement by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteAttitudeSkill(@PathVariable UUID id) {
         Boolean response = attitudeSkillServ.deleteAttitudeSkill(id);

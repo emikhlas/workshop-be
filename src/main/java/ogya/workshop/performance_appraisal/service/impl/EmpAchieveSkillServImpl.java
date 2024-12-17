@@ -129,7 +129,6 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         return empAchieveSkillDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private EmpAchieveSkill convertToEntity(EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkill empAchieveSkill = new EmpAchieveSkill();
         if (empAchieveSkillDto.getUserId() != null) {
@@ -154,8 +153,11 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     }
 
     @Override
-    public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year) {
+    public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year, boolean enabledOnly) {
         List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserIdAndAssessmentYear(userId, year);
+        if (enabledOnly) {
+            empAchieveSkills = empAchieveSkills.stream().filter(e -> e.getAchieve().getEnabled()==1 && e.getAchieve().getGroupAchieve().getEnabled()==1).toList();
+        }
         return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 }
