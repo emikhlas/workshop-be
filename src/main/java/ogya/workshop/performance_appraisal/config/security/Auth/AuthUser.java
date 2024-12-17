@@ -24,6 +24,9 @@ public class AuthUser implements UserDetails {
 
     public AuthUser(User user, List<Role> roles) {
         this.user = user;
+        if (user.getEnabled()==0) {
+            throw new IllegalStateException("User account is not enabled");
+        }
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.authorities = roles.stream()

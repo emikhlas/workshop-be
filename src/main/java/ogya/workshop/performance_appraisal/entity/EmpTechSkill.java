@@ -26,6 +26,7 @@ public class EmpTechSkill {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "TECHNICAL_SKILL_ID", nullable = false)
     private TechSkill techSkill;
     @Column(name = "TECH_DETAIL")
