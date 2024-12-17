@@ -50,6 +50,9 @@ public class DevPlanServImpl implements DevPlanServ {
         if(devPlanDto.getPlan() != null){
             currentDevPlan.setPlan(devPlanDto.getPlan());
         }
+        if(devPlanDto.getEnabled() != null){
+            currentDevPlan.setEnabled(devPlanDto.getEnabled());
+        }
 
         currentDevPlan.setUpdatedAt(new Date());  // Set the updated date
 

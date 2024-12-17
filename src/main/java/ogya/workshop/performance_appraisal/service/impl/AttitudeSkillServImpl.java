@@ -65,6 +65,9 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
             GroupAttitudeSkill groupAttitudeSkill = groupAttitudeSkillRepo.findById(attitudeSkillDto.getGroupAttitudeSkillId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
             currentAttitudeSkill.setGroupAttitudeSkill(groupAttitudeSkill);
         }
+        if(attitudeSkillDto.getEnabled() != null){
+            currentAttitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
+        }
 
         currentAttitudeSkill.setUpdatedAt(new Date());
 

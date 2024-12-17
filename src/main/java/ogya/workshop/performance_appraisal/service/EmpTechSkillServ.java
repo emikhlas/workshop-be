@@ -17,5 +17,5 @@ public interface EmpTechSkillServ {
     EmpTechSkillDto update(UUID id, EmpTechSkillCreateDto empTechSkillDto);
     List<EmpTechSkillUserDto> findByUserId(UUID userId);
     List<EmpTechSkillDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear);
-
+    List<Integer> getAllEmpTechSkillYears();
 }

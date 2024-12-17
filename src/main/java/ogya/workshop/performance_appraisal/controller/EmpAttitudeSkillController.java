@@ -60,6 +60,11 @@ public class EmpAttitudeSkillController {
         return ResponseEntity.ok(empAttitudeSkills);
     }
 
+    @GetMapping("/assessment-years")
+    public ResponseEntity<List<Integer>> getAllEmpAttitudeSkillYears() {
+        List<Integer> years = empAttitudeSkillServ.getAllEmpAttitudeSkillYears();
+        return ResponseEntity.ok(years);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpAttitudeSkill(@PathVariable UUID id) {
