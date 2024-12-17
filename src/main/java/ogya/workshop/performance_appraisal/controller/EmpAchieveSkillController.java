@@ -24,14 +24,14 @@ public class EmpAchieveSkillController extends ServerResponseList {
     @Autowired
     private EmpAchieveSkillServ empAchieveSkillServ;
 
-    // Create a new Achievement
+
     @PostMapping
     public ResponseEntity<EmpAchieveSkillDto> createEmpAchieveSkill(@RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkillDto newEmpAchieveSkill = empAchieveSkillServ.createEmpAchieveSkill(empAchieveSkillDto);
         return ResponseEntity.ok(newEmpAchieveSkill);
     }
 
-    // Update an existing Achievement
+
     @PutMapping("/{id}")
     public ResponseEntity<EmpAchieveSkillDto> updateEmpAchieveSkill(@PathVariable UUID id, @RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
         try {
@@ -42,20 +42,28 @@ public class EmpAchieveSkillController extends ServerResponseList {
         }
     }
 
-    // Retrieve by ID
+
     @GetMapping("/{id}")
     public ResponseEntity<EmpAchieveSkillDto> getEmpAchieveSkillById(@PathVariable UUID id) {
         Optional<EmpAchieveSkillDto> achievement = empAchieveSkillServ.getEmpAchieveSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
+
     @GetMapping
-    public List<EmpAchieveSkillDto> getAllEmpAchieveSkill() {
-        return empAchieveSkillServ.getAllEmpAchieveSkill();
+    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpAchieveSkill() {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<EmpAchieveSkillDto>> response = new ManagerDto<>();
+        List<EmpAchieveSkillDto> content = empAchieveSkillServ.getAllEmpAchieveSkill();
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Delete an Achievement by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpAchieveSkill(@PathVariable UUID id) {
         Boolean response = empAchieveSkillServ.deleteEmpAchieveSkill(id);
@@ -69,10 +77,13 @@ public class EmpAchieveSkillController extends ServerResponseList {
     }
 
     @GetMapping("/user/{userId}/{year}")
-    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(@PathVariable("userId") UUID userId, @PathVariable("year") Integer year) {
+    public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(
+            @PathVariable("userId") UUID userId,
+            @PathVariable("year") Integer year,
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
         long startTime = System.currentTimeMillis();
         ManagerDto<List<EmpAchieveSkillDto>> response = new ManagerDto<>();
-        List<EmpAchieveSkillDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year);
+        List<EmpAchieveSkillDto> empAchieves = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year, enabledOnly);
         response.setContent(empAchieves);
         response.setTotalRows(empAchieves.size());
         long endTime = System.currentTimeMillis();

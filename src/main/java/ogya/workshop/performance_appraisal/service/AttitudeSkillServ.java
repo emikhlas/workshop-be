@@ -12,7 +12,7 @@ public interface AttitudeSkillServ {
     AttitudeSkillDto createAttitudeSkill(AttitudeSkillCreateDto attitudeSkillDto);
     AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillCreateDto attitudeSkillDto);
     Optional<AttitudeSkillDto> getAttitudeSkillById(UUID id);
-    List<AttitudeSkillDto> getAllAttitudeSkills();
+    List<AttitudeSkillDto> getAllAttitudeSkills(boolean enabledOnly);
     boolean deleteAttitudeSkill(UUID id);
     List<AttitudeWithGroupNameDto> getAllAttitudeWithGroupName();
 }

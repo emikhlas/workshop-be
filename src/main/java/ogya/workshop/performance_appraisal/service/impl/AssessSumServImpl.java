@@ -202,10 +202,10 @@ public class AssessSumServImpl implements AssessSumServ {
     private Map<String, Object> fetchAssessSumData(UUID userId, Integer year) {
         Log.info("Start generateAssessSum in AssessSumServImpl");
 
-        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year);
-        List<EmpAchieveSkillDto> empAchievementSkills = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year);
-        List<GroupAttitudeSkillInfoWithCountDto> groupAttitudeSkills = groupAttitudeSkillServ.getGroupAttitudeSkillWithCount();
-        List<GroupAchieveInfoWithCountDto> groupAchievements = groupAchieveSkillServ.getGroupAchieveInfoWithCount();
+        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year, true);
+        List<EmpAchieveSkillDto> empAchievementSkills = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year, true);
+        List<GroupAttitudeSkillInfoWithCountDto> groupAttitudeSkills = groupAttitudeSkillServ.getGroupAttitudeSkillWithCount().stream().filter(g -> g.getEnabled() == 1).toList();
+        List<GroupAchieveInfoWithCountDto> groupAchievements = groupAchieveSkillServ.getGroupAchieveInfoWithCount().stream().filter(g -> g.getEnabled() == 1 ).toList();
 
         List<GroupedResultDto<EmpAchieveSkillDto>> groupedAchieveResults = groupDataByCategory(
                 empAchievementSkills,

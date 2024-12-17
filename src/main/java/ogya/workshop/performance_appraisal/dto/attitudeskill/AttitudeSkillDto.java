@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.dto.attitudeskill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import java.util.Date;
@@ -18,8 +19,8 @@ public class AttitudeSkillDto {
     private UUID id;
     @JsonProperty("attitude_skill_name")
     private String attitudeSkillName;
-    @JsonProperty("group_attitude_skill_id")
-    private UUID groupAttitudeSkillId;
+    @JsonProperty("group_attitude_skill")
+    private GroupAttitudeSkillInfoDto groupAttitudeSkill;
     @JsonProperty("enabled")
     private Integer enabled;
     @JsonFormat(timezone = "Asia/Jakarta")

@@ -1,11 +1,13 @@
 package ogya.workshop.performance_appraisal.controller;
 
+import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttWithAttDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.service.GroupAttitudeSkillServ;
+import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +19,26 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/group-attitude-skill")
-public class GroupAttitudeSkillController {
+public class GroupAttitudeSkillController extends ServerResponseList {
 
     @Autowired
     private GroupAttitudeSkillServ groupAttitudeSkillServ;
 
-    // Create a new Achievement
     @PostMapping
-    public ResponseEntity<GroupAttitudeSkillDto> createGroupAttitudeSkill(@RequestBody GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
+    public ResponseEntity<ManagerDto<GroupAttitudeSkillDto>> createGroupAttitudeSkill(@RequestBody GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<GroupAttitudeSkillDto> response = new ManagerDto<>();
+
         GroupAttitudeSkillDto newGroupAttitudeSkill = groupAttitudeSkillServ.createGroupAttitudeSkill(groupAttitudeSkillDto);
-        return ResponseEntity.ok(newGroupAttitudeSkill);
+        response.setContent(newGroupAttitudeSkill);
+
+        response.setTotalRows(1);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success create data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<GroupAttitudeSkillDto> updateGroupAttitudeSkill(@PathVariable UUID id, @RequestBody GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         try {
@@ -40,38 +49,103 @@ public class GroupAttitudeSkillController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
-    public ResponseEntity<GroupAttitudeSkillDto> getGroupAttitudeSkillById(@PathVariable UUID id) {
+    public ResponseEntity<ManagerDto<GroupAttitudeSkillDto>> getGroupAttitudeSkillById(@PathVariable UUID id) {
+        ManagerDto<GroupAttitudeSkillDto> response = new ManagerDto<>();
         Optional<GroupAttitudeSkillDto> achievement = groupAttitudeSkillServ.getGroupAttitudeSkillById(id);
-        return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        if (achievement.isPresent()) {
+            response.setContent(achievement.get());
+            response.setTotalRows(1);
+            return ResponseEntity.ok(response);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Retrieve all Achievements
-    @GetMapping
-    public List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills() {
-        return groupAttitudeSkillServ.getAllGroupAttitudeSkills();
+    @GetMapping("/all")
+    public ResponseEntity<ManagerDto<List<GroupAttitudeSkillDto>>> getAllGroupAttitudeSkills(
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<GroupAttitudeSkillDto>> response = new ManagerDto<>();
+
+        List<GroupAttitudeSkillDto> content = groupAttitudeSkillServ.getAllGroupAttitudeSkills(enabledOnly);
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // Delete an Achievement by ID
+    @GetMapping("/all-with-att")
+    public ResponseEntity<ManagerDto<List<GroupAttWithAttDto>>> getAllGroupAttitudeSkillsWithAtt(
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<GroupAttWithAttDto>> response = new ManagerDto<>();
+        List<GroupAttWithAttDto> content = groupAttitudeSkillServ.getAllGroupWithAttitudeSkills();
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteGroupAttitudeSkill(@PathVariable UUID id) {
-        Boolean response = groupAttitudeSkillServ.deleteGroupAttitudeSkill(id);
+    public ResponseEntity<ManagerDto<Boolean>> deleteGroupAttitudeSkill(@PathVariable UUID id) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<Boolean> response = new ManagerDto<>();
+
+        Boolean content = groupAttitudeSkillServ.deleteGroupAttitudeSkill(id);
+        response.setContent(content);
+
+        response.setTotalRows(1);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success delete data", executionTime));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/group-attitude-skill/{id}")
-    public GroupAttWithAttDto getGroupWithAttitudeSkills(@PathVariable UUID id) {
-        return groupAttitudeSkillServ.getGroupWithAttitudeSkills(id);
+    public ResponseEntity<ManagerDto<GroupAttWithAttDto>> getGroupWithAttitudeSkills(@PathVariable UUID id) {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<GroupAttWithAttDto> response = new ManagerDto<>();
+
+        GroupAttWithAttDto content = groupAttitudeSkillServ.getGroupWithAttitudeSkills(id);
+        response.setContent(content);
+        response.setTotalRows(1);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
-    public List<GroupAttWithAttDto> getAllGroupWithAttitudeSkills() {
-        return groupAttitudeSkillServ.getAllGroupWithAttitudeSkills();
+    @GetMapping("/all-with-att-skills")
+    public ResponseEntity<ManagerDto<List<GroupAttWithAttDto>>> getAllGroupWithAttitudeSkills() {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<GroupAttWithAttDto>> response = new ManagerDto<>();
+
+        List<GroupAttWithAttDto> content = groupAttitudeSkillServ.getAllGroupWithAttitudeSkills();
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/count")
-    public List<GroupAttitudeSkillInfoWithCountDto> getGroupAttitudeSkillWithCount() {
-        return groupAttitudeSkillServ.getGroupAttitudeSkillWithCount();
+    public ResponseEntity<ManagerDto<List<GroupAttitudeSkillInfoWithCountDto>>> getGroupAttitudeSkillWithCount() {
+        long startTime = System.currentTimeMillis();
+        ManagerDto<List<GroupAttitudeSkillInfoWithCountDto>> response = new ManagerDto<>();
+
+        List<GroupAttitudeSkillInfoWithCountDto> content = groupAttitudeSkillServ.getGroupAttitudeSkillWithCount();
+        response.setContent(content);
+        response.setTotalRows(content.size());
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success get data", executionTime));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

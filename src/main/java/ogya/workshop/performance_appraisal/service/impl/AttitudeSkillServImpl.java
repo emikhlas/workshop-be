@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto;
+import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.GroupAttitudeSkill;
@@ -68,7 +69,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
             currentAttitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
         }
 
-        currentAttitudeSkill.setUpdatedAt(new Date());  // Set the updated date
+        currentAttitudeSkill.setUpdatedAt(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -87,9 +88,14 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     }
 
     @Override
-    public List<AttitudeSkillDto> getAllAttitudeSkills() {
-        List<AttitudeSkill> attitudeSkill = attitudeSkillRepo.findAll();
-        return attitudeSkill.stream().map(this::convertToDto).collect(Collectors.toList());
+    public List<AttitudeSkillDto> getAllAttitudeSkills(boolean enabledOnly) {
+        List<AttitudeSkill> response;
+        if (enabledOnly) {
+            response = attitudeSkillRepo.findAllByEnabled(1);
+        }else{
+            response = attitudeSkillRepo.findAll();
+        }
+        return response.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -109,7 +115,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         attitudeSkillDto.setId(attitudeSkill.getId());
         attitudeSkillDto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
         if (attitudeSkill.getGroupAttitudeSkill() != null) {
-            attitudeSkillDto.setGroupAttitudeSkillId(attitudeSkill.getGroupAttitudeSkill().getId());
+            attitudeSkillDto.setGroupAttitudeSkill(GroupAttitudeSkillInfoDto.fromEntity(attitudeSkill.getGroupAttitudeSkill()));
         }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
         attitudeSkillDto.setCreatedAt(attitudeSkill.getCreatedAt());

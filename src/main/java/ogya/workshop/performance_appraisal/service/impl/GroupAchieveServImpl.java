@@ -99,12 +99,12 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
                         UUID.nameUUIDFromBytes((byte[]) map.get("id")),
                         (String) map.get("group_achievement_name"),
                         (Integer) map.get("percentage"),
+                        (Integer) map.get("enabled"),
                         Math.toIntExact((Long) map.get("count"))
                 ))
                 .collect(Collectors.toList());
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private GroupAchieveDto convertToDto(GroupAchieve groupAchieve) {
         GroupAchieveDto groupAchieveDto = new GroupAchieveDto();
         groupAchieveDto.setId(groupAchieve.getId());

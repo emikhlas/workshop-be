@@ -20,20 +20,11 @@ public class EmpAttitudeSkillController {
     @Autowired
     private EmpAttitudeSkillServ empAttitudeSkillServ;
 
-    // Create a new Achievement
-//    @PostMapping
-//    public ResponseEntity<EmpAttitudeSkillDto> createEmpAttitudeSkill(@RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-//        EmpAttitudeSkillDto newEmpAttitudeSkill = empAttitudeSkillServ.createEmpAttitudeSkill(empAttitudeSkillDto);
-//        return ResponseEntity.ok(newEmpAttitudeSkill);
-//    }
-
     @PostMapping
     public ResponseEntity<List<EmpAttitudeSkillDto>> createEmpAttitudeSkills(@RequestBody List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
         List<EmpAttitudeSkillDto> newEmpAttitudeSkills = empAttitudeSkillServ.createEmpAttitudeSkills(empAttitudeSkillDtos);
         return ResponseEntity.ok(newEmpAttitudeSkills);
     }
-
-
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpAttitudeSkillDto> updateEmpAttitudeSkill(@PathVariable UUID id, @RequestBody EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
@@ -61,8 +52,11 @@ public class EmpAttitudeSkillController {
 
 
     @GetMapping("/user/{userId}/{year}")
-    public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(@PathVariable UUID userId, @PathVariable Integer year) {
-        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year);
+    public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(
+            @PathVariable UUID userId,
+            @PathVariable Integer year,
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
+        List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year, enabledOnly);
         return ResponseEntity.ok(empAttitudeSkills);
     }
 

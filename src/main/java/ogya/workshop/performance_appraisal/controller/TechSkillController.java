@@ -23,11 +23,13 @@ public class TechSkillController extends ServerResponseList {
     private TechSkillServ techSkillServ;
 
     @GetMapping("/all")
-    public ResponseEntity<ManagerDto<List<TechSkillDto>>> getAll() {
+    public ResponseEntity<ManagerDto<List<TechSkillDto>>> getAll(
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly)
+    {
         Log.info("Start getAll in TechSkillController");
         long startTime = System.currentTimeMillis();
         ManagerDto<List<TechSkillDto>> response = new ManagerDto<>();
-        List<TechSkillDto> content = techSkillServ.findAll();
+        List<TechSkillDto> content = techSkillServ.findAll(enabledOnly);
         response.setContent(content);
         response.setTotalRows(content.size());
         long endTime = System.currentTimeMillis();
