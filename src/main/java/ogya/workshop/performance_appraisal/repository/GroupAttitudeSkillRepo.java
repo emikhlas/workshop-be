@@ -15,7 +15,8 @@ import java.util.UUID;
 public interface GroupAttitudeSkillRepo extends JpaRepository<GroupAttitudeSkill, UUID> {
     @Query(value = "SELECT g.id, g.group_name, g.percentage,COUNT(a.id) as count, g.enabled " +
             "from group_attitude_skill g join attitude_skill a " +
-            "on g.id = a.group_attitude_skill_id GROUP by g.id, g.group_name;",
+            "on g.id = a.group_attitude_skill_id AND a.enabled = 1 " +
+            "GROUP by g.id, g.group_name;",
             nativeQuery = true)
     List<Map<String, Object>> getGroupAttitudeSkillWithCount();
 
