@@ -21,7 +21,6 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
     @Autowired
     private AccessDivisionRepo accessDivisionRepo;
 
-    // Create a new Group Achieve
     @Override
     public AccessDivisionDto createAccessDivision(AccessDivisionCreateDto accessDivisionDto) {
         AccessDivision accessDivision = convertToEntity(accessDivisionDto);
@@ -29,7 +28,6 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
         return convertToDto(savedAccessDivision);
     }
 
-    // Update an existing Achieve
     @Override
     public AccessDivisionDto updateAccessDivision(UUID id, AccessDivisionCreateDto accessDivisionDto) {
         if (!accessDivisionRepo.existsById(id)) {
@@ -37,34 +35,30 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
         }
 
         AccessDivision accessDivision = convertToEntity(accessDivisionDto);
-        accessDivision.setId(id);  // Use the ID from the URL path
+        accessDivision.setId(id);
 
         AccessDivision updatedAccessDivision = accessDivisionRepo.save(accessDivision);
         return convertToDto(updatedAccessDivision);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<AccessDivisionDto> getAccessDivisionById(UUID id) {
         Optional<AccessDivision> accessDivision = accessDivisionRepo.findById(id);
         return accessDivision.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<AccessDivisionDto> getAllAccessDivision() {
         List<AccessDivision> accessDivisions = accessDivisionRepo.findAll();
         return accessDivisions.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteAccessDivision(UUID id) {
         accessDivisionRepo.deleteById(id);
         return true;
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private AccessDivisionDto convertToDto(AccessDivision accessDivision) {
         AccessDivisionDto accessDivisionDto = new AccessDivisionDto();
         accessDivisionDto.setId(accessDivision.getId());
@@ -77,7 +71,6 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
         return accessDivisionDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private AccessDivision convertToEntity(AccessDivisionCreateDto accessDivisionDto) {
         AccessDivision accessDivision = new AccessDivision();
 
@@ -90,5 +83,4 @@ public class AccessDivisionServImpl implements AccessDivisionServ {
         accessDivision.setDivision(division);
         return accessDivision;
     }
-
 }

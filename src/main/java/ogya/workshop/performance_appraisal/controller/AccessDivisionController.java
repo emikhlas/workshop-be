@@ -19,14 +19,12 @@ public class AccessDivisionController {
     @Autowired
     private AccessDivisionServ accessDivisionServ;
 
-    // Create a new Achievement
     @PostMapping
     public ResponseEntity<AccessDivisionDto> createAccessDivision(@RequestBody AccessDivisionCreateDto accessDivisionDto) {
         AccessDivisionDto newAccessDivision = accessDivisionServ.createAccessDivision(accessDivisionDto);
         return ResponseEntity.ok(newAccessDivision);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<AccessDivisionDto> updateAccessDivision(@PathVariable UUID id, @RequestBody AccessDivisionCreateDto accessDivisionDto) {
         try {
@@ -37,20 +35,17 @@ public class AccessDivisionController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
     public ResponseEntity<AccessDivisionDto> getAccessDivisionById(@PathVariable UUID id) {
         Optional<AccessDivisionDto> accessDivision = accessDivisionServ.getAccessDivisionById(id);
         return accessDivision.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
     @GetMapping
     public List<AccessDivisionDto> getAllAccessDivision() {
         return accessDivisionServ.getAllAccessDivision();
     }
 
-    // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteAccessDivision(@PathVariable UUID id) {
         Boolean response = accessDivisionServ.deleteAccessDivision(id);

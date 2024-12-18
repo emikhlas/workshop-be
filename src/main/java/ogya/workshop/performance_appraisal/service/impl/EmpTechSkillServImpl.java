@@ -1,13 +1,10 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillDto;
 import ogya.workshop.performance_appraisal.dto.emptechskill.EmpTechSkillUserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
 import ogya.workshop.performance_appraisal.entity.TechSkill;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -22,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,20 +55,6 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         return result;
     }
 
-//    @Override
-//    public List<EmpTechSkillDto> findAllByEmpId(UUID empId) {
-//        Log.info("Start findAllByEmpId in EmpTechSkillServImpl");
-//        List<EmpTechSkill> response = empTechSkillRepo.findByUserId(empId);
-//        Log.info("Received response: {}", response);
-//        List<EmpTechSkillDto> result = new ArrayList<>();
-//        for (EmpTechSkill empTechSkill : response) {
-//            EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-//            result.add(empTechSkillDto);
-//        }
-//        Log.info("End findAllByEmpId in EmpTechSkillServImpl");
-//        return result;
-//    }
-
     @Override
     public List<EmpTechSkillUserDto> findByUserId(UUID userId){
         List<EmpTechSkill> empTechSkills = empTechSkillRepo.findByUserId(userId);
@@ -90,7 +72,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     @Override
     public List<EmpTechSkillDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
         Log.info("Start findByUserIdAndAssessmentYear in EmpTechSkillServImpl");
-        List<EmpTechSkill> response = empTechSkillRepo.findAll();
+        List<EmpTechSkill> response = empTechSkillRepo.findByUserIdAndAssessmentYear(userId,assessmentYear);
         Log.info("Received response: {}", response);
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
@@ -126,27 +108,6 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         return result;
     }
 
-
-
-//    @Override
-//    public EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto) {
-//        Log.info("Start save in EmpTechSkillServImpl");
-//        User user = userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-//        TechSkill techSkill = techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found"));
-//        EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(empTechSkillDto);
-//        empTechSkill.setUser(user);
-//        empTechSkill.setTechSkill(techSkill);
-//        empTechSkill.setCreatedAt(LocalDateTime.now());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-//        User creator = authUser.getUser();
-//
-//        empTechSkill.setCreatedBy(creator);
-//        empTechSkillRepo.save(empTechSkill);
-//        Log.info("End save in EmpTechSkillServImpl");
-//        return EmpTechSkillDto.fromEntity(empTechSkill);
-//    }
-
     @Override
     public List<EmpTechSkillDto> save(List<EmpTechSkillCreateDto> empTechSkillDtos) {
         Log.info("Start bulk save in EmpTechSkillServImpl");
@@ -171,7 +132,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
             empTechSkills.add(empTechSkill);
         }
 
-        empTechSkillRepo.saveAll(empTechSkills);  // Save all at once
+        empTechSkillRepo.saveAll(empTechSkills);
 
         for (EmpTechSkill empTechSkill : empTechSkills) {
             resultDtos.add(EmpTechSkillDto.fromEntity(empTechSkill));
@@ -180,10 +141,6 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         Log.info("End bulk save in EmpTechSkillServImpl");
         return resultDtos;
     }
-
-
-
-
 
     @Override
     public Boolean deleteById(UUID id) {

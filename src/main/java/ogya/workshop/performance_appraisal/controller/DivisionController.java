@@ -19,14 +19,12 @@ public class DivisionController {
     @Autowired
     private DivisionServ divisionServ;
 
-    // Create a new Achievement
     @PostMapping
     public ResponseEntity<DivisionDto> createDivision(@RequestBody DivisionCreateDto divisionDto) {
         DivisionDto newDivision = divisionServ.createDivision(divisionDto);
         return ResponseEntity.ok(newDivision);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<DivisionDto> updateDivision(@PathVariable UUID id, @RequestBody DivisionCreateDto divisionDto) {
         try {
@@ -37,20 +35,17 @@ public class DivisionController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
     public ResponseEntity<DivisionDto> getDivisionById(@PathVariable UUID id) {
         Optional<DivisionDto> division = divisionServ.getDivisionById(id);
         return division.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
     @GetMapping
     public List<DivisionDto> getAllDivision() {
         return divisionServ.getAllDivision();
     }
 
-    // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteDivision(@PathVariable UUID id) {
         Boolean response = divisionServ.deleteDivision(id);

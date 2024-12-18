@@ -1,12 +1,12 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanCreateDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.*;
+import ogya.workshop.performance_appraisal.entity.DevPlan;
+import ogya.workshop.performance_appraisal.entity.EmpDevPlan;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.DevPlanRepo;
 import ogya.workshop.performance_appraisal.repository.EmpDevPlanRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
@@ -31,22 +31,6 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     @Autowired
     private DevPlanRepo devPlanRepo;
 
-    // Create a new Group Achieve
-//    @Override
-//    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
-//        EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-//        User creator = authUser.getUser();
-//
-//        empDevPlan.setCreatedBy(creator);
-//
-//        empDevPlan.setCreatedAt(new Date());  // Set the creation date
-//        EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
-//        return convertToDto(savedEmpDevPlan);
-//    }
-
     @Override
     public List<EmpDevPlanDto> createEmpDevPlan(List<EmpDevPlanCreateDto> empDevPlanDtos) {
         List<EmpDevPlanDto> result = new ArrayList<>();
@@ -64,7 +48,6 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return result;
     }
 
-    // Update an existing Achieve
     @Override
     public EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan currentEmpDevPlan = empDevPlanRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("EmpDevPlan with this ID does not exist."));
@@ -95,14 +78,12 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return convertToDto(updatedEmpDevPlan);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<EmpDevPlanDto> getEmpDevPlanById(UUID id) {
         Optional<EmpDevPlan> empDevPlan = empDevPlanRepo.findById(id);
         return empDevPlan.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<EmpDevPlanDto> getAllEmpDevPlan() {
         List<EmpDevPlan> empDevPlan = empDevPlanRepo.findAll();
@@ -131,14 +112,12 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlanDtos;
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteEmpDevPlan(UUID id) {
         empDevPlanRepo.deleteById(id);
         return true;
     }
 
-    // get by userId and assessmentYear
     @Override
     public List<EmpDevPlanDto> getEmpDevPlanByUserIdAndYear(UUID userId, Integer assessmentYear) {
         List<EmpDevPlan> empDevPlans = empDevPlanRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
@@ -161,8 +140,6 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlanRepo.findDistinctAssessmentYears();
     }
 
-
-    // Helper method to convert Achieve entity to AchieveDto
     private EmpDevPlanDto convertToDto(EmpDevPlan empDevPlan) {
         EmpDevPlanDto empDevPlanDto = new EmpDevPlanDto();
         empDevPlanDto.setId(empDevPlan.getId());
@@ -186,7 +163,6 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         return empDevPlanDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private EmpDevPlan convertToEntity(EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan empDevPlan = new EmpDevPlan();
         if (empDevPlanDto.getUserId() != null) {

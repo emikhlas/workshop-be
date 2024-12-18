@@ -5,7 +5,6 @@ import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.Menu;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.MenuRepo;
@@ -24,7 +23,6 @@ public class MenuServImpl implements MenuServ {
     @Autowired
     private MenuRepo menuRepo;
 
-    // Create a new Group Achieve
     @Override
     public MenuDto createMenu(MenuCreateDto menuDto) {
         Menu menu = convertToEntity(menuDto);
@@ -35,12 +33,11 @@ public class MenuServImpl implements MenuServ {
 
         menu.setCreatedBy(creator);
 
-        menu.setCreatedAt(new Date());  // Set the creation date
+        menu.setCreatedAt(new Date());
         Menu savedMenu = menuRepo.save(menu);
         return convertToDto(savedMenu);
     }
 
-    // Update an existing Achieve
     @Override
     public MenuDto updateMenu(UUID id, MenuCreateDto menuDto) {
         Menu currentMenu = menuRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Menu with this ID does not exist."));
@@ -49,7 +46,7 @@ public class MenuServImpl implements MenuServ {
             currentMenu.setMenuName(menuDto.getMenuName());
         }
 
-        currentMenu.setUpdatedAt(new Date());  // Set the updated date
+        currentMenu.setUpdatedAt(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -61,21 +58,18 @@ public class MenuServImpl implements MenuServ {
         return convertToDto(updatedMenu);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<MenuDto> getMenuById(UUID id) {
         Optional<Menu> menu = menuRepo.findById(id);
         return menu.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<MenuDto> getAllMenu() {
         List<Menu> menus = menuRepo.findAll();
         return menus.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteMenu(UUID id) {
         menuRepo.deleteById(id);
@@ -90,15 +84,13 @@ public class MenuServImpl implements MenuServ {
         return menuSets.stream()
                 .map(menu ->  {
                     return new MenuInfoDto(
-                            menu.getId(),        // Cast the value to UUID
-                            menu.getMenuName() // Cast the value to String
+                            menu.getId(),
+                            menu.getMenuName()
                     ) ;
                 })
                 .collect(Collectors.toList());
     }
 
-
-    // Helper method to convert Achieve entity to AchieveDto
     private MenuDto convertToDto(Menu menu) {
         MenuDto menuDto = new MenuDto();
         menuDto.setId(menu.getId());
@@ -114,7 +106,6 @@ public class MenuServImpl implements MenuServ {
         return menuDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private Menu convertToEntity(MenuCreateDto menuDto) {
         Menu menu = new Menu();
         menu.setMenuName(menuDto.getMenuName());
