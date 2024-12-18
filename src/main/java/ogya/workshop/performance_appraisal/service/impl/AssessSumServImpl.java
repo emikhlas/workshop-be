@@ -370,6 +370,9 @@ public class AssessSumServImpl implements AssessSumServ {
     }
 
     private void distributeRemainingPercentage(List<Integer> percentages, int remaining) {
+        if (percentages == null || percentages.isEmpty()) {
+            return;
+        }
         int direction = remaining > 0 ? 1 : -1;
         int i = 0;
 
