@@ -22,14 +22,12 @@ public class MenuController {
     @Autowired
     private MenuServ menuServ;
 
-    // Create a new Achievement
     @PostMapping
     public ResponseEntity<MenuDto> createMenu(@RequestBody MenuCreateDto menuDto) {
         MenuDto newMenu = menuServ.createMenu(menuDto);
         return ResponseEntity.ok(newMenu);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<MenuDto> updateMenu(@PathVariable UUID id, @RequestBody MenuCreateDto menuDto) {
         try {
@@ -40,20 +38,17 @@ public class MenuController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
     public ResponseEntity<MenuDto> getMenuById(@PathVariable UUID id) {
         Optional<MenuDto> menu = menuServ.getMenuById(id);
         return menu.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
     @GetMapping
     public List<MenuDto> getAllMenu() {
         return menuServ.getAllMenu();
     }
 
-    // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteMenu(@PathVariable UUID id) {
         Boolean response = menuServ.deleteMenu(id);

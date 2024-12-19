@@ -21,12 +21,7 @@ public class EmpDevPlanController {
     @Autowired
     private EmpDevPlanServ empDevPlanServ;
 
-    // Create a new Achievement
-//    @PostMapping
-//    public ResponseEntity<EmpDevPlanDto> createEmpDevPlan(@RequestBody EmpDevPlanCreateDto empDevPlanDto) {
-//        EmpDevPlanDto newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDto);
-//        return ResponseEntity.ok(newEmpDevPlan);
-//    }
+
 
     @PostMapping
     public ResponseEntity<List<EmpDevPlanDto>> createEmpDevPlan(@RequestBody List<EmpDevPlanCreateDto> empDevPlanDtos) {
@@ -34,7 +29,7 @@ public class EmpDevPlanController {
         return ResponseEntity.ok(newEmpDevPlan);
     }
 
-    // Update an existing Achievement
+
     @PutMapping("/{id}")
     public ResponseEntity<EmpDevPlanDto> updateEmpDevPlan(@PathVariable UUID id, @RequestBody EmpDevPlanCreateDto empDevPlanDto) {
         try {
@@ -45,14 +40,14 @@ public class EmpDevPlanController {
         }
     }
 
-    // Retrieve by ID
+
     @GetMapping("/{id}")
     public ResponseEntity<EmpDevPlanDto> getEmpDevPlanById(@PathVariable UUID id) {
         Optional<EmpDevPlanDto> empDevPlan = empDevPlanServ.getEmpDevPlanById(id);
         return empDevPlan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
+
     @GetMapping
     public List<EmpDevPlanDto> getAllEmpDevPlan() {
         return empDevPlanServ.getAllEmpDevPlan();
@@ -64,7 +59,7 @@ public class EmpDevPlanController {
         return ResponseEntity.ok(empDevPlans);
     }
 
-    // Add this method in EmpDevPlanController class
+
     @GetMapping("/user/{userId}/with-plan")
     public ResponseEntity<List<EmpDevPlanDto>> getEmpDevPlanWithPlanByUserId(@PathVariable UUID userId) {
         List<EmpDevPlanDto> empDevPlansWithPlan = empDevPlanServ.getEmpDevPlanWithPlan(userId);
@@ -85,7 +80,7 @@ public class EmpDevPlanController {
         return ResponseEntity.ok(years);
     }
 
-    // Delete an Achievement by ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpDevPlan(@PathVariable UUID id) {
         Boolean response = empDevPlanServ.deleteEmpDevPlan(id);

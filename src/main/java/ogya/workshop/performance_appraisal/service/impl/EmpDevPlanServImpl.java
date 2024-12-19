@@ -31,21 +31,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     @Autowired
     private DevPlanRepo devPlanRepo;
 
-    // Create a new Group Achieve
-//    @Override
-//    public EmpDevPlanDto createEmpDevPlan(EmpDevPlanCreateDto empDevPlanDto) {
-//        EmpDevPlan empDevPlan = convertToEntity(empDevPlanDto);
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-//        User creator = authUser.getUser();
-//
-//        empDevPlan.setCreatedBy(creator);
-//
-//        empDevPlan.setCreatedAt(new Date());  // Set the creation date
-//        EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
-//        return convertToDto(savedEmpDevPlan);
-//    }
+
 
     @Override
     public List<EmpDevPlanDto> createEmpDevPlan(List<EmpDevPlanCreateDto> empDevPlanDtos) {
@@ -148,7 +134,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
             // Fetch the DevPlan and include the 'plan' in the DTO
             if (empDevPlan.getDevPlan() != null) {
-                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan()); // Assuming DevPlan has a 'plan' attribute
+                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());
             }
             return empDevPlanDto;
         }).collect(Collectors.toList());
