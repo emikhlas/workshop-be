@@ -35,16 +35,19 @@ public class DevPlanController {
         }
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<DevPlanDto> getDevPlanById(@PathVariable UUID id) {
         Optional<DevPlanDto> achievement = devPlanServ.getDevPlanById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
     @GetMapping
     public List<DevPlanDto> getAllDevPlan() {
         return devPlanServ.getAllDevPlan();
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteDevPlan(@PathVariable UUID id) {

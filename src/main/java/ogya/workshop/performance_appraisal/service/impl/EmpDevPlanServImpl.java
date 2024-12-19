@@ -127,7 +127,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
             // Fetch the DevPlan and include the 'plan' in the DTO
             if (empDevPlan.getDevPlan() != null) {
-                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan()); // Assuming DevPlan has a 'plan' attribute
+                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());
             }
             return empDevPlanDto;
         }).collect(Collectors.toList());
