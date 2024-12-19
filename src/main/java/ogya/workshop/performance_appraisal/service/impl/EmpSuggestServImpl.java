@@ -62,17 +62,7 @@ public class EmpSuggestServImpl implements EmpSuggestServ {
         return EmpSuggestDto.fromEntity(empSuggest);
     }
 
-//    @Override
-//    public EmpSuggestDto save(EmpSuggestCreateDto empSuggestCreateDto) {
-//        Log.info("Start save in EmpSuggestServImpl");
-//        EmpSuggest empSuggest = EmpSuggestCreateDto.toEntity(empSuggestCreateDto);
-//        User user = userRepo.findById(empSuggestCreateDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-//        empSuggest.setUser(user);
-//        empSuggest.setCreatedAt(LocalDateTime.now());
-//        empSuggestRepo.save(empSuggest);
-//        Log.info("End save in EmpSuggestServImpl");
-//        return EmpSuggestDto.fromEntity(empSuggest);
-//    }
+
 
     @Override
     public List<EmpSuggestDto> saveAll(List<EmpSuggestCreateDto> empSuggestCreateDtos) {

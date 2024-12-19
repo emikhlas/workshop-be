@@ -59,19 +59,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         return result;
     }
 
-//    @Override
-//    public List<EmpTechSkillDto> findAllByEmpId(UUID empId) {
-//        Log.info("Start findAllByEmpId in EmpTechSkillServImpl");
-//        List<EmpTechSkill> response = empTechSkillRepo.findByUserId(empId);
-//        Log.info("Received response: {}", response);
-//        List<EmpTechSkillDto> result = new ArrayList<>();
-//        for (EmpTechSkill empTechSkill : response) {
-//            EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-//            result.add(empTechSkillDto);
-//        }
-//        Log.info("End findAllByEmpId in EmpTechSkillServImpl");
-//        return result;
-//    }
+
 
     @Override
     public List<EmpTechSkillUserDto> findByUserId(UUID userId){
@@ -90,7 +78,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     @Override
     public List<EmpTechSkillDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
         Log.info("Start findByUserIdAndAssessmentYear in EmpTechSkillServImpl");
-        List<EmpTechSkill> response = empTechSkillRepo.findAll();
+        List<EmpTechSkill> response = empTechSkillRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
         Log.info("Received response: {}", response);
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
@@ -128,24 +116,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
 
 
 
-//    @Override
-//    public EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto) {
-//        Log.info("Start save in EmpTechSkillServImpl");
-//        User user = userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-//        TechSkill techSkill = techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found"));
-//        EmpTechSkill empTechSkill = EmpTechSkillCreateDto.toEntity(empTechSkillDto);
-//        empTechSkill.setUser(user);
-//        empTechSkill.setTechSkill(techSkill);
-//        empTechSkill.setCreatedAt(LocalDateTime.now());
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        AuthUser authUser = (AuthUser) authentication.getPrincipal();
-//        User creator = authUser.getUser();
-//
-//        empTechSkill.setCreatedBy(creator);
-//        empTechSkillRepo.save(empTechSkill);
-//        Log.info("End save in EmpTechSkillServImpl");
-//        return EmpTechSkillDto.fromEntity(empTechSkill);
-//    }
+
 
     @Override
     public List<EmpTechSkillDto> save(List<EmpTechSkillCreateDto> empTechSkillDtos) {

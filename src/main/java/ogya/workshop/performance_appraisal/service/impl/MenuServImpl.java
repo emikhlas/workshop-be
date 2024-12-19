@@ -24,7 +24,6 @@ public class MenuServImpl implements MenuServ {
     @Autowired
     private MenuRepo menuRepo;
 
-    // Create a new Group Achieve
     @Override
     public MenuDto createMenu(MenuCreateDto menuDto) {
         Menu menu = convertToEntity(menuDto);
@@ -40,7 +39,6 @@ public class MenuServImpl implements MenuServ {
         return convertToDto(savedMenu);
     }
 
-    // Update an existing Achieve
     @Override
     public MenuDto updateMenu(UUID id, MenuCreateDto menuDto) {
         Menu currentMenu = menuRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Menu with this ID does not exist."));
@@ -61,21 +59,18 @@ public class MenuServImpl implements MenuServ {
         return convertToDto(updatedMenu);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<MenuDto> getMenuById(UUID id) {
         Optional<Menu> menu = menuRepo.findById(id);
         return menu.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<MenuDto> getAllMenu() {
         List<Menu> menus = menuRepo.findAll();
         return menus.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteMenu(UUID id) {
         menuRepo.deleteById(id);
@@ -98,7 +93,6 @@ public class MenuServImpl implements MenuServ {
     }
 
 
-    // Helper method to convert Achieve entity to AchieveDto
     private MenuDto convertToDto(Menu menu) {
         MenuDto menuDto = new MenuDto();
         menuDto.setId(menu.getId());
@@ -114,7 +108,6 @@ public class MenuServImpl implements MenuServ {
         return menuDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private Menu convertToEntity(MenuCreateDto menuDto) {
         Menu menu = new Menu();
         menu.setMenuName(menuDto.getMenuName());

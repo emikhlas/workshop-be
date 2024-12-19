@@ -74,21 +74,7 @@ public class EmpSuggestController extends ServerResponseList {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @PostMapping("/create")
-//    public ResponseEntity<ManagerDto<EmpSuggestDto>> create( @RequestBody EmpSuggestCreateDto empSuggestDto) {
-//        Log.info("Start create in EmpSuggestController");
-//        long startTime = System.currentTimeMillis();
-//
-//        ManagerDto<EmpSuggestDto> response = new ManagerDto<>();
-//        EmpSuggestDto content = empSuggestServ.save(empSuggestDto);
-//
-//        response.setContent(content);
-//        long endTime = System.currentTimeMillis();
-//        long executionTime = endTime - startTime;
-//        response.setInfo(getInfoOk("Success create data", executionTime));
-//        Log.info("End create in EmpSuggestController");
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+
 
     @PostMapping("/create")
     public ResponseEntity<ManagerDto<List<EmpSuggestDto>>> create(@RequestBody List<EmpSuggestCreateDto> empSuggestCreateDtos) {

@@ -21,14 +21,12 @@ public class GroupAchieveController {
     @Autowired
     private GroupAchieveServ groupAchieveServ;
 
-    // Create a new Achievement
     @PostMapping
     public ResponseEntity<GroupAchieveDto> createGroupAchieve(@RequestBody GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieveDto newGroupAchievement = groupAchieveServ.createGroupAchieve(groupAchieveDto);
         return ResponseEntity.ok(newGroupAchievement);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<GroupAchieveDto> updateGroupAchieve(@PathVariable UUID id, @RequestBody GroupAchieveCreateDto groupAchieveDto) {
         try {
@@ -39,20 +37,17 @@ public class GroupAchieveController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
     public ResponseEntity<GroupAchieveDto> getAchievementById(@PathVariable UUID id) {
         Optional<GroupAchieveDto> achievement = groupAchieveServ.getGroupAchieveById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
     @GetMapping
     public List<GroupAchieveDto> getAllGroupAchieve() {
         return groupAchieveServ.getAllGroupAchieve();
     }
 
-    // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteGroupAchieve(@PathVariable UUID id) {
         Boolean response = groupAchieveServ.deleteGroupAchieve(id);
