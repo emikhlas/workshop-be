@@ -30,7 +30,6 @@ public class RoleMenuServImpl implements RoleMenuServ {
     @Autowired
     private RoleRepo roleRepo;
 
-    // Create a new Group Achieve
     @Override
     public RoleMenuDto createRoleMenu(RoleMenuCreateDto roleMenuDto) {
         RoleMenu roleMenu = convertToEntity(roleMenuDto);
@@ -38,7 +37,6 @@ public class RoleMenuServImpl implements RoleMenuServ {
         return convertToDto(savedRoleMenu);
     }
 
-    // Update an existing Achieve
     @Override
     public RoleMenuDto updateRoleMenu(UUID id, RoleMenuCreateDto roleMenuDto) {
         if (!roleMenuRepo.existsById(id)) {
@@ -46,27 +44,24 @@ public class RoleMenuServImpl implements RoleMenuServ {
         }
 
         RoleMenu roleMenu = convertToEntity(roleMenuDto);
-        roleMenu.setId(id);  // Use the ID from the URL path
+        roleMenu.setId(id);
 
         RoleMenu updatedRoleMenu = roleMenuRepo.save(roleMenu);
         return convertToDto(updatedRoleMenu);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<RoleMenuDto> getRoleMenuById(UUID id) {
         Optional<RoleMenu> roleMenu = roleMenuRepo.findById(id);
         return roleMenu.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<RoleMenuDto> getAllRoleMenu() {
         List<RoleMenu> roleMenus = roleMenuRepo.findAll();
         return roleMenus.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteRoleMenu(UUID id) {
         roleMenuRepo.deleteById(id);
@@ -114,7 +109,6 @@ public class RoleMenuServImpl implements RoleMenuServ {
         return roleMenuByRoleDtoList;
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private RoleMenuDto convertToDto(RoleMenu roleMenu) {
         RoleMenuDto roleMenuDto = new RoleMenuDto();
         roleMenuDto.setId(roleMenu.getId());
@@ -127,7 +121,6 @@ public class RoleMenuServImpl implements RoleMenuServ {
         return roleMenuDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private RoleMenu convertToEntity(RoleMenuCreateDto roleMenuDto) {
         RoleMenu roleMenu = new RoleMenu();
         if (roleMenuDto.getRoleId() != null) {

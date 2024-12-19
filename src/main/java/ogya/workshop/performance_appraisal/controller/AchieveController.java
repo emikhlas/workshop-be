@@ -20,14 +20,12 @@ public class AchieveController {
     @Autowired
     private AchieveServ achieveServ;
 
-    // Create a new Achievement
     @PostMapping
     public ResponseEntity<AchieveDto> createAchievement(@RequestBody AchieveCreateDto achieveDto) {
         AchieveDto newAchievement = achieveServ.createAchievement(achieveDto);
         return ResponseEntity.ok(newAchievement);
     }
 
-    // Update an existing Achievement
     @PutMapping("/{id}")
     public ResponseEntity<AchieveDto> updateAchievement(@PathVariable UUID id, @RequestBody AchieveCreateDto achieveDto) {
         try {
@@ -38,20 +36,17 @@ public class AchieveController {
         }
     }
 
-    // Retrieve by ID
     @GetMapping("/{id}")
     public ResponseEntity<AchieveDto> getAchievementById(@PathVariable UUID id) {
         Optional<AchieveDto> achievement = achieveServ.getAchievementById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Retrieve all Achievements
     @GetMapping
     public List<AchieveDto> getAllAchievements() {
         return achieveServ.getAllAchievements();
     }
 
-    // Delete an Achievement by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteAchievement(@PathVariable UUID id) {
         Boolean response = achieveServ.deleteAchievement(id);

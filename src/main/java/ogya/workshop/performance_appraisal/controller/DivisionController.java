@@ -19,13 +19,11 @@ public class DivisionController {
     @Autowired
     private DivisionServ divisionServ;
 
-
     @PostMapping
     public ResponseEntity<DivisionDto> createDivision(@RequestBody DivisionCreateDto divisionDto) {
         DivisionDto newDivision = divisionServ.createDivision(divisionDto);
         return ResponseEntity.ok(newDivision);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<DivisionDto> updateDivision(@PathVariable UUID id, @RequestBody DivisionCreateDto divisionDto) {
@@ -37,19 +35,16 @@ public class DivisionController {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<DivisionDto> getDivisionById(@PathVariable UUID id) {
         Optional<DivisionDto> division = divisionServ.getDivisionById(id);
         return division.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @GetMapping
     public List<DivisionDto> getAllDivision() {
         return divisionServ.getAllDivision();
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteDivision(@PathVariable UUID id) {

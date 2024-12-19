@@ -21,14 +21,11 @@ public class EmpDevPlanController {
     @Autowired
     private EmpDevPlanServ empDevPlanServ;
 
-
-
     @PostMapping
     public ResponseEntity<List<EmpDevPlanDto>> createEmpDevPlan(@RequestBody List<EmpDevPlanCreateDto> empDevPlanDtos) {
         List<EmpDevPlanDto> newEmpDevPlan = empDevPlanServ.createEmpDevPlan(empDevPlanDtos);
         return ResponseEntity.ok(newEmpDevPlan);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpDevPlanDto> updateEmpDevPlan(@PathVariable UUID id, @RequestBody EmpDevPlanCreateDto empDevPlanDto) {
@@ -40,13 +37,11 @@ public class EmpDevPlanController {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<EmpDevPlanDto> getEmpDevPlanById(@PathVariable UUID id) {
         Optional<EmpDevPlanDto> empDevPlan = empDevPlanServ.getEmpDevPlanById(id);
         return empDevPlan.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
     @GetMapping
     public List<EmpDevPlanDto> getAllEmpDevPlan() {
@@ -58,7 +53,6 @@ public class EmpDevPlanController {
         List<EmpDevPlanDto> empDevPlans = empDevPlanServ.getEmpDevPlanByUserId(userId);
         return ResponseEntity.ok(empDevPlans);
     }
-
 
     @GetMapping("/user/{userId}/with-plan")
     public ResponseEntity<List<EmpDevPlanDto>> getEmpDevPlanWithPlanByUserId(@PathVariable UUID userId) {
@@ -79,7 +73,6 @@ public class EmpDevPlanController {
         List<Integer> years = empDevPlanServ.getAllEmpDevPlanYear();
         return ResponseEntity.ok(years);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpDevPlan(@PathVariable UUID id) {

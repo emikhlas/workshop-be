@@ -5,7 +5,6 @@ import ogya.workshop.performance_appraisal.dto.menu.MenuCreateDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuDto;
 import ogya.workshop.performance_appraisal.dto.menu.MenuInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 import ogya.workshop.performance_appraisal.entity.Menu;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.MenuRepo;
@@ -34,7 +33,7 @@ public class MenuServImpl implements MenuServ {
 
         menu.setCreatedBy(creator);
 
-        menu.setCreatedAt(new Date());  // Set the creation date
+        menu.setCreatedAt(new Date());
         Menu savedMenu = menuRepo.save(menu);
         return convertToDto(savedMenu);
     }
@@ -47,7 +46,7 @@ public class MenuServImpl implements MenuServ {
             currentMenu.setMenuName(menuDto.getMenuName());
         }
 
-        currentMenu.setUpdatedAt(new Date());  // Set the updated date
+        currentMenu.setUpdatedAt(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -85,13 +84,12 @@ public class MenuServImpl implements MenuServ {
         return menuSets.stream()
                 .map(menu ->  {
                     return new MenuInfoDto(
-                            menu.getId(),        // Cast the value to UUID
-                            menu.getMenuName() // Cast the value to String
+                            menu.getId(),
+                            menu.getMenuName()
                     ) ;
                 })
                 .collect(Collectors.toList());
     }
-
 
     private MenuDto convertToDto(Menu menu) {
         MenuDto menuDto = new MenuDto();

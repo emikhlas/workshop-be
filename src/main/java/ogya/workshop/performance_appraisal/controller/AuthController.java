@@ -34,7 +34,6 @@ public class AuthController extends ServerResponseList {
         Log.info("Start authenticate in AuthController");
         long startTime = System.currentTimeMillis();
 
-
         AuthUser authenticatedUser = authService.authenticate(authRequestDto);
 
         ManagerDto<AuthResponseDto> response = new ManagerDto<>();

@@ -1,7 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-import ogya.workshop.performance_appraisal.dto.role.RoleDto;
 import ogya.workshop.performance_appraisal.dto.role.RoleInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
@@ -162,10 +161,6 @@ public class UserServImpl implements UserServ {
     public Boolean deleteUser(UUID id) {
         Log.info("Start deleteUser in UserServImpl");
         User findUser = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User  not found"));
-//        List<UserRole> userRoles = userRoleRepo.findByUserId(id);
-//        for (UserRole userRole : userRoles) {
-//            userRoleRepo.delete(userRole);
-//        }
         userRepo.delete(findUser);
         Log.info("End deleteUser in UserServImpl");
         return true;
