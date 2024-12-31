@@ -4,6 +4,7 @@ import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
+import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
@@ -148,6 +149,32 @@ public class AssessSumController extends ServerResponseList {
         long executionTime = endTime - startTime;
         response.setInfo(getInfoOk("Success get data", executionTime));
         Log.info("End getAssessSumDetail in AssessSumController");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<AssessSumWithUserDto> getAssessmentSummary(
+            @RequestParam UUID userId,
+            @RequestParam Integer year) {
+        AssessSumWithUserDto summary = assessSumServ.getAssessmentSummary(userId, year);
+        return ResponseEntity.ok(summary);
+    }
+
+    @PatchMapping("/update-status-to-approve/{id}")
+    public ResponseEntity<ManagerDto<AssessSumWithUserDto>> updateAssessSumStatusToActive(
+            @PathVariable("id") UUID id) {
+        Log.info("Start updateAssessSumStatusToActive in AssessSumController");
+        long startTime = System.currentTimeMillis();
+
+        ManagerDto<AssessSumWithUserDto> response = new ManagerDto<>();
+        AssessSumWithUserDto content = assessSumServ.updateAssessSumStatusToActive(id);
+
+        response.setContent(content);
+        response.setTotalRows(1);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        response.setInfo(getInfoOk("Success update status to active", executionTime));
+        Log.info("End updateAssessSumStatusToActive in AssessSumController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

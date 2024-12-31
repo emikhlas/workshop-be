@@ -15,4 +15,5 @@ public interface AssessSumRepo extends JpaRepository<AssessSum, UUID> {
     AssessSum findByUserIdAndYear(UUID userId, Integer year);
 
     List<AssessSum> findByYear(Integer year);
+
 }
