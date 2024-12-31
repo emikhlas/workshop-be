@@ -1,6 +1,5 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -39,7 +37,6 @@ public class SharedServiceImpl implements SharedService {
             AssessSumWithUserDto updatedSummary = assessSumServ.generateAssessSum(existingSum.getUser().getId(), existingSum.getYear());
             updatedAssessSums.add(updatedSummary);
         }
-
     }
 
     @Override

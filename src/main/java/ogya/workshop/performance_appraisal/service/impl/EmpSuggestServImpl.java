@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +60,6 @@ public class EmpSuggestServImpl implements EmpSuggestServ {
         Log.info("End findById in EmpSuggestServImpl");
         return EmpSuggestDto.fromEntity(empSuggest);
     }
-
-
 
     @Override
     public List<EmpSuggestDto> saveAll(List<EmpSuggestCreateDto> empSuggestCreateDtos) {

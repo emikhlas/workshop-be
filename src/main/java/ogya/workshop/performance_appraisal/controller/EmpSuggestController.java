@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -73,8 +72,6 @@ public class EmpSuggestController extends ServerResponseList {
         Log.info("End getDetailByUser in EmpSuggestController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 
     @PostMapping("/create")
     public ResponseEntity<ManagerDto<List<EmpSuggestDto>>> create(@RequestBody List<EmpSuggestCreateDto> empSuggestCreateDtos) {

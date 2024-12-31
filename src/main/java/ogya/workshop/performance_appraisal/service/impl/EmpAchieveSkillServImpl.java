@@ -20,7 +20,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +40,6 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     @Autowired
     private AchieveRepo achieveRepo;
 
-    // Create a new Group Achieve
     @Override
     public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto) {
         System.out.println("dto: "+ empAchieveSkillDto);
@@ -52,7 +54,6 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         return convertToDto(savedEmpAchieveSkill);
     }
 
-    // Update an existing Achieve
     @Override
     public EmpAchieveSkillDto updateEmpAchieveSkill(UUID id, EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkill currentEAchieveSkill = empAchieveSkillRepo.findById(id)
@@ -82,28 +83,24 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         return convertToDto(updatedEmpAchieveSkill);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<EmpAchieveSkillDto> getEmpAchieveSkillById(UUID id) {
         Optional<EmpAchieveSkill> empAchieveSkill = empAchieveSkillRepo.findById(id);
         return empAchieveSkill.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<EmpAchieveSkillDto> getAllEmpAchieveSkill() {
         List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findAll();
         return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteEmpAchieveSkill(UUID id) {
         empAchieveSkillRepo.deleteById(id);
         return true;
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private EmpAchieveSkillDto convertToDto(EmpAchieveSkill empAchieveSkill) {
         EmpAchieveSkillDto empAchieveSkillDto = new EmpAchieveSkillDto();
         empAchieveSkillDto.setId(empAchieveSkill.getId());

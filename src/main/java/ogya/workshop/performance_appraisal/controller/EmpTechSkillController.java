@@ -42,15 +42,11 @@ public class EmpTechSkillController extends ServerResponseList {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<EmpTechSkillUserDto>> getAllUserEmpTech(@PathVariable UUID userId){
         List<EmpTechSkillUserDto> empTechSkills = empTechSkillServ.findByUserId(userId);
         return ResponseEntity.ok(empTechSkills);
     }
-
-
 
     @PostMapping("/save")
     public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>> save(@RequestBody List<EmpTechSkillCreateDto> empTechSkillDtos) {
@@ -68,10 +64,6 @@ public class EmpTechSkillController extends ServerResponseList {
         Log.info("End bulk save in EmpTechSkillController");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-
-
-
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ManagerDto<EmpTechSkillDto>> update(@PathVariable("id") UUID id,@RequestBody EmpTechSkillCreateDto empTechSkillDto) {

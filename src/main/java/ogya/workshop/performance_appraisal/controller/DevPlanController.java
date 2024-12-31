@@ -25,7 +25,6 @@ public class DevPlanController {
         return ResponseEntity.ok(newDevPlan);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<DevPlanDto> updateDevPlan(@PathVariable UUID id, @RequestBody DevPlanCreateDto devPlanDto) {
         try {

@@ -75,7 +75,7 @@ public class AuthUser implements UserDetails {
         return "AuthUser{" +
                 "username='" + user.getUsername() + '\'' +
                 ", roles=" + authorities.stream()
-                .map(GrantedAuthority::getAuthority)  // Extract the role names (strings)
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(", ")) +
                 '}';
     }

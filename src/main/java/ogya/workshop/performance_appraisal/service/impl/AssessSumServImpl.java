@@ -9,8 +9,10 @@ import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkill
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.*;
-import ogya.workshop.performance_appraisal.repository.*;
+import ogya.workshop.performance_appraisal.entity.AssessSum;
+import ogya.workshop.performance_appraisal.entity.User;
+import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
+import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -384,8 +386,6 @@ public class AssessSumServImpl implements AssessSumServ {
             i = (i + 1) % percentages.size();
         }
     }
-
-
 
     private String getAchievementGroupName(Object item) {
         return ((EmpAchieveSkillDto) item).getAchievement().getGroupAchievement().getGroupAchievementName();
