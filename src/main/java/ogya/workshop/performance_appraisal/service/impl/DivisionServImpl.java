@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.service.impl;
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.division.DivisionCreateDto;
 import ogya.workshop.performance_appraisal.dto.division.DivisionDto;
+import ogya.workshop.performance_appraisal.dto.division.DivisionInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Division;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -13,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +61,19 @@ public class DivisionServImpl implements DivisionServ {
     public List<DivisionDto> getAllDivision() {
         List<Division> divisions = divisionRepo.findAll();
         return divisions.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DivisionInfoDto> getListDivisionName() {
+        List<Division> division = divisionRepo.findAll();
+        List<DivisionInfoDto> divisionInfoDtos = new ArrayList<>();
+        for(Division div : division) {
+            DivisionInfoDto divisionInfoDto = new DivisionInfoDto();
+            divisionInfoDto.setId(div.getId());
+            divisionInfoDto.setDivisionName(div.getDivisionName());
+            divisionInfoDtos.add(divisionInfoDto);
+        }
+        return divisionInfoDtos;
     }
 
     @Override

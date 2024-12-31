@@ -37,10 +37,10 @@ public class UserReqDto {
 
     public static User toEntity(UserReqDto userDto) {
         User user = new User();
-        user.setUsername(userDto.getUsername());
+        user.setUsername(userDto.getUsername().toLowerCase());
         user.setFullName(userDto.getFullName());
         user.setPosition(userDto.getPosition());
-        user.setEmailAddress(userDto.getEmailAddress());
+        user.setEmailAddress(userDto.getEmailAddress().toLowerCase());
         user.setEmployeeStatus(userDto.getEmployeeStatus());
         user.setJoinDate(userDto.getJoinDate() != null ? userDto.getJoinDate().toLocalDate() : null);
         user.setEnabled(userDto.getEnabled());

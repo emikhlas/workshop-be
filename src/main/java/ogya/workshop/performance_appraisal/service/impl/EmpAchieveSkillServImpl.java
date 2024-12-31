@@ -151,10 +151,16 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
 
     @Override
     public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year, boolean enabledOnly) {
-        List<EmpAchieveSkill> empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserIdAndAssessmentYear(userId, year);
+        List<EmpAchieveSkill> empAchieveSkills;
+        if(year == null) {
+            empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserId(userId);
+        }else{
+            empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserIdAndAssessmentYear(userId, year);
+        }
         if (enabledOnly) {
             empAchieveSkills = empAchieveSkills.stream().filter(e -> e.getAchieve().getEnabled()==1 && e.getAchieve().getGroupAchieve().getEnabled()==1).toList();
         }
-        return empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<EmpAchieveSkillDto> empAchieveSkillDtos = empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
+        return empAchieveSkillDtos;
     }
 }
