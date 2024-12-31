@@ -76,6 +76,48 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     }
 
     @Override
+    public List<EmpAttitudeSkillDto> updateEmpAttitudeSkills(List<UUID> ids, List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
+        if (ids.size() != empAttitudeSkillDtos.size()) {
+            throw new IllegalArgumentException("The number of IDs must match the number of DTOs");
+        }
+
+        List<EmpAttitudeSkillDto> updatedDtos = new ArrayList<>();
+
+        for (int i = 0; i < ids.size(); i++) {
+            UUID id = ids.get(i);
+            EmpAttitudeSkillCreateDto empAttitudeSkillDto = empAttitudeSkillDtos.get(i);
+
+            EmpAttitudeSkill currentEmpAttitudeSkill = empAttitudeSkillRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("EmpAttitudeSkill not found for ID: " + id));
+
+            if (empAttitudeSkillDto.getUserId() != null) {
+                User user = new User();
+                user.setId(empAttitudeSkillDto.getUserId());
+                currentEmpAttitudeSkill.setUser (user);
+            }
+            if (empAttitudeSkillDto.getAttitudeSkillId() != null) {
+                AttitudeSkill attitudeSkill = new AttitudeSkill();
+                attitudeSkill.setId(empAttitudeSkillDto.getAttitudeSkillId());
+                currentEmpAttitudeSkill.setAttitudeSkill(attitudeSkill);
+            }
+            currentEmpAttitudeSkill.setScore(empAttitudeSkillDto.getScore());
+            currentEmpAttitudeSkill.setAssessmentYear(empAttitudeSkillDto.getAssessmentYear());
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            AuthUser  authUser  = (AuthUser ) authentication.getPrincipal();
+            User creator = authUser .getUser ();
+
+            currentEmpAttitudeSkill.setUpdatedBy(creator);
+            currentEmpAttitudeSkill.setUpdatedAt(new Date());
+
+            EmpAttitudeSkill updatedEmpAttitudeSkill = empAttitudeSkillRepo.save(currentEmpAttitudeSkill);
+            updatedDtos.add(convertToDto(updatedEmpAttitudeSkill));
+        }
+
+        return updatedDtos;
+    }
+
+    @Override
     public Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id) {
         Optional<EmpAttitudeSkill> empAttitudeSkill = empAttitudeSkillRepo.findById(id);
         return empAttitudeSkill.map(this::convertToDto);

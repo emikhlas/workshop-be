@@ -2,6 +2,7 @@ package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillUpdateRequestDto;
 import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/emp-attitude-skill")
@@ -31,6 +33,30 @@ public class EmpAttitudeSkillController {
         try {
             EmpAttitudeSkillDto updateEmpAttitudeSkill = empAttitudeSkillServ.updateEmpAttitudeSkill(id, empAttitudeSkillDto);
             return ResponseEntity.ok(updateEmpAttitudeSkill);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<List<EmpAttitudeSkillDto>> updateEmpAttitudeSkills(@RequestBody List<EmpAttitudeSkillUpdateRequestDto> empAttitudeSkillUpdates) {
+        try {
+            // Ekstrak ID dan DTO dari request
+            List<UUID> ids = empAttitudeSkillUpdates.stream()
+                    .map(EmpAttitudeSkillUpdateRequestDto::getId)
+                    .collect(Collectors.toList());
+
+            List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos = empAttitudeSkillUpdates.stream()
+                    .map(updateRequest -> new EmpAttitudeSkillCreateDto(
+                            updateRequest.getUserId(),
+                            updateRequest.getAttitudeSkillId(),
+                            updateRequest.getScore(),
+                            updateRequest.getAssessmentYear()
+                    ))
+                    .collect(Collectors.toList());
+
+            List<EmpAttitudeSkillDto> updatedEmpAttitudeSkills = empAttitudeSkillServ.updateEmpAttitudeSkills(ids, empAttitudeSkillDtos);
+            return ResponseEntity.ok(updatedEmpAttitudeSkills);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
