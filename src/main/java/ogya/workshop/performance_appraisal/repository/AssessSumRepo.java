@@ -20,4 +20,5 @@ public interface AssessSumRepo extends JpaRepository<AssessSum, UUID>, JpaSpecif
 
     @Query(value = "SELECT DISTINCT YEAR FROM assessment_summary ORDER BY YEAR", nativeQuery = true)
     List<Integer> findDistinctAssessmentYears();
+
 }

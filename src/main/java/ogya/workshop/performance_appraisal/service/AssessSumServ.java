@@ -23,4 +23,9 @@ public interface AssessSumServ {
     void generateAssessSumsForAllUsers(Integer year);
     List<AssessSumDto> getAllAssessSumByYear(Integer year);
     List<Integer> getDistinctAssessmentYears();
+    List<AssessSumWithUserDto> getAllAssessSumByYear(Integer year);
+
+    AssessSumWithUserDto getAssessmentSummary(UUID userId, Integer year);
+
+    AssessSumWithUserDto updateAssessSumStatusToActive(UUID id);
 }
