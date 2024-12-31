@@ -2,14 +2,24 @@ package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
+
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumResDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
+
 import ogya.workshop.performance_appraisal.service.AssessSumServ;
+import ogya.workshop.performance_appraisal.service.DivisionServ;
+import ogya.workshop.performance_appraisal.util.PageInfo;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,22 +35,43 @@ public class AssessSumController extends ServerResponseList {
     @Autowired
     private AssessSumServ assessSumServ;
 
+    @Autowired
+    private DivisionServ divisionServ;
+
     @GetMapping("/all")
-    public ResponseEntity<ManagerDto<List<AssessSumWithUserDto>>> getAllAssessSum(@RequestParam(value = "year", required = false) Integer year) {
+    public ResponseEntity<ManagerDto<AssessSumResDto>> getAllAssessSum(
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) UUID divisionId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection) {
 
         Log.info("Start getAllAssessSum in AssessSumController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<List<AssessSumWithUserDto>> response = new ManagerDto<>();
-        List<AssessSumWithUserDto> content;
-        if (year != null) {
-            content = assessSumServ.getAllAssessSumByYear(year);
-        } else {
-            content = assessSumServ.getAllAssessSum();
-        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+        Page<AssessSumDto> result = assessSumServ.getFilteredAssessSum(searchTerm, year, divisionId, pageable);
+
+        ManagerDto<AssessSumResDto> response = new ManagerDto<>();
+        List<AssessSumDto> assessSumList = result.getContent();
+        List<Integer> years = assessSumServ.getDistinctAssessmentYears();
+        AssessSumResDto content = new AssessSumResDto();
+        content.setAssessSumList(assessSumList);
+        content.setYears(years);
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPage(result.getNumber());
+        pageInfo.setSize(result.getSize());
+        pageInfo.setTotalElements(result.getTotalElements());
+        pageInfo.setTotalPages(result.getTotalPages());
+        pageInfo.setLast(result.isLast());
+        pageInfo.setFirst(result.isFirst());
+        response.setPageInfo(pageInfo);
 
         response.setContent(content);
-        response.setTotalRows(content.size());
+        response.setTotalRows(assessSumList.size());
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
         response.setInfo(getInfoOk("Success get data", executionTime));
@@ -49,12 +80,12 @@ public class AssessSumController extends ServerResponseList {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ManagerDto<AssessSumWithUserDto>> saveAssessSum(@RequestBody AssessSumReqDto assessSumReqDto) {
+    public ResponseEntity<ManagerDto<AssessSumDto>> saveAssessSum(@RequestBody AssessSumReqDto assessSumReqDto) {
         Log.info("Start saveAssessSum in AssessSumController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<AssessSumWithUserDto> response = new ManagerDto<>();
-        AssessSumWithUserDto content = assessSumServ.createAssessSum(assessSumReqDto);
+        ManagerDto<AssessSumDto> response = new ManagerDto<>();
+        AssessSumDto content = assessSumServ.createAssessSum(assessSumReqDto);
 
         response.setContent(content);
         response.setTotalRows(1);
@@ -66,14 +97,14 @@ public class AssessSumController extends ServerResponseList {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<ManagerDto<AssessSumWithUserDto>> updateAssessSum(
+    public ResponseEntity<ManagerDto<AssessSumDto>> updateAssessSum(
             @PathVariable("id") UUID id,
             @RequestBody AssessSumReqDto assessSumReqDto) {
         Log.info("Start updateAssessSum in AssessSumController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<AssessSumWithUserDto> response = new ManagerDto<>();
-        AssessSumWithUserDto content = assessSumServ.updateAssessSum(id,assessSumReqDto);
+        ManagerDto<AssessSumDto> response = new ManagerDto<>();
+        AssessSumDto content = assessSumServ.updateAssessSum(id,assessSumReqDto);
 
         response.setContent(content);
         response.setTotalRows(1);
@@ -85,12 +116,12 @@ public class AssessSumController extends ServerResponseList {
     }
 
     @GetMapping("/detail-by-user/{id}")
-    public ResponseEntity<ManagerDto<List<AssessSumWithUserDto>>> getAssessSumDetailByUser(@PathVariable("id") UUID id) {
+    public ResponseEntity<ManagerDto<List<AssessSumDto>>> getAssessSumDetailByUser(@PathVariable("id") UUID id) {
         Log.info("Start getAssessSumDetailByUser in AssessSumController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<List<AssessSumWithUserDto>> response = new ManagerDto<>();
-        List<AssessSumWithUserDto> content = assessSumServ.getAssessSumByUserId(id);
+        ManagerDto<List<AssessSumDto>> response = new ManagerDto<>();
+        List<AssessSumDto> content = assessSumServ.getAssessSumByUserId(id);
 
         response.setContent(content);
         response.setTotalRows(content.size());
@@ -119,12 +150,12 @@ public class AssessSumController extends ServerResponseList {
     }
 
     @PostMapping("/generate/{userId}/{year}")
-    public ResponseEntity<ManagerDto<AssessSumWithUserDto>> generateAssessSum(@PathVariable("userId") UUID userId, @PathVariable("year") int year) {
+    public ResponseEntity<ManagerDto<AssessSumDto>> generateAssessSum(@PathVariable("userId") UUID userId, @PathVariable("year") int year) {
         Log.info("Start generateAssessSum in AssessSumController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<AssessSumWithUserDto> response = new ManagerDto<>();
-        AssessSumWithUserDto content = assessSumServ.generateAssessSum(userId, year);
+        ManagerDto<AssessSumDto> response = new ManagerDto<>();
+        AssessSumDto content = assessSumServ.generateAssessSum(userId, year);
 
         response.setContent(content);
         response.setTotalRows(1);

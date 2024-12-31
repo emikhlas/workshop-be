@@ -13,18 +13,23 @@ import ogya.workshop.performance_appraisal.repository.DivisionRepo;
 import ogya.workshop.performance_appraisal.repository.RoleRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.repository.UserRoleRepo;
+import ogya.workshop.performance_appraisal.repository.specification.UserSpec;
 import ogya.workshop.performance_appraisal.service.UserRoleServ;
 import ogya.workshop.performance_appraisal.service.UserServ;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServImpl implements UserServ {
@@ -50,27 +55,27 @@ public class UserServImpl implements UserServ {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public Page<UserDto> getAllUsers(String searchTerm, Pageable pageable) {
         Log.info("Start getAllUsers in UserServImpl");
-        List<User> response = userRepo.findAll();
-        List<UserDto> userList = new ArrayList<>();
+        Specification<User> spec = Specification
+                .where(UserSpec.hasName(searchTerm))
+                .or(UserSpec.hasEmail(searchTerm))
+                .or(UserSpec.hasPosition(searchTerm));
 
-        for (User user : response) {
+        Page<User> response = userRepo.findAll(spec, pageable);
+
+        Page<UserDto> userDtoPage = response.map(user -> {
             UserDto userDto = UserDto.fromEntity(user);
             List<UserRole> userRoles = userRoleRepo.findByUserId(userDto.getId());
-            Set<RoleInfoDto> roles = new HashSet<>();
-            if(!userRoles.isEmpty()) {
-                for (UserRole userRole : userRoles) {
-                    Role role= userRole.getRole();
-                    roles.add(RoleInfoDto.fromEntity(role));
-                }
-            }
+            Set<RoleInfoDto> roles = userRoles.stream()
+                    .map(userRole -> RoleInfoDto.fromEntity(userRole.getRole()))
+                    .collect(Collectors.toSet());
             userDto.setRole(roles);
-            userList.add(userDto);
-        }
+            return userDto;
+        });
 
         Log.info("End getAllUsers in UserServImpl");
-        return userList;
+        return userDtoPage;
     }
 
     @Override
@@ -177,13 +182,29 @@ public class UserServImpl implements UserServ {
         return newPassword;
     }
 
+    @Override
+    public Boolean isUsernameExist(String username) {
+        Log.info("Start isUsernameExist in UserServImpl");
+        Boolean usernameExist = userRepo.existsByUsername(username);
+        Log.info("End isUsernameExist in UserServImpl");
+        return usernameExist;
+    }
+
+    @Override
+    public Boolean isEmailExist(String email) {
+        Log.info("Start isEmailExist in UserServImpl");
+        Boolean emailExist = userRepo.existsByEmailAddress(email);
+        Log.info("End isEmailExist in UserServImpl");
+        return emailExist;
+    }
+
     public static String generatePassword() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
     }
 
     private void updateUserFields(User existingUser, UserReqDto userDto) {
         if (userDto.getUsername() != null) {
-            existingUser.setUsername(userDto.getUsername());
+            existingUser.setUsername(userDto.getUsername().toLowerCase());
         }
         if (userDto.getFullName() != null) {
             existingUser.setFullName(userDto.getFullName());
@@ -192,7 +213,7 @@ public class UserServImpl implements UserServ {
             existingUser.setPosition(userDto.getPosition());
         }
         if (userDto.getEmailAddress() != null) {
-            existingUser.setEmailAddress(userDto.getEmailAddress());
+            existingUser.setEmailAddress(userDto.getEmailAddress().toLowerCase());
         }
         if (userDto.getEmployeeStatus() != null) {
             existingUser.setEmployeeStatus(userDto.getEmployeeStatus());

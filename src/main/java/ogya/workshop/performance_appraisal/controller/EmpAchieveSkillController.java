@@ -69,10 +69,10 @@ public class EmpAchieveSkillController extends ServerResponseList {
         return ResponseEntity.ok(empAchieves);
     }
 
-    @GetMapping("/user/{userId}/{year}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpUserAchieveByUserId(
             @PathVariable("userId") UUID userId,
-            @PathVariable("year") Integer year,
+            @RequestParam(value = "year", required = false) Integer year,
             @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
         long startTime = System.currentTimeMillis();
         ManagerDto<List<EmpAchieveSkillDto>> response = new ManagerDto<>();
