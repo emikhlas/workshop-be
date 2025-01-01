@@ -62,20 +62,16 @@ public class EmpAttitudeSkillController {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<EmpAttitudeSkillDto> getEmpAttitudeSkillById(@PathVariable UUID id) {
         Optional<EmpAttitudeSkillDto> achievement = empAttitudeSkillServ.getEmpAttitudeSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
     @GetMapping
     public List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills() {
         return empAttitudeSkillServ.getAllEmpAttitudeSkills();
     }
-
-
 
     @GetMapping("/user/{userId}/{year}")
     public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(

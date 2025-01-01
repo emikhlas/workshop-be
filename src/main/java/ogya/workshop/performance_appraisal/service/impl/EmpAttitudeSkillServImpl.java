@@ -5,9 +5,10 @@ import ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeSkillInfoDt
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.entity.*;
+import ogya.workshop.performance_appraisal.entity.AttitudeSkill;
+import ogya.workshop.performance_appraisal.entity.EmpAttitudeSkill;
+import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
-import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import ogya.workshop.performance_appraisal.service.SharedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,6 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         return result;
     }
 
-    // Update an existing Achieve
     @Override
     public EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
         EmpAttitudeSkill currentEmpAttitudeSkill = empAttitudeSkillRepo.findById(id).orElseThrow( () -> new RuntimeException("EmpAttitudeSkill not found"));

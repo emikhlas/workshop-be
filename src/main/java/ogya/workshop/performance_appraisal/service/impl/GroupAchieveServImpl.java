@@ -2,11 +2,11 @@ package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveCreateDto;
+import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.Achieve;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
-import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveDto;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.repository.GroupAchieveRepo;
@@ -133,7 +133,6 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         return groupAchieveDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private GroupAchieve convertToEntity(GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve groupAchieve = new GroupAchieve();
         groupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());

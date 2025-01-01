@@ -24,13 +24,11 @@ public class AttitudeSkillController extends ServerResponseList {
     @Autowired
     private AttitudeSkillServ attitudeSkillServ;
 
-
     @PostMapping
     public ResponseEntity<AttitudeSkillDto> createAttitudeSkill(@RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkillDto newAttitudeSkill = attitudeSkillServ.createAttitudeSkill(attitudeSkillDto);
         return ResponseEntity.ok(newAttitudeSkill);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<AttitudeSkillDto> updateAttitudeSkill(@PathVariable UUID id, @RequestBody AttitudeSkillCreateDto attitudeSkillDto) {
@@ -42,13 +40,11 @@ public class AttitudeSkillController extends ServerResponseList {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<AttitudeSkillDto> getAttitudeSkillById(@PathVariable UUID id) {
         Optional<AttitudeSkillDto> achievement = attitudeSkillServ.getAttitudeSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
     @GetMapping
     public ResponseEntity<ManagerDto<List<AttitudeSkillDto>>> getAllAttitudeSkills(

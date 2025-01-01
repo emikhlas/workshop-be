@@ -78,14 +78,12 @@ public class AchieveServImpl implements AchieveServ {
         return convertToDto(updatedAchieve);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<AchieveDto> getAchievementById(UUID id) {
         Optional<Achieve> achieve = achieveRepo.findById(id);
         return achieve.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<AchieveDto> getAllAchievements() {
         List<Achieve> achieves = achieveRepo.findAll();

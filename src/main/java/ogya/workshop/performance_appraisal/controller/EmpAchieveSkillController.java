@@ -1,11 +1,9 @@
 package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
-import ogya.workshop.performance_appraisal.dto.achieve.AchieveWithGroupNameDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
-
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +22,11 @@ public class EmpAchieveSkillController extends ServerResponseList {
     @Autowired
     private EmpAchieveSkillServ empAchieveSkillServ;
 
-
     @PostMapping
     public ResponseEntity<EmpAchieveSkillDto> createEmpAchieveSkill(@RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
         EmpAchieveSkillDto newEmpAchieveSkill = empAchieveSkillServ.createEmpAchieveSkill(empAchieveSkillDto);
         return ResponseEntity.ok(newEmpAchieveSkill);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpAchieveSkillDto> updateEmpAchieveSkill(@PathVariable UUID id, @RequestBody EmpAchieveSkillCreateDto empAchieveSkillDto) {
@@ -42,13 +38,11 @@ public class EmpAchieveSkillController extends ServerResponseList {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<EmpAchieveSkillDto> getEmpAchieveSkillById(@PathVariable UUID id) {
         Optional<EmpAchieveSkillDto> achievement = empAchieveSkillServ.getEmpAchieveSkillById(id);
         return achievement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
 
     @GetMapping
     public ResponseEntity<ManagerDto<List<EmpAchieveSkillDto>>> getAllEmpAchieveSkill() {
@@ -62,7 +56,6 @@ public class EmpAchieveSkillController extends ServerResponseList {
         response.setInfo(getInfoOk("Success get data", executionTime));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteEmpAchieveSkill(@PathVariable UUID id) {

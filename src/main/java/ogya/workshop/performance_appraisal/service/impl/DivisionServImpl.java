@@ -25,7 +25,6 @@ public class DivisionServImpl implements DivisionServ {
     @Autowired
     private DivisionRepo divisionRepo;
 
-    // Create a new Group Achieve
     @Override
     public DivisionDto createDivision(DivisionCreateDto divisionDto) {
         Division division = convertToEntity(divisionDto);
@@ -33,12 +32,11 @@ public class DivisionServImpl implements DivisionServ {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
         division.setCreatedBy(creator);
-        division.setCreatedAt(new Date());  // Set the creation date
+        division.setCreatedAt(new Date());
         Division savedDivision = divisionRepo.save(division);
         return convertToDto(savedDivision);
     }
 
-    // Update an existing Achieve
     @Override
     public DivisionDto updateDivision(UUID id, DivisionCreateDto divisionDto) {
         Division currentDivision = divisionRepo.findById(id).orElseThrow(() -> new RuntimeException("Division not found"));
@@ -49,34 +47,30 @@ public class DivisionServImpl implements DivisionServ {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
         currentDivision.setUpdatedBy(creator);
-        currentDivision.setUpdatedAt(new Date());  // Set the update date
+        currentDivision.setUpdatedAt(new Date());
 
         Division updatedDivision = divisionRepo.save(currentDivision);
         return convertToDto(updatedDivision);
     }
 
-    // Retrieve by ID
     @Override
     public Optional<DivisionDto> getDivisionById(UUID id) {
         Optional<Division> division = divisionRepo.findById(id);
         return division.map(this::convertToDto);
     }
 
-    // Retrieve all Achievements
     @Override
     public List<DivisionDto> getAllDivision() {
         List<Division> divisions = divisionRepo.findAll();
         return divisions.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Delete an Achieve by ID
     @Override
     public boolean deleteDivision(UUID id) {
         divisionRepo.deleteById(id);
         return true;
     }
 
-    // Helper method to convert Achieve entity to AchieveDto
     private DivisionDto convertToDto(Division division) {
         DivisionDto divisionDto = new DivisionDto();
         divisionDto.setId(division.getId());
@@ -92,11 +86,9 @@ public class DivisionServImpl implements DivisionServ {
         return divisionDto;
     }
 
-    // Helper method to convert AchieveDto to Achieve entity
     private Division convertToEntity(DivisionCreateDto divisionDto) {
         Division division = new Division();
         division.setDivisionName(divisionDto.getDivisionName());
         return division;
     }
-
 }

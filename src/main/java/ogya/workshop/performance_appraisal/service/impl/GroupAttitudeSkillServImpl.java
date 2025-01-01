@@ -74,7 +74,6 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         currentGroupAttitudeSkill.setUpdatedBy(updater);
         currentGroupAttitudeSkill.setUpdatedAt(new Date());
 
-
         GroupAttitudeSkill updatedGroupAttitudeSkill = groupAttitudeSkillRepo.save(currentGroupAttitudeSkill);
 
         sharedService.updateAllAssessSums();
