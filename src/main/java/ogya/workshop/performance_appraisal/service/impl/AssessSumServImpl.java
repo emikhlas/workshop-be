@@ -1,5 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
+import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
@@ -15,6 +16,8 @@ import ogya.workshop.performance_appraisal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,6 +45,8 @@ public class AssessSumServImpl implements AssessSumServ {
 
     @Autowired
     private GroupAttitudeSkillServ groupAttitudeSkillServ;
+
+
 
     @Override
     public List<AssessSumWithUserDto> getAllAssessSum() {
@@ -431,7 +436,6 @@ public class AssessSumServImpl implements AssessSumServ {
     public AssessSumWithUserDto getAssessmentSummary(UUID userId, Integer year) {
         Log.info("Start getAssessmentSummary in AssessSumServImpl");
 
-        // Fetch the assessment summary for the given userId and year
         AssessSum assessSum = assessSumRepo.findByUserIdAndYear(userId, year);
         if (assessSum == null) {
             throw new RuntimeException("Assessment summary not found for userId: " + userId + " and year: " + year);
@@ -445,20 +449,23 @@ public class AssessSumServImpl implements AssessSumServ {
     public AssessSumWithUserDto updateAssessSumStatusToActive(UUID id) {
         Log.info("Start updateAssessSumStatusToActive in AssessSumServImpl");
 
-        // Ambil entitas AssessSum berdasarkan ID
         AssessSum assessSum = assessSumRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("AssessSum not found"));
 
-        // Perbarui status menjadi 1
         assessSum.setStatus(1);
-        assessSum.setUpdatedAt(LocalDateTime.now());
 
-        // Simpan perubahan ke database
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+        User creator = authUser.getUser();
+
+        assessSum.setApproverId(creator);
+
+        assessSum.setApprovalDate(LocalDateTime.now());
+
         AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
 
         Log.info("End updateAssessSumStatusToActive in AssessSumServImpl");
 
-        // Kembalikan entitas yang diperbarui sebagai DTO
         return AssessSumWithUserDto.fromEntity(updatedAssessSum);
     }
 

@@ -27,6 +27,10 @@ public class AssessSumWithUserDto {
     private int score;
     @JsonProperty("status")
     private int status;
+    @JsonProperty("approver_id")
+    private UserInfoDto approverId;
+    @JsonProperty("approval_date")
+    private LocalDateTime approvalDate;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
@@ -41,6 +45,8 @@ public class AssessSumWithUserDto {
         dto.setStatus(assessSum.getStatus());
         dto.setCreatedAt(assessSum.getCreatedAt());
         dto.setUpdatedAt(assessSum.getUpdatedAt());
+        dto.setApproverId(UserInfoDto.fromEntity(assessSum.getUser()));
+        dto.setApprovalDate(assessSum.getApprovalDate());
         return dto;
     }
 }
