@@ -25,9 +25,6 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
     @Autowired
     private EmpAttitudeSkillRepo empAttitudeSkillRepo;
 
-    @Autowired
-    private SharedService sharedService;
-
     @Override
     public List<EmpAttitudeSkillDto> createEmpAttitudeSkills(List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos) {
         List<EmpAttitudeSkillDto> result = new ArrayList<>();

@@ -30,12 +30,15 @@ public class AssessSum {
     private int score;
     @Column(name = "STATUS", length = 1, nullable = false)
     private int status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "APPROVER_ID")
     private User approverId;
+
     @Column(name = "APPROVAL_DATE")
     private LocalDateTime approvalDate;
+
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
     @ManyToOne(fetch = FetchType.LAZY)

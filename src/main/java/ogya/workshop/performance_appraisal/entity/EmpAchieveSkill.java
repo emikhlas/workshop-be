@@ -29,7 +29,7 @@ public class EmpAchieveSkill {
     @Column(name = "NOTES", length = 100)
     private String notes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ACHIEVEMENT_ID")
     private Achieve achieve;

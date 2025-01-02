@@ -13,12 +13,16 @@ import ogya.workshop.performance_appraisal.repository.AchieveRepo;
 import ogya.workshop.performance_appraisal.repository.EmpAchieveSkillRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
+import ogya.workshop.performance_appraisal.service.SharedService;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +43,9 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
 
     @Autowired
     private AchieveRepo achieveRepo;
+
+    @Autowired
+    private SharedService sharedService;
 
     @Override
     public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto) {
@@ -149,6 +156,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         return empAchieveSkillRepo.findEmpAchieveUser();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year, boolean enabledOnly) {
         List<EmpAchieveSkill> empAchieveSkills;

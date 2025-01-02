@@ -1,10 +1,14 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
+
+import ogya.workshop.performance_appraisal.dto.assesssum.*;
+
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.GroupedResultDto;
+
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
@@ -18,6 +22,11 @@ import ogya.workshop.performance_appraisal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -74,7 +83,26 @@ public class AssessSumServImpl implements AssessSumServ {
         Log.info("End getAssessSumByYear in AssessSumServImpl");
         return assessSumList;
     }
+  
+    @Override
+    public List<AssessSumWithUserDto> getAllAssessSumWithUserByYear(Integer year) {
+        Log.info("Start getAssessSumByYear in AssessSumServImpl");
+        List<AssessSum> assessSums = assessSumRepo.findByYear(year);
+        List<AssessSumWithUserDto> assessSumList = new ArrayList<>();
+        for(AssessSum assessSum : assessSums) {
+            assessSumList.add(AssessSumWithUserDto.fromEntity(assessSum));
+        }
+        Log.info("End getAssessSumByYear in AssessSumServImpl");
+        return assessSumList;
+    }
 
+    @Override
+    public List<Integer> getDistinctAssessmentYears() {
+        Log.info("Start getDistinctAssessmentYears in AssessSumServImpl");
+        List<Integer> years = assessSumRepo.findDistinctAssessmentYears();
+        Log.info("End getDistinctAssessmentYears in AssessSumServImpl");
+        return years;
+    }
 
     @Override
     public List<AssessSumWithUserDto> getAssessSumByUserId(UUID userId) {
@@ -445,6 +473,27 @@ public class AssessSumServImpl implements AssessSumServ {
         return AssessSumWithUserDto.fromEntity(assessSum);
     }
 
+//    @Override
+//    public AssessSumWithUserDto updateAssessSumStatusToActive(UUID id) {
+//        Log.info("Start updateAssessSumStatusToActive in AssessSumServImpl");
+//
+//        // Ambil entitas AssessSum berdasarkan ID
+//        AssessSum assessSum = assessSumRepo.findById(id)
+//                .orElseThrow(() -> new RuntimeException("AssessSum not found"));
+//
+//        // Perbarui status menjadi 1
+//        assessSum.setStatus(1);
+//        assessSum.setUpdatedAt(LocalDateTime.now());
+//
+//        // Simpan perubahan ke database
+//        AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
+//
+//        Log.info("End updateAssessSumStatusToActive in AssessSumServImpl");
+//
+//        // Kembalikan entitas yang diperbarui sebagai DTO
+//        return AssessSumWithUserDto.fromEntity(updatedAssessSum);
+//    }
+
     @Override
     public AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id) {
         Log.info("Start updateAssessSumStatusToApprove in AssessSumServImpl");
@@ -484,5 +533,21 @@ public class AssessSumServImpl implements AssessSumServ {
 
         return AssessSumWithUserDto.fromEntity(updatedAssessSum);
     }
+
+    @Override
+    public AssessSumWithUserDto updateAssessSumStatusToUnapprove(UUID id) {
+        Log.info("Start updateAssessSumStatusToUnapprove in AssessSumServImpl");
+
+        AssessSum assessSum = assessSumRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("AssessSum not found"));
+
+        assessSum.setStatus(0);
+
+        AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
+
+        Log.info("End updateAssessSumStatusToUnapprove in AssessSumServImpl");
+
+        return AssessSumWithUserDto.fromEntity(updatedAssessSum);
+}
 
 }
