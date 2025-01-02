@@ -1,8 +1,12 @@
 package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
+import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillUpdateRequestDto;
 import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestCreateDto;
 import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestDto;
+import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestUpdateRequestDto;
 import ogya.workshop.performance_appraisal.service.EmpSuggestServ;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/emp-suggest")
@@ -115,6 +120,29 @@ public class EmpSuggestController extends ServerResponseList {
         response.setInfo(getInfoOk("Success update data", executionTime));
         Log.info("End update in EmpSuggestController");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<List<EmpSuggestDto>> updates(@RequestBody List<EmpSuggestUpdateRequestDto> empSuggestUpdates) {
+        try {
+            // Ekstrak ID dan DTO dari request
+            List<UUID> ids = empSuggestUpdates.stream()
+                    .map(EmpSuggestUpdateRequestDto::getId)
+                    .collect(Collectors.toList());
+
+            List<EmpSuggestCreateDto> empSuggestDtos = empSuggestUpdates.stream()
+                    .map(updateRequest -> new EmpSuggestCreateDto(
+                            updateRequest.getUserId(),
+                            updateRequest.getSuggestion(),
+                            updateRequest.getAssessmentYear()
+                    ))
+                    .collect(Collectors.toList());
+
+            List<EmpSuggestDto> updatedEmpSuggest = empSuggestServ.updates(ids, empSuggestDtos);
+            return ResponseEntity.ok(updatedEmpSuggest);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/userId&Year")

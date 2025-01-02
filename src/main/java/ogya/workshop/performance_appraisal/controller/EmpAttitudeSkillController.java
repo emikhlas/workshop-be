@@ -3,7 +3,6 @@ package ogya.workshop.performance_appraisal.controller;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillUpdateRequestDto;
-import ogya.workshop.performance_appraisal.dto.empdevplan.EmpDevPlanDto;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,6 +72,7 @@ public class EmpAttitudeSkillController {
         return empAttitudeSkillServ.getAllEmpAttitudeSkills();
     }
 
+
     @GetMapping("/user/{userId}/{year}")
     public ResponseEntity<List<EmpAttitudeSkillDto>> getEmpAttSkillByUserId(
             @PathVariable UUID userId,
@@ -93,4 +93,12 @@ public class EmpAttitudeSkillController {
         Boolean response = empAttitudeSkillServ.deleteEmpAttitudeSkill(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/user-only")
+    public ResponseEntity<List<UUID>> getEmpAttSkillByUserOnly() {
+        List<UUID> userIds = empAttitudeSkillServ.getEmpAttSkillByUserOnly();
+        return ResponseEntity.ok(userIds);
+    }
+
+
 }

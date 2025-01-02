@@ -41,7 +41,6 @@ public class AssessSum {
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")
