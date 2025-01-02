@@ -1,6 +1,6 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
 import ogya.workshop.performance_appraisal.service.AssessSumServ;
@@ -31,10 +31,10 @@ public class SharedServiceImpl implements SharedService {
 
         List<AssessSum> allAssessSums = assessSumRepo.findAll();
 
-        List<AssessSumWithUserDto> updatedAssessSums = new ArrayList<>();
+        List<AssessSumDto> updatedAssessSums = new ArrayList<>();
 
         for (AssessSum existingSum : allAssessSums) {
-            AssessSumWithUserDto updatedSummary = assessSumServ.generateAssessSum(existingSum.getUser().getId(), existingSum.getYear());
+            AssessSumDto updatedSummary = assessSumServ.generateAssessSum(existingSum.getUser().getId(), existingSum.getYear());
             updatedAssessSums.add(updatedSummary);
         }
     }

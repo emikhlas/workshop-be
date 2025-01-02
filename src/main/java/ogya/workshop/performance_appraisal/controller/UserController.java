@@ -4,14 +4,19 @@ import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserReqDto;
 import ogya.workshop.performance_appraisal.service.UserServ;
+import ogya.workshop.performance_appraisal.util.PageInfo;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,18 +32,34 @@ public class UserController extends ServerResponseList {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/all")
-    public ResponseEntity<ManagerDto<List<UserDto>>>  getAllUsers() {
+    public ResponseEntity<ManagerDto<List<UserDto>>> getAllUsers(
+            @RequestParam(required = false) String searchTerm,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection) {
+
         Log.info("Start getAllUsers in UserController");
         long startTime = System.currentTimeMillis();
 
-        ManagerDto<List<UserDto>> response = new ManagerDto<>();
-        List<UserDto> content = userServ.getAllUsers();
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+        Page<UserDto> content = userServ.getAllUsers(searchTerm,pageable);
 
-        response.setContent(content);
-        response.setTotalRows(content.size());
+        ManagerDto<List<UserDto>> response = new ManagerDto<>();
+        response.setContent(content.getContent());
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPage(content.getNumber());
+        pageInfo.setSize(content.getSize());
+        pageInfo.setTotalElements(content.getTotalElements());
+        pageInfo.setTotalPages(content.getTotalPages());
+        pageInfo.setLast(content.isLast());
+        pageInfo.setFirst(content.isFirst());
+        response.setPageInfo(pageInfo);
+        response.setTotalRows((int) content.getTotalElements());
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
         response.setInfo(getInfoOk("Success get data", executionTime));
+
         Log.info("End getAllUsers in UserController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -130,5 +151,21 @@ public class UserController extends ServerResponseList {
         response.setInfo(getInfoOk("Success reset password", executionTime));
         Log.info("End resetPassword in UserController");
         return new ResponseEntity<>(response, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean>  checkUsername(
+            @RequestParam("username") String username) {
+        Log.info("Start checkUsername in UserController");
+        Boolean usernameExist = userServ.isUsernameExist(username);
+        return new ResponseEntity<>(usernameExist, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean>  checkEmail(
+            @RequestParam("email") String email) {
+        Log.info("Start checkEmail in UserController");
+        Boolean emailExist = userServ.isEmailExist(email);
+        return new ResponseEntity<>(emailExist, HttpStatus.OK) ;
     }
 }

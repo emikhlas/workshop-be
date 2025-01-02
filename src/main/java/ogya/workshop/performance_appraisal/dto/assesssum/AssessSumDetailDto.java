@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.entity.EmpAttitudeSkill;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @Data
 public class AssessSumDetailDto {
     @JsonProperty("assess_sum")
-    private AssessSumWithUserDto assessSum;
+    private AssessSumDto assessSum;
     @JsonProperty("achieve_results")
     private List<GroupedResultDto<EmpAchieveSkillDto>> groupedAchieveResults;
     @JsonProperty("attitude_results")
