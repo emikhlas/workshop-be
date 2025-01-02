@@ -7,6 +7,7 @@ import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.EmpSuggest;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class EmpSuggestDto {
     @JsonProperty("id")
     private UUID id;
     @JsonProperty("user")
-    private UserDto user;
+    private UserInfoDto user;
     @JsonProperty("suggestion")
     private String suggestion;
     @JsonProperty("assessment_year")
@@ -35,7 +36,7 @@ public class EmpSuggestDto {
     public static EmpSuggestDto fromEntity(EmpSuggest empSuggest) {
         EmpSuggestDto empSuggestDto = new EmpSuggestDto();
         empSuggestDto.setId(empSuggest.getId());
-        empSuggestDto.setUser(UserDto.fromEntity(empSuggest.getUser()));
+        empSuggestDto.setUser(UserInfoDto.fromEntity(empSuggest.getUser()));
         empSuggestDto.setSuggestion(empSuggest.getSuggestion());
         empSuggestDto.setAssessmentYear(empSuggest.getAssessmentYear());
         empSuggestDto.setCreatedAt(empSuggest.getCreatedAt());

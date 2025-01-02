@@ -446,8 +446,8 @@ public class AssessSumServImpl implements AssessSumServ {
     }
 
     @Override
-    public AssessSumWithUserDto updateAssessSumStatusToActive(UUID id) {
-        Log.info("Start updateAssessSumStatusToActive in AssessSumServImpl");
+    public AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id) {
+        Log.info("Start updateAssessSumStatusToApprove in AssessSumServImpl");
 
         AssessSum assessSum = assessSumRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("AssessSum not found"));
@@ -464,7 +464,23 @@ public class AssessSumServImpl implements AssessSumServ {
 
         AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
 
-        Log.info("End updateAssessSumStatusToActive in AssessSumServImpl");
+        Log.info("End updateAssessSumStatusToApprove in AssessSumServImpl");
+
+        return AssessSumWithUserDto.fromEntity(updatedAssessSum);
+    }
+
+    @Override
+    public AssessSumWithUserDto updateAssessSumStatusToUnapprove(UUID id) {
+        Log.info("Start updateAssessSumStatusToUnapprove in AssessSumServImpl");
+
+        AssessSum assessSum = assessSumRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("AssessSum not found"));
+
+        assessSum.setStatus(0);
+
+        AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
+
+        Log.info("End updateAssessSumStatusToUnapprove in AssessSumServImpl");
 
         return AssessSumWithUserDto.fromEntity(updatedAssessSum);
     }

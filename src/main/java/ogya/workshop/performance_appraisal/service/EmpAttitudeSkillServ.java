@@ -13,7 +13,11 @@ public interface EmpAttitudeSkillServ {
 List<EmpAttitudeSkillDto> updateEmpAttitudeSkills(List<UUID> ids, List<EmpAttitudeSkillCreateDto> empAttitudeSkillDtos);
     Optional<EmpAttitudeSkillDto> getEmpAttitudeSkillById(UUID id);
     List<EmpAttitudeSkillDto> getAllEmpAttitudeSkills();
+
     boolean deleteEmpAttitudeSkill(UUID id);
     List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly);
     List<Integer> getAllEmpAttitudeSkillYears();
+
+    List<UUID> getEmpAttSkillByUserOnly();
+
 }

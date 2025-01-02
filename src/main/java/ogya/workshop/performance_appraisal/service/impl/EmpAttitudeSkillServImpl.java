@@ -130,6 +130,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
+
     @Override
     public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly){
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserIdAndAssessmentYear(userId, year);
@@ -150,6 +151,18 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
         empAttitudeSkillRepo.deleteById(id);
         return true;
     }
+
+    @Override
+    public List<UUID> getEmpAttSkillByUserOnly() {
+        List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findAll();
+        return empAttitudeSkills.stream()
+                .filter(emp -> emp.getUser() != null) // Pastikan user tidak null
+                .map(emp -> emp.getUser().getId())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+
 
     private EmpAttitudeSkillDto convertToDto(EmpAttitudeSkill empAttitudeSkill) {
         EmpAttitudeSkillDto empAttitudeSkillDto = new EmpAttitudeSkillDto();
