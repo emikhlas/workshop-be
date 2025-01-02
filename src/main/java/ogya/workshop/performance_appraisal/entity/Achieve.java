@@ -25,7 +25,7 @@ public class Achieve {
     @Column(name = "ACHIEVEMENT_NAME", length = 100, nullable = false)
     private String achievementName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "GROUP_ACHIEVEMENT_ID")
     private GroupAchieve groupAchieve;

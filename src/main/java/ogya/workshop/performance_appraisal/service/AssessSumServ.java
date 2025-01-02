@@ -3,6 +3,7 @@ package ogya.workshop.performance_appraisal.service;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
 import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDto;
+import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,11 +22,16 @@ public interface AssessSumServ {
     AssessSumDto generateAssessSum(UUID userId, Integer year);
     AssessSumDetailDto getAssessSumDetail(UUID userId, Integer year);
     void generateAssessSumsForAllUsers(Integer year);
+
     List<AssessSumDto> getAllAssessSumByYear(Integer year);
+
     List<Integer> getDistinctAssessmentYears();
-    List<AssessSumWithUserDto> getAllAssessSumByYear(Integer year);
+
+    List<AssessSumWithUserDto> getAllAssessSumWithUserByYear(Integer year);
 
     AssessSumWithUserDto getAssessmentSummary(UUID userId, Integer year);
 
-    AssessSumWithUserDto updateAssessSumStatusToActive(UUID id);
+    AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id);
+
+    AssessSumWithUserDto updateAssessSumStatusToUnapprove(UUID id);
 }
