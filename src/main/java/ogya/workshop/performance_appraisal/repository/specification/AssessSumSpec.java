@@ -67,4 +67,17 @@ public class AssessSumSpec {
         };
     }
 
+    public static Specification<AssessSum> hasApproved(Boolean approved) {
+        return (root, query, builder) -> {
+            if (approved == null) {
+                return null;
+            }
+            if(approved){
+                return builder.equal(root.get("status"), 1);
+            } else {
+                return builder.equal(root.get("status"), 0);
+            }
+        };
+    }
+
 }

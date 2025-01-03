@@ -43,6 +43,7 @@ public class AssessSumController extends ServerResponseList {
             @RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) List<UUID> divisionIds,
+            @RequestParam(required = false) Boolean approved,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -52,7 +53,7 @@ public class AssessSumController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
-        Page<AssessSumDto> result = assessSumServ.getFilteredAssessSum(searchTerm, year, divisionIds, pageable);
+        Page<AssessSumDto> result = assessSumServ.getFilteredAssessSum(searchTerm, year, divisionIds, pageable, approved);
 
         ManagerDto<AssessSumResDto> response = new ManagerDto<>();
         List<AssessSumDto> assessSumList = result.getContent();
