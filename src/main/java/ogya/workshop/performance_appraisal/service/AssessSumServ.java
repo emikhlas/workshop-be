@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface AssessSumServ {
 
-    Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, List<UUID> divisionIds, Pageable pageable);
+    Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, List<UUID> divisionIds, Pageable pageable, Boolean approved);
     List<AssessSumDto> getAllAssessSum();
     List<AssessSumDto> getAssessSumByUserId(UUID userId);
     AssessSumDto getAssessSumById(UUID id);

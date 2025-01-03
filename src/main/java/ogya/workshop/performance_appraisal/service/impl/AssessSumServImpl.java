@@ -61,7 +61,7 @@ public class AssessSumServImpl implements AssessSumServ {
 
 
     @Override
-    public Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, List<UUID> divisionIds, Pageable pageable) {
+    public Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, List<UUID> divisionIds, Pageable pageable, Boolean approved) {
         Log.info("Start getFilteredAssessSum in AssessSumServImpl");
 
         Specification<AssessSum> specification = Specification.where(null);
@@ -80,6 +80,10 @@ public class AssessSumServImpl implements AssessSumServ {
 
         if (divisionIds != null && !divisionIds.isEmpty()) {
             specification = specification.and(AssessSumSpec.hasDivision(divisionIds));
+        }
+
+        if(approved != null) {
+            specification = specification.and(AssessSumSpec.hasApproved(approved));
         }
 
         Page<AssessSum> response = assessSumRepo.findAll(specification, pageable);
