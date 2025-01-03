@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.Join;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
 import java.util.UUID;
 
 public class AssessSumSpec {
@@ -55,14 +56,14 @@ public class AssessSumSpec {
         };
     }
 
-    public static Specification<AssessSum> hasDivision(UUID divisionId){
+    public static Specification<AssessSum> hasDivision(List<UUID> divisionIds) {
         return (root, query, builder) -> {
-            if(divisionId == null){
+            if (divisionIds == null || divisionIds.isEmpty()) {
                 return null;
             }
             Join<Object, Object> userJoin = root.join("user");
             Join<Object, Object> divisionJoin = userJoin.join("division");
-            return builder.equal(divisionJoin.get("id"), divisionId);
+            return divisionJoin.get("id").in(divisionIds);
         };
     }
 

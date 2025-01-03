@@ -8,6 +8,7 @@ import ogya.workshop.performance_appraisal.dto.auth.AuthRequestDto;
 import ogya.workshop.performance_appraisal.dto.auth.AuthResponseDto;
 import ogya.workshop.performance_appraisal.dto.auth.ChangePasswordDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoWithDivDto;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class AuthController extends ServerResponseList {
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
         AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setUser(UserInfoDto.fromAuthenticatedUser(authenticatedUser));
+        authResponseDto.setUser(UserInfoWithDivDto.fromAuthenticatedUser(authenticatedUser));
         authResponseDto.setToken(jwtToken);
 
         response.setContent(authResponseDto);
@@ -62,7 +63,7 @@ public class AuthController extends ServerResponseList {
         String jwtToken = jwtService.generateToken(updatedUser);
         ManagerDto<AuthResponseDto> response = new ManagerDto<>();
         AuthResponseDto authResponseDto = new AuthResponseDto();
-        authResponseDto.setUser(UserInfoDto.fromAuthenticatedUser(updatedUser));
+        authResponseDto.setUser(UserInfoWithDivDto.fromAuthenticatedUser(updatedUser));
         authResponseDto.setToken(jwtToken);
         response.setContent(authResponseDto);
         response.setTotalRows(1);
