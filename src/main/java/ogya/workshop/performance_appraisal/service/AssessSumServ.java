@@ -14,13 +14,14 @@ import java.util.UUID;
 
 public interface AssessSumServ {
 
-    List<AssessSumWithUserDto> getAllAssessSum();
-    List<AssessSumWithUserDto> getAssessSumByUserId(UUID userId);
-    AssessSumWithUserDto getAssessSumById(UUID id);
-    AssessSumWithUserDto createAssessSum(AssessSumReqDto assessSumReqDto);
-    AssessSumWithUserDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto);
+    Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, UUID divisionId, Pageable pageable);
+    List<AssessSumDto> getAllAssessSum();
+    List<AssessSumDto> getAssessSumByUserId(UUID userId);
+    AssessSumDto getAssessSumById(UUID id);
+    AssessSumDto createAssessSum(AssessSumReqDto assessSumReqDto);
+    AssessSumDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto);
     Boolean deleteAssessSum(UUID id);
-    AssessSumWithUserDto generateAssessSum(UUID userId, Integer year);
+    AssessSumDto generateAssessSum(UUID userId, Integer year);
     AssessSumDetailDto getAssessSumDetail(UUID userId, Integer year);
     void generateAssessSumsForAllUsers(Integer year);
 
