@@ -14,10 +14,12 @@ import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkill
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoWithDivDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.AssessSumRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
+import ogya.workshop.performance_appraisal.repository.specification.AssessSumSpec;
 import ogya.workshop.performance_appraisal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,27 +60,55 @@ public class AssessSumServImpl implements AssessSumServ {
     private GroupAttitudeSkillServ groupAttitudeSkillServ;
 
 
+    @Override
+    public Page<AssessSumDto> getFilteredAssessSum(String searchTerm, Integer year, UUID divisionId, Pageable pageable) {
+        Log.info("Start getFilteredAssessSum in AssessSumServImpl");
+
+        Specification<AssessSum> specification = Specification.where(null);
+
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            Specification<AssessSum> searchSpec = Specification
+                    .where(AssessSumSpec.hasName(searchTerm))
+                    .or(AssessSumSpec.hasEmail(searchTerm))
+                    .or(AssessSumSpec.hasPosition(searchTerm));
+            specification = specification.and(searchSpec);
+        }
+
+        if (year != null) {
+            specification = specification.and(AssessSumSpec.hasYear(year));
+        }
+
+        if (divisionId != null) {
+            specification = specification.and(AssessSumSpec.hasDivision(divisionId));
+        }
+
+        Page<AssessSum> response = assessSumRepo.findAll(specification, pageable);
+        Page<AssessSumDto> assessSumDtoPage = response.map(AssessSumDto::fromEntity);
+
+        Log.info("End getFilteredAssessSum in AssessSumServImpl");
+        return assessSumDtoPage;
+    }
 
     @Override
-    public List<AssessSumWithUserDto> getAllAssessSum() {
+    public List<AssessSumDto> getAllAssessSum() {
 
         Log.info("Start getAllAssessSum in AssessSumServImpl");
         List<AssessSum> response = assessSumRepo.findAll();
-        List<AssessSumWithUserDto> assessSumList = new ArrayList<>();
+        List<AssessSumDto> assessSumList = new ArrayList<>();
         for (AssessSum assessSum : response) {
-            assessSumList.add(AssessSumWithUserDto.fromEntity(assessSum));
+            assessSumList.add(AssessSumDto.fromEntity(assessSum));
         }
         Log.info("End getAllAssessSum in AssessSumServImpl");
 
         return assessSumList;
     }
     @Override
-    public List<AssessSumWithUserDto> getAllAssessSumByYear(Integer year) {
+    public List<AssessSumDto> getAllAssessSumByYear(Integer year) {
         Log.info("Start getAssessSumByYear in AssessSumServImpl");
         List<AssessSum> assessSums = assessSumRepo.findByYear(year);
-        List<AssessSumWithUserDto> assessSumList = new ArrayList<>();
+        List<AssessSumDto> assessSumList = new ArrayList<>();
         for(AssessSum assessSum : assessSums) {
-            assessSumList.add(AssessSumWithUserDto.fromEntity(assessSum));
+            assessSumList.add(AssessSumDto.fromEntity(assessSum));
         }
         Log.info("End getAssessSumByYear in AssessSumServImpl");
         return assessSumList;
@@ -105,27 +135,27 @@ public class AssessSumServImpl implements AssessSumServ {
     }
 
     @Override
-    public List<AssessSumWithUserDto> getAssessSumByUserId(UUID userId) {
+    public List<AssessSumDto> getAssessSumByUserId(UUID userId) {
         Log.info("Start getAssessSumByUserId in AssessSumServImpl");
         List<AssessSum> response = assessSumRepo.findByUserId(userId);
-        List<AssessSumWithUserDto> assessSumList = new ArrayList<>();
+        List<AssessSumDto> assessSumList = new ArrayList<>();
         for (AssessSum assessSum : response) {
-            assessSumList.add(AssessSumWithUserDto.fromEntity(assessSum));
+            assessSumList.add(AssessSumDto.fromEntity(assessSum));
         }
         Log.info("End getAssessSumByUserId in AssessSumServImpl");
         return assessSumList;
     }
 
     @Override
-    public AssessSumWithUserDto getAssessSumById(UUID id) {
+    public AssessSumDto getAssessSumById(UUID id) {
         Log.info("Start getAssessSumById in AssessSumServImpl");
         AssessSum assessSum = assessSumRepo.findById(id).orElseThrow(() -> new RuntimeException("AssessSum not found"));
         Log.info("End getAssessSumById in AssessSumServImpl");
-        return AssessSumWithUserDto.fromEntity(assessSum);
+        return AssessSumDto.fromEntity(assessSum);
     }
 
     @Override
-    public AssessSumWithUserDto createAssessSum(AssessSumReqDto assessSumReqDto) {
+    public AssessSumDto createAssessSum(AssessSumReqDto assessSumReqDto) {
         Log.info("Start createAssessSum in AssessSumServImpl");
         AssessSum currentAssessSum = assessSumRepo.findByUserIdAndYear(assessSumReqDto.getUserId(), assessSumReqDto.getYear());
         if (currentAssessSum != null) {
@@ -137,12 +167,12 @@ public class AssessSumServImpl implements AssessSumServ {
             assessSum.setUser(user);
             assessSum.setCreatedAt(LocalDateTime.now());
             Log.info("End createAssessSum in AssessSumServImpl");
-            return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
+            return AssessSumDto.fromEntity(assessSumRepo.save(assessSum));
         }
     }
 
     @Override
-    public AssessSumWithUserDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto) {
+    public AssessSumDto updateAssessSum(UUID id, AssessSumReqDto assessSumReqDto) {
         Log.info("Start updateAssessSum in AssessSumServImpl");
 
         AssessSum assessSum = assessSumRepo.findById(id)
@@ -168,7 +198,7 @@ public class AssessSumServImpl implements AssessSumServ {
         assessSum.setUpdatedAt(LocalDateTime.now());
 
         Log.info("End updateAssessSum in AssessSumServImpl");
-        return AssessSumWithUserDto.fromEntity(assessSumRepo.save(assessSum));
+        return AssessSumDto.fromEntity(assessSumRepo.save(assessSum));
     }
     @Override
     public Boolean deleteAssessSum(UUID id) {
@@ -182,7 +212,7 @@ public class AssessSumServImpl implements AssessSumServ {
     }
 
     @Override
-    public AssessSumWithUserDto generateAssessSum(UUID userId, Integer year) {
+    public AssessSumDto generateAssessSum(UUID userId, Integer year) {
         Map<String, Object> generatedData = fetchAssessSumData(userId, year);
         int score = (Integer) generatedData.get("score");
         AssessSumReqDto requestData = new AssessSumReqDto();
@@ -198,10 +228,10 @@ public class AssessSumServImpl implements AssessSumServ {
     public void generateAssessSumsForAllUsers(Integer year) {
         List<UUID> allUserIds = userRepo.findAllId();
 
-        List<AssessSumWithUserDto> assessSums = new ArrayList<>();
+        List<AssessSumDto> assessSums = new ArrayList<>();
 
         for (UUID userId : allUserIds) {
-            AssessSumWithUserDto summary = generateAssessSum(userId, year);
+            AssessSumDto summary = generateAssessSum(userId, year);
             assessSums.add(summary);
         }
 
@@ -218,8 +248,8 @@ public class AssessSumServImpl implements AssessSumServ {
         List<GroupedResultDto<EmpAttitudeSkillDto>> groupedAttitudeResults =
                 (List<GroupedResultDto<EmpAttitudeSkillDto>>) generatedData.get("attitudeResults");
 
-        AssessSumWithUserDto assessSum = new AssessSumWithUserDto();
-        UserInfoDto user = new UserInfoDto();
+        AssessSumDto assessSum = new AssessSumDto();
+        UserInfoWithDivDto user = new UserInfoWithDivDto();
         user.setId(userId);
         assessSum.setUser(user);
         assessSum.setYear(year);
@@ -533,21 +563,5 @@ public class AssessSumServImpl implements AssessSumServ {
 
         return AssessSumWithUserDto.fromEntity(updatedAssessSum);
     }
-
-    @Override
-    public AssessSumWithUserDto updateAssessSumStatusToUnapprove(UUID id) {
-        Log.info("Start updateAssessSumStatusToUnapprove in AssessSumServImpl");
-
-        AssessSum assessSum = assessSumRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("AssessSum not found"));
-
-        assessSum.setStatus(0);
-
-        AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
-
-        Log.info("End updateAssessSumStatusToUnapprove in AssessSumServImpl");
-
-        return AssessSumWithUserDto.fromEntity(updatedAssessSum);
-}
 
 }

@@ -226,21 +226,4 @@ public class AssessSumController extends ServerResponseList {
         Log.info("End updateAssessSumStatusToUnapprove in AssessSumController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @PatchMapping("/update-status-to-unapprove/{id}")
-    public ResponseEntity<ManagerDto<AssessSumWithUserDto>> updateAssessSumStatusToUnapprove(
-            @PathVariable("id") UUID id) {
-        Log.info("Start updateAssessSumStatusToUnapprove in AssessSumController");
-        long startTime = System.currentTimeMillis();
-
-        ManagerDto<AssessSumWithUserDto> response = new ManagerDto<>();
-        AssessSumWithUserDto content = assessSumServ.updateAssessSumStatusToUnapprove(id);
-
-        response.setContent(content);
-        response.setTotalRows(1);
-        long endTime = System.currentTimeMillis();
-        long executionTime = endTime - startTime;
-        response.setInfo(getInfoOk("Success update status to unapprove", executionTime));
-        Log.info("End updateAssessSumStatusToUnapprove in AssessSumController");
-        return new ResponseEntity<>(response, HttpStatus.OK);}
 }
