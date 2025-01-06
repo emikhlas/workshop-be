@@ -35,7 +35,7 @@ public class DevPlanServImpl implements DevPlanServ {
 
         devPlan.setCreatedBy(creator);
 
-        devPlan.setCreatedAt(new Date());  // Set the creation date
+        devPlan.setCreatedAt(new Date());
         DevPlan savedDevPlan = devPlanRepo.save(devPlan);
         return convertToDto(savedDevPlan);
     }
@@ -51,7 +51,7 @@ public class DevPlanServImpl implements DevPlanServ {
             currentDevPlan.setEnabled(devPlanDto.getEnabled());
         }
 
-        currentDevPlan.setUpdatedAt(new Date());  // Set the updated date
+        currentDevPlan.setUpdatedAt(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();

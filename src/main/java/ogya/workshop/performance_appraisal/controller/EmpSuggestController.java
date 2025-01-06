@@ -125,7 +125,6 @@ public class EmpSuggestController extends ServerResponseList {
     @PutMapping
     public ResponseEntity<List<EmpSuggestDto>> updates(@RequestBody List<EmpSuggestUpdateRequestDto> empSuggestUpdates) {
         try {
-            // Ekstrak ID dan DTO dari request
             List<UUID> ids = empSuggestUpdates.stream()
                     .map(EmpSuggestUpdateRequestDto::getId)
                     .collect(Collectors.toList());

@@ -14,8 +14,6 @@ public interface UserServ {
     UserDto updateUser(UUID id, UserReqDto userDto);
     Boolean deleteUser(UUID id);
     String resetPassword(UUID id);
-
     Boolean isUsernameExist(String username);
-
     Boolean isEmailExist(String email);
 }

@@ -12,7 +12,6 @@ import java.util.UUID;
 public interface EmpSuggestRepo extends JpaRepository<EmpSuggest, UUID> {
     List<EmpSuggest> findByUserId(UUID userId);
     List<EmpSuggest> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear);
-
     @Query("SELECT DISTINCT e.assessmentYear FROM EmpSuggest e ORDER BY e.assessmentYear DESC")
     List<Integer> findDistinctAssessmentYears();
 }

@@ -56,7 +56,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
         empAchieveSkill.setCreatedBy(creator);
-        empAchieveSkill.setCreatedAt(new Date());  // Set the creation date
+        empAchieveSkill.setCreatedAt(new Date());
         EmpAchieveSkill savedEmpAchieveSkill = empAchieveSkillRepo.save(empAchieveSkill);
         return convertToDto(savedEmpAchieveSkill);
     }

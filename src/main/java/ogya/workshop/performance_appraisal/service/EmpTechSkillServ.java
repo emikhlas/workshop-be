@@ -9,9 +9,7 @@ import java.util.UUID;
 
 public interface EmpTechSkillServ {
     List<EmpTechSkillDto> findAll();
-//    List<EmpTechSkillDto> findAllByEmpId(UUID empId);
     List<EmpTechSkillDto> findAllByTechSkillId(UUID techSkillId);
-//    EmpTechSkillDto save(EmpTechSkillCreateDto empTechSkillDto);
     List<EmpTechSkillDto> save(List<EmpTechSkillCreateDto> empTechSkillDtos);
     Boolean deleteById(UUID id);
     EmpTechSkillDto update(UUID id, EmpTechSkillCreateDto empTechSkillDto);

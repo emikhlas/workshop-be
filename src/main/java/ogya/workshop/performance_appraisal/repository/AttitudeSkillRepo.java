@@ -14,9 +14,7 @@ public interface AttitudeSkillRepo extends JpaRepository<AttitudeSkill, UUID> {
     @Query("SELECT new ogya.workshop.performance_appraisal.dto.attitudeskill.AttitudeWithGroupNameDto(a.id, a.attitudeSkillName, g.id, g.groupName, a.enabled, a.createdAt, a.updatedAt) " +
             "FROM AttitudeSkill a JOIN a.groupAttitudeSkill g")
     List<AttitudeWithGroupNameDto> findAllWithGroupNames();
-
     List<AttitudeSkill> findAllByEnabled(int i);
-
     List<AttitudeSkill> findByGroupAttitudeSkill_Id(UUID groupAttitudeSkillId);
 
 }

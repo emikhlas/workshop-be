@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Repository
 public interface MenuRepo extends JpaRepository<Menu, UUID> {
-
     @Query(value = "SELECT m.id, m.menu_name, m.created_at, m.updated_at, m.created_by, m.updated_by FROM app_user_role ur " +
             "JOIN app_role_menu rm ON ur.role_id = rm.role_id " +
             "JOIN app_menu m ON rm.menu_id = m.id " +

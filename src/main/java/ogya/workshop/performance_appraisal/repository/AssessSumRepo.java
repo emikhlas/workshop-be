@@ -11,13 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface AssessSumRepo extends JpaRepository<AssessSum, UUID>, JpaSpecificationExecutor<AssessSum> {
-
     List<AssessSum> findByUserId(UUID userId);
-
     AssessSum findByUserIdAndYear(UUID userId, Integer year);
-
     List<AssessSum> findByYear(Integer year);
-
     @Query(value = "SELECT DISTINCT YEAR FROM assessment_summary ORDER BY YEAR", nativeQuery = true)
     List<Integer> findDistinctAssessmentYears();
 

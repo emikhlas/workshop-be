@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface EmpAchieveSkillRepo extends JpaRepository<EmpAchieveSkill, UUID> {
-
     @Query("SELECT new ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto(" +
             "e.id, u.id, e.notes, a.id, e.score, e.assessmentYear, u.username, " +
             "a.achievementName, a.createdAt, a.updatedAt) " +
@@ -19,8 +18,6 @@ public interface EmpAchieveSkillRepo extends JpaRepository<EmpAchieveSkill, UUID
             "JOIN e.user u " +
             "JOIN e.achieve a")
     List<EmpAchieveSkillWithUserDto> findEmpAchieveUser();
-
     List<EmpAchieveSkill> findEmpAchieveUserByUserId(UUID userId);
-
     List<EmpAchieveSkill> findEmpAchieveUserByUserIdAndAssessmentYear(UUID userId, Integer year);
 }

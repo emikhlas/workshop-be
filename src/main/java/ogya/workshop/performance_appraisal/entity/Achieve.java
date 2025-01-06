@@ -16,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "ACHIEVEMENT")
 public class Achieve {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)

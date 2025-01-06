@@ -507,26 +507,6 @@ public class AssessSumServImpl implements AssessSumServ {
         return AssessSumWithUserDto.fromEntity(assessSum);
     }
 
-//    @Override
-//    public AssessSumWithUserDto updateAssessSumStatusToActive(UUID id) {
-//        Log.info("Start updateAssessSumStatusToActive in AssessSumServImpl");
-//
-//        // Ambil entitas AssessSum berdasarkan ID
-//        AssessSum assessSum = assessSumRepo.findById(id)
-//                .orElseThrow(() -> new RuntimeException("AssessSum not found"));
-//
-//        // Perbarui status menjadi 1
-//        assessSum.setStatus(1);
-//        assessSum.setUpdatedAt(LocalDateTime.now());
-//
-//        // Simpan perubahan ke database
-//        AssessSum updatedAssessSum = assessSumRepo.save(assessSum);
-//
-//        Log.info("End updateAssessSumStatusToActive in AssessSumServImpl");
-//
-//        // Kembalikan entitas yang diperbarui sebagai DTO
-//        return AssessSumWithUserDto.fromEntity(updatedAssessSum);
-//    }
 
     @Override
     public AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id) {
