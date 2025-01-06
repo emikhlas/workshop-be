@@ -20,14 +20,18 @@ public class AssessSum {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)
     private UUID id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
     @Column(name = "YEAR", length = 4, nullable = false)
     private int year;
+
     @Column(name = "SCORE", length = 3, nullable = false)
     private int score;
+
     @Column(name = "STATUS", length = 1, nullable = false)
     private int status;
 
@@ -41,6 +45,7 @@ public class AssessSum {
 
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "CREATED_BY")

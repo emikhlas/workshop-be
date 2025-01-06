@@ -19,6 +19,5 @@ public interface GroupAttitudeSkillRepo extends JpaRepository<GroupAttitudeSkill
             "GROUP by g.id, g.group_name;",
             nativeQuery = true)
     List<Map<String, Object>> getGroupAttitudeSkillWithCount();
-
     List<GroupAttitudeSkill> findAllByEnabled(int b);
 }

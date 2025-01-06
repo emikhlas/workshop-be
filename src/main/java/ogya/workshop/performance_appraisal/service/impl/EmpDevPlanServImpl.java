@@ -40,7 +40,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             AuthUser authUser = (AuthUser) authentication.getPrincipal();
             User creator = authUser.getUser();
             empDevPlan.setCreatedBy(creator);
-            empDevPlan.setCreatedAt(new Date());  // Set the creation date
+            empDevPlan.setCreatedAt(new Date());
 
             EmpDevPlan savedEmpDevPlan = empDevPlanRepo.save(empDevPlan);
             result.add(convertToDto(savedEmpDevPlan));
@@ -66,7 +66,7 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
             currentEmpDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
         }
 
-        currentEmpDevPlan.setUpdatedAt(new Date());  // Set the updated date
+        currentEmpDevPlan.setUpdatedAt(new Date());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -102,9 +102,8 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
 
         List<EmpDevPlanDto> empDevPlanDtos = empDevPlans.stream().map(empDevPlan -> {
             EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
-            // Fetch the DevPlan and include the plan in the DTO
             if (empDevPlan.getDevPlan() != null) {
-                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());  // Assuming DevPlan has a 'plan' attribute
+                empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());
             }
             return empDevPlanDto;
         }).collect(Collectors.toList());
@@ -122,10 +121,8 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     public List<EmpDevPlanDto> getEmpDevPlanByUserIdAndYear(UUID userId, Integer assessmentYear) {
         List<EmpDevPlan> empDevPlans = empDevPlanRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
 
-        // Transform empDevPlans to EmpDevPlanDto including the 'plan' attribute
         List<EmpDevPlanDto> empDevPlanDtos = empDevPlans.stream().map(empDevPlan -> {
             EmpDevPlanDto empDevPlanDto = convertToDto(empDevPlan);
-            // Fetch the DevPlan and include the 'plan' in the DTO
             if (empDevPlan.getDevPlan() != null) {
                 empDevPlanDto.setPlan(empDevPlan.getDevPlan().getPlan());
             }

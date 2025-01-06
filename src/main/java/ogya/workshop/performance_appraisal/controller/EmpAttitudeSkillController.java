@@ -40,7 +40,6 @@ public class EmpAttitudeSkillController {
     @PutMapping
     public ResponseEntity<List<EmpAttitudeSkillDto>> updateEmpAttitudeSkills(@RequestBody List<EmpAttitudeSkillUpdateRequestDto> empAttitudeSkillUpdates) {
         try {
-            // Ekstrak ID dan DTO dari request
             List<UUID> ids = empAttitudeSkillUpdates.stream()
                     .map(EmpAttitudeSkillUpdateRequestDto::getId)
                     .collect(Collectors.toList());

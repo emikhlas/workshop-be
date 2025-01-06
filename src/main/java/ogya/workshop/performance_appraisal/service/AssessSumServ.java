@@ -24,16 +24,10 @@ public interface AssessSumServ {
     AssessSumDto generateAssessSum(UUID userId, Integer year);
     AssessSumDetailDto getAssessSumDetail(UUID userId, Integer year);
     void generateAssessSumsForAllUsers(Integer year);
-
     List<AssessSumDto> getAllAssessSumByYear(Integer year);
-
     List<Integer> getDistinctAssessmentYears();
-
     List<AssessSumWithUserDto> getAllAssessSumWithUserByYear(Integer year);
-
     AssessSumWithUserDto getAssessmentSummary(UUID userId, Integer year);
-
     AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id);
-
     AssessSumWithUserDto updateAssessSumStatusToUnapprove(UUID id);
 }

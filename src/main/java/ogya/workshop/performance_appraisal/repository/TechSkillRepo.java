@@ -9,7 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface TechSkillRepo extends JpaRepository<TechSkill, UUID> {
-
-
     List<TechSkill> findAllByEnabled(int i);
 }
