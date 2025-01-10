@@ -42,7 +42,7 @@ public class MenuServImpl implements MenuServ {
     public MenuDto updateMenu(UUID id, MenuCreateDto menuDto) {
         Menu currentMenu = menuRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Menu with this ID does not exist."));
 
-        if(menuDto.getMenuName() != null){
+        if (menuDto.getMenuName() != null) {
             currentMenu.setMenuName(menuDto.getMenuName());
         }
 
@@ -82,11 +82,11 @@ public class MenuServImpl implements MenuServ {
         List<Menu> menus = menuRepo.findMenuByUserId(userId);
         Set<Menu> menuSets = new HashSet<>(menuRepo.findMenuByUserId(userId));
         return menuSets.stream()
-                .map(menu ->  {
+                .map(menu -> {
                     return new MenuInfoDto(
                             menu.getId(),
                             menu.getMenuName()
-                    ) ;
+                    );
                 })
                 .collect(Collectors.toList());
     }
@@ -96,11 +96,11 @@ public class MenuServImpl implements MenuServ {
         menuDto.setId(menu.getId());
         menuDto.setMenuName(menu.getMenuName());
         menuDto.setCreatedAt(menu.getCreatedAt());
-        if(menu.getCreatedBy() != null){
+        if (menu.getCreatedBy() != null) {
             menuDto.setCreatedBy(UserInfoDto.fromEntity(menu.getCreatedBy()));
         }
         menuDto.setUpdatedAt(menu.getUpdatedAt());
-        if(menu.getUpdatedBy() != null){
+        if (menu.getUpdatedBy() != null) {
             menuDto.setUpdatedBy(UserInfoDto.fromEntity(menu.getUpdatedBy()));
         }
         return menuDto;

@@ -11,9 +11,14 @@ import java.util.UUID;
 
 public interface DivisionServ {
     DivisionDto createDivision(DivisionCreateDto divisionDto);
+
     DivisionDto updateDivision(UUID id, DivisionCreateDto divisionDto);
+
     Optional<DivisionDto> getDivisionById(UUID id);
+
     List<DivisionDto> getAllDivision();
+
     boolean deleteDivision(UUID id);
+
     List<DivisionInfoDto> getListDivisionName();
 }

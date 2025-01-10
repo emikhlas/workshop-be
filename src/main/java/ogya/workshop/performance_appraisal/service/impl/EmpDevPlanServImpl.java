@@ -52,17 +52,17 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
     public EmpDevPlanDto updateEmpDevPlan(UUID id, EmpDevPlanCreateDto empDevPlanDto) {
         EmpDevPlan currentEmpDevPlan = empDevPlanRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("EmpDevPlan with this ID does not exist."));
 
-        if(empDevPlanDto.getUserId() != null){
+        if (empDevPlanDto.getUserId() != null) {
             User user = userRepo.findById(empDevPlanDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("User with this ID does not exist."));
             currentEmpDevPlan.setUser(user);
         }
 
-        if(empDevPlanDto.getDevPlanId() != null){
+        if (empDevPlanDto.getDevPlanId() != null) {
             DevPlan devPlan = devPlanRepo.findById(empDevPlanDto.getDevPlanId()).orElseThrow(() -> new IllegalArgumentException("DevPlan with this ID does not exist."));
             currentEmpDevPlan.setDevPlan(devPlan);
         }
 
-        if(empDevPlanDto.getAssessmentYear() != null){
+        if (empDevPlanDto.getAssessmentYear() != null) {
             currentEmpDevPlan.setAssessmentYear(empDevPlanDto.getAssessmentYear());
         }
 
@@ -148,11 +148,11 @@ public class EmpDevPlanServImpl implements EmpDevPlanServ {
         }
         empDevPlanDto.setAssessmentYear(empDevPlan.getAssessmentYear());
         empDevPlanDto.setCreatedAt(empDevPlan.getCreatedAt());
-        if(empDevPlan.getCreatedBy() != null){
+        if (empDevPlan.getCreatedBy() != null) {
             empDevPlanDto.setCreatedBy(UserInfoDto.fromEntity(empDevPlan.getCreatedBy()));
         }
         empDevPlanDto.setUpdatedAt(empDevPlan.getUpdatedAt());
-        if(empDevPlan.getUpdatedBy() != null){
+        if (empDevPlan.getUpdatedBy() != null) {
             empDevPlanDto.setUpdatedBy(UserInfoDto.fromEntity(empDevPlan.getUpdatedBy()));
         }
         empDevPlanDto.setPlanDetail(empDevPlan.getPlanDetail());

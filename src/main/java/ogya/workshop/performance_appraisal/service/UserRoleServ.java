@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserRoleServ {
-    List<UserRoleDto> updateUserRole(UUID userId,UserRoleUpdateDto updateDto);
+    List<UserRoleDto> updateUserRole(UUID userId, UserRoleUpdateDto updateDto);
+
     List<UserRoleDto> getUserRoleByUserId(UUID userId);
 }

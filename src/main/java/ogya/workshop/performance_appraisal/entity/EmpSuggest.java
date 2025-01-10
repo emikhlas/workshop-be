@@ -26,7 +26,7 @@ public class EmpSuggest {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @Column(name = "SUGGESTION", length = 200,nullable = false)
+    @Column(name = "SUGGESTION", length = 200, nullable = false)
     private String suggestion;
 
     @Column(name = "ASSESSMENT_YEAR", length = 4)

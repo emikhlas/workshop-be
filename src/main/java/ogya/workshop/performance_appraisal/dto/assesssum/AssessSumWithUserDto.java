@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
-import ogya.workshop.performance_appraisal.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

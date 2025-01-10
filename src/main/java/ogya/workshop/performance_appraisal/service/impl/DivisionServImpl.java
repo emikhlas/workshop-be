@@ -67,7 +67,7 @@ public class DivisionServImpl implements DivisionServ {
     public List<DivisionInfoDto> getListDivisionName() {
         List<Division> division = divisionRepo.findAll();
         List<DivisionInfoDto> divisionInfoDtos = new ArrayList<>();
-        for(Division div : division) {
+        for (Division div : division) {
             DivisionInfoDto divisionInfoDto = new DivisionInfoDto();
             divisionInfoDto.setId(div.getId());
             divisionInfoDto.setDivisionName(div.getDivisionName());
@@ -87,11 +87,11 @@ public class DivisionServImpl implements DivisionServ {
         divisionDto.setId(division.getId());
         divisionDto.setDivisionName(division.getDivisionName());
         divisionDto.setCreatedAt(division.getCreatedAt());
-        if(division.getCreatedBy() != null) {
+        if (division.getCreatedBy() != null) {
             divisionDto.setCreatedBy(UserInfoDto.fromEntity(division.getCreatedBy()));
         }
         divisionDto.setUpdatedAt(division.getUpdatedAt());
-        if(division.getUpdatedBy() != null){
+        if (division.getUpdatedBy() != null) {
             divisionDto.setUpdatedBy(UserInfoDto.fromEntity(division.getUpdatedBy()));
         }
         return divisionDto;

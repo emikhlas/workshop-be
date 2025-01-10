@@ -40,17 +40,13 @@ public class AuthService implements UserDetailsService {
 
         User user = userRepo.findByUsername(username);
         if (user == null) {
-            log.error("User not found: {}", username);
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
         List<UserRole> userRoles = userRoleRepo.findByUserId(user.getId());
         if (userRoles == null || userRoles.isEmpty()) {
-            log.warn("User roles not found for user: {}", username);
             throw new UsernameNotFoundException("No roles found for user: " + username);
         }
-
-        log.info("User roles found for {}: {}", username, userRoles);
 
         List<Role> roles = new ArrayList<>();
         for (UserRole role : userRoles) {
@@ -67,17 +63,13 @@ public class AuthService implements UserDetailsService {
 
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> {
-                    log.error("User not found with ID: {}", userId);
                     return new UsernameNotFoundException("User not found");
                 });
 
         List<UserRole> userRoles = userRoleRepo.findByUserId(userId);
         if (userRoles == null || userRoles.isEmpty()) {
-            log.warn("User roles not found for user ID: {}", userId);
             throw new UsernameNotFoundException("No roles found for user ID: " + userId);
         }
-
-        log.info("User roles found for user ID {}: {}", userId, userRoles);
 
         List<Role> roles = new ArrayList<>();
         for (UserRole role : userRoles) {
@@ -96,18 +88,15 @@ public class AuthService implements UserDetailsService {
 
         User user = userRepo.findByUsername(username);
         if (user == null) {
-            log.error("User not found: {}", username);
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            log.error("Invalid password for user: {}", username);
             throw new UsernameNotFoundException("Invalid password for user: " + username);
         }
 
         List<UserRole> userRoles = userRoleRepo.findByUserId(user.getId());
         if (userRoles == null || userRoles.isEmpty()) {
-            log.warn("User roles not found for user: {}", username);
             throw new UsernameNotFoundException("No roles found for user: " + username);
         }
 
@@ -116,12 +105,12 @@ public class AuthService implements UserDetailsService {
             roles.add(role.getRole());
         }
 
-        return  new AuthUser(user, roles);
+        return new AuthUser(user, roles);
     }
 
     public AuthUser changePassword(UUID id, ChangePasswordDto changePasswordDto) {
         User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
             userRepo.save(user);
             return loadUserById(id);

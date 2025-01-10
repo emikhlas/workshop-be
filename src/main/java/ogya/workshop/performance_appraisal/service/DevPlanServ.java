@@ -9,8 +9,12 @@ import java.util.UUID;
 
 public interface DevPlanServ {
     DevPlanDto createDevPlan(DevPlanCreateDto devPlanDto);
+
     DevPlanDto updateDevPlan(UUID id, DevPlanCreateDto devPlanDto);
+
     Optional<DevPlanDto> getDevPlanById(UUID id);
+
     List<DevPlanDto> getAllDevPlan();
+
     boolean deleteDevPlan(UUID id);
 }

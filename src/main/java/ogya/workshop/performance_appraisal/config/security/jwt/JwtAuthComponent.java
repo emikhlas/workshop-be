@@ -62,7 +62,6 @@ public class JwtAuthComponent extends OncePerRequestFilter {
                 AuthUser userDetails = this.userDetailsService.loadUserById(UUID.fromString(username));
                 System.out.println(userDetails);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    System.out.println("Token is valid");
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -72,7 +71,6 @@ public class JwtAuthComponent extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
-                System.out.println("Token is not valid");
             }
 
 

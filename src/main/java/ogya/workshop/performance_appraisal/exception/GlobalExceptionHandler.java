@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -27,8 +26,7 @@ public class GlobalExceptionHandler extends ServerResponseList {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ManagerDto<?>> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
-        WebRequest request)
-    {
+            WebRequest request) {
         HttpServletRequest servletRequest = ((ServletWebRequest) request).getRequest();
 
         LOG.info("Validation error during request - URL: {}",
@@ -53,10 +51,9 @@ public class GlobalExceptionHandler extends ServerResponseList {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ManagerDto<String>> myExceptionHandler(IllegalArgumentException pe , WebRequest req)
-    {
+    public ResponseEntity<ManagerDto<String>> myExceptionHandler(IllegalArgumentException pe, WebRequest req) {
         ManagerDto<String> managerDto = new ManagerDto<>();
         managerDto.setInfo(getInfoBadRequest(pe.getMessage()));
-        return new ResponseEntity<>(managerDto,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(managerDto, HttpStatus.BAD_REQUEST);
     }
 }

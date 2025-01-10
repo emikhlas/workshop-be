@@ -1,20 +1,15 @@
 package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillCreateDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillWithUserDto;
-import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
-import ogya.workshop.performance_appraisal.service.SharedService;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;

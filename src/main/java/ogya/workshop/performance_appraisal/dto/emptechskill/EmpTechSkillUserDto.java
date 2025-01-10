@@ -2,8 +2,6 @@ package ogya.workshop.performance_appraisal.dto.emptechskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.techskill.TechSkillDto;
-import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import java.time.LocalDateTime;

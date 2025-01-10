@@ -10,7 +10,7 @@ public class ServerResponseList {
         info.setMessage(HttpStatus.OK.name());
         info.setDetailMessage(message);
         info.setDetailInfo(HttpStatus.OK);
-        info.setExecutionTime(executionTime+" ms");
+        info.setExecutionTime(executionTime + " ms");
         return info;
     }
 

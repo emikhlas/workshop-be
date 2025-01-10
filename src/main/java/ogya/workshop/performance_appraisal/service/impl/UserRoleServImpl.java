@@ -32,16 +32,16 @@ public class UserRoleServImpl implements UserRoleServ {
     private RoleRepo roleRepo;
 
     @Override
-    public List<UserRoleDto> updateUserRole(UUID id ,UserRoleUpdateDto updateDto) {
+    public List<UserRoleDto> updateUserRole(UUID id, UserRoleUpdateDto updateDto) {
         Log.info("Start update in UserRoleServImpl");
         List<UserRole> currentUserRole = userRoleRepo.findByUserId(id);
         User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         List<UserRoleDto> updatedUserRole = new ArrayList<>();
-        for(UserRole userRole : currentUserRole) {
+        for (UserRole userRole : currentUserRole) {
             userRoleRepo.delete(userRole);
         }
 
-        for(UUID roleId : updateDto.getRole()) {
+        for (UUID roleId : updateDto.getRole()) {
             Role role = roleRepo.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
             UserRole userRole = new UserRole();
             userRole.setUser(user);

@@ -18,6 +18,8 @@ public interface EmpAchieveSkillRepo extends JpaRepository<EmpAchieveSkill, UUID
             "JOIN e.user u " +
             "JOIN e.achieve a")
     List<EmpAchieveSkillWithUserDto> findEmpAchieveUser();
+
     List<EmpAchieveSkill> findEmpAchieveUserByUserId(UUID userId);
+
     List<EmpAchieveSkill> findEmpAchieveUserByUserIdAndAssessmentYear(UUID userId, Integer year);
 }

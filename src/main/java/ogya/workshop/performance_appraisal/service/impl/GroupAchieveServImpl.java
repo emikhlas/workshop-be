@@ -52,17 +52,17 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
     public GroupAchieveDto updateGroupAchieve(UUID id, GroupAchieveCreateDto groupAchieveDto) {
         GroupAchieve currentGroupAchieve = groupAchieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Group achieve with this ID does not exist."));
 
-        if(groupAchieveDto.getGroupAchievementName() != null){
+        if (groupAchieveDto.getGroupAchievementName() != null) {
             currentGroupAchieve.setGroupAchievementName(groupAchieveDto.getGroupAchievementName());
         }
 
-        if(groupAchieveDto.getPercentage() != null){
+        if (groupAchieveDto.getPercentage() != null) {
             currentGroupAchieve.setPercentage(groupAchieveDto.getPercentage());
         }
 
-        if(groupAchieveDto.getEnabled() != null){
+        if (groupAchieveDto.getEnabled() != null) {
             List<Achieve> achieves = achieveRepo.findByGroupAchieve_Id(id);
-            for(Achieve achieve : achieves){
+            for (Achieve achieve : achieves) {
                 achieve.setEnabled(groupAchieveDto.getEnabled());
                 achieveRepo.save(achieve);
             }
@@ -103,7 +103,7 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
 
     @Override
     public List<GroupAchieveInfoWithCountDto> getGroupAchieveInfoWithCount() {
-        List<Map<String,Object>> result = groupAchieveRepo.getGroupAchieveWithCount();
+        List<Map<String, Object>> result = groupAchieveRepo.getGroupAchieveWithCount();
 
         return result.stream()
                 .map(map -> new GroupAchieveInfoWithCountDto(
@@ -123,11 +123,11 @@ public class GroupAchieveServImpl implements GroupAchieveServ {
         groupAchieveDto.setPercentage(groupAchieve.getPercentage());
         groupAchieveDto.setEnabled(groupAchieve.getEnabled());
         groupAchieveDto.setCreatedAt(groupAchieve.getCreatedAt());
-        if(groupAchieve.getCreatedBy() != null){
+        if (groupAchieve.getCreatedBy() != null) {
             groupAchieveDto.setCreatedBy(UserInfoDto.fromEntity(groupAchieve.getCreatedBy()));
         }
         groupAchieveDto.setUpdatedAt(groupAchieve.getUpdatedAt());
-        if(groupAchieve.getUpdatedBy() != null){
+        if (groupAchieve.getUpdatedBy() != null) {
             groupAchieveDto.setUpdatedBy(UserInfoDto.fromEntity(groupAchieve.getUpdatedBy()));
         }
         return groupAchieveDto;

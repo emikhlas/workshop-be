@@ -10,9 +10,14 @@ import java.util.UUID;
 
 public interface MenuServ {
     MenuDto createMenu(MenuCreateDto menuDto);
+
     MenuDto updateMenu(UUID id, MenuCreateDto menuDto);
+
     Optional<MenuDto> getMenuById(UUID id);
+
     List<MenuDto> getAllMenu();
+
     boolean deleteMenu(UUID id);
+
     List<MenuInfoDto> getMenuByUserId(UUID id);
 }

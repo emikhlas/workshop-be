@@ -1,9 +1,6 @@
 package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillCreateDto;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
-import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillUpdateRequestDto;
 import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestCreateDto;
 import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestDto;
 import ogya.workshop.performance_appraisal.dto.empsuggest.EmpSuggestUpdateRequestDto;
@@ -114,7 +111,7 @@ public class EmpSuggestController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<EmpSuggestDto> response = new ManagerDto<>();
-        response.setContent(empSuggestServ.update(id,empSuggestDto));
+        response.setContent(empSuggestServ.update(id, empSuggestDto));
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
         response.setInfo(getInfoOk("Success update data", executionTime));

@@ -16,10 +16,9 @@ import java.util.UUID;
 @Service
 public class SharedServiceImpl implements SharedService {
 
+    private final AssessSumServ assessSumServ;
     @Autowired
     private AssessSumRepo assessSumRepo;
-
-    private final AssessSumServ assessSumServ;
 
     @Autowired
     public SharedServiceImpl(@Lazy AssessSumServ assessSumServ) {
@@ -41,7 +40,6 @@ public class SharedServiceImpl implements SharedService {
 
     @Override
     public void generateAssessSum(UUID userId, Integer year) {
-        System.out.println("Generate AssessSum for user ID: " + userId + " and year: " + year);
         assessSumServ.generateAssessSum(userId, year);
     }
 }

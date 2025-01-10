@@ -10,9 +10,14 @@ import java.util.UUID;
 
 public interface GroupAchieveServ {
     GroupAchieveDto createGroupAchieve(GroupAchieveCreateDto groupAchieveDto);
+
     GroupAchieveDto updateGroupAchieve(UUID id, GroupAchieveCreateDto groupAchieveDto);
+
     Optional<GroupAchieveDto> getGroupAchieveById(UUID id);
+
     List<GroupAchieveDto> getAllGroupAchieve();
+
     boolean deleteGroupAchieve(UUID id);
+
     List<GroupAchieveInfoWithCountDto> getGroupAchieveInfoWithCount();
 }

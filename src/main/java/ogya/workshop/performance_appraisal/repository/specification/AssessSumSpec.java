@@ -72,7 +72,7 @@ public class AssessSumSpec {
             if (approved == null) {
                 return null;
             }
-            if(approved){
+            if (approved) {
                 return builder.equal(root.get("status"), 1);
             } else {
                 return builder.equal(root.get("status"), 0);

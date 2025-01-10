@@ -89,7 +89,7 @@ public class RoleMenuServImpl implements RoleMenuServ {
     public List<RoleMenuByRoleDto> getAllRoleMenuByRole() {
         List<Role> roleList = roleRepo.findAll();
         List<RoleMenuByRoleDto> roleMenuByRoleDtoList = new ArrayList<>();
-        for(Role role : roleList) {
+        for (Role role : roleList) {
             List<RoleMenu> roleMenuList = roleMenuRepo.findByRoleId(role.getId());
 
             RoleMenuByRoleDto roleMenuByRoleDto = new RoleMenuByRoleDto();

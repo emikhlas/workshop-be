@@ -58,7 +58,6 @@ public class RoleServImpl implements RoleServ {
     public RoleDto createRole(RoleReqDto roleDto) {
         Log.info("Start createRole in RoleServImpl");
         Role role = RoleReqDto.toEntity(roleDto);
-        Log.info("role: {}", role);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
@@ -71,10 +70,10 @@ public class RoleServImpl implements RoleServ {
     }
 
     @Override
-    public RoleDto updateRole(UUID id,RoleReqDto roleDto) {
+    public RoleDto updateRole(UUID id, RoleReqDto roleDto) {
         Log.info("Start updateRole in RoleServImpl");
         Role currentRole = roleRepo.findById(id).orElseThrow(() -> new RuntimeException("Role not found"));
-        if(roleDto.getRolename() != null){
+        if (roleDto.getRolename() != null) {
             currentRole.setRolename(roleDto.getRolename());
         }
         currentRole.setUpdatedAt(LocalDateTime.now());
@@ -92,7 +91,7 @@ public class RoleServImpl implements RoleServ {
     public Boolean deleteRole(UUID id) {
         Log.info("Start deleteRole in RoleServImpl");
         Optional<Role> role = roleRepo.findById(id);
-        if(role.isEmpty()){
+        if (role.isEmpty()) {
             throw new RuntimeException("Role not found");
         }
         roleRepo.deleteById(id);

@@ -15,16 +15,15 @@ import java.util.stream.Collectors;
 
 public class AuthUser implements UserDetails {
 
-    @Getter
-    private User user;
-
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
+    @Getter
+    private final User user;
 
     public AuthUser(User user, List<Role> roles) {
         this.user = user;
-        if (user.getEnabled()==0) {
+        if (user.getEnabled() == 0) {
             throw new IllegalStateException("User account is not enabled");
         }
         this.username = user.getUsername();
@@ -79,7 +78,6 @@ public class AuthUser implements UserDetails {
                 .collect(Collectors.joining(", ")) +
                 '}';
     }
-
 
     public UUID getId() {
         return user.getId();

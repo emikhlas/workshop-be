@@ -26,7 +26,7 @@ public class AttitudeSkillInfoDto {
         AttitudeSkillInfoDto dto = new AttitudeSkillInfoDto();
         dto.setId(attitudeSkill.getId());
         dto.setAttitudeSkillName(attitudeSkill.getAttitudeSkillName());
-        if(attitudeSkill.getGroupAttitudeSkill() != null){
+        if (attitudeSkill.getGroupAttitudeSkill() != null) {
             dto.setGroupAttitudeSkill(GroupAttitudeSkillInfoDto.fromEntity(attitudeSkill.getGroupAttitudeSkill()));
         }
         dto.setEnabled(attitudeSkill.getEnabled());

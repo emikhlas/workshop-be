@@ -24,8 +24,7 @@ public class TechSkillController extends ServerResponseList {
 
     @GetMapping("/all")
     public ResponseEntity<ManagerDto<List<TechSkillDto>>> getAll(
-            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly)
-    {
+            @RequestParam(value = "enabledOnly", required = false, defaultValue = "false") boolean enabledOnly) {
         Log.info("Start getAll in TechSkillController");
         long startTime = System.currentTimeMillis();
         ManagerDto<List<TechSkillDto>> response = new ManagerDto<>();

@@ -3,8 +3,8 @@ package ogya.workshop.performance_appraisal.dto.emptechskill;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.dto.techskill.TechSkillDto;
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserDto;
+import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.EmpTechSkill;
 
 import java.time.LocalDateTime;
@@ -50,10 +50,10 @@ public class EmpTechSkillDto {
         dto.setStatus(empTechSkill.getStatus());
         dto.setCreatedAt(empTechSkill.getCreatedAt());
         dto.setUpdatedAt(empTechSkill.getUpdatedAt());
-        if(empTechSkill.getCreatedBy() != null){
+        if (empTechSkill.getCreatedBy() != null) {
             dto.setCreatedBy(UserInfoDto.fromEntity(empTechSkill.getCreatedBy()));
         }
-        if(empTechSkill.getUpdatedBy() != null){
+        if (empTechSkill.getUpdatedBy() != null) {
             dto.setUpdatedBy(UserInfoDto.fromEntity(empTechSkill.getUpdatedBy()));
         }
         return dto;

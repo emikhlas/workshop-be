@@ -3,7 +3,6 @@ package ogya.workshop.performance_appraisal.dto.attitudeskill;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 
 import java.util.Date;
 import java.util.UUID;

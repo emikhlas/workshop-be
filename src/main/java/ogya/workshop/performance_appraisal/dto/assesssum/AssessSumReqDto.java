@@ -31,8 +31,7 @@ public class AssessSumReqDto {
     }
 
     public static AssessSum toEntity(
-            AssessSumReqDto assessSumReqDto)
-    {
+            AssessSumReqDto assessSumReqDto) {
         AssessSum assessSum = new AssessSum();
         assessSum.setYear(assessSumReqDto.getYear());
         assessSum.setScore(assessSumReqDto.getScore());

@@ -1,19 +1,11 @@
 package ogya.workshop.performance_appraisal.service.impl;
 
 import ogya.workshop.performance_appraisal.config.security.Auth.AuthUser;
-
 import ogya.workshop.performance_appraisal.dto.assesssum.*;
-
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.GroupedResultDto;
-
 import ogya.workshop.performance_appraisal.dto.empachieveskill.EmpAchieveSkillDto;
 import ogya.workshop.performance_appraisal.dto.empattitudeskill.EmpAttitudeSkillDto;
 import ogya.workshop.performance_appraisal.dto.groupachieve.GroupAchieveInfoWithCountDto;
 import ogya.workshop.performance_appraisal.dto.groupattitudeskill.GroupAttitudeSkillInfoWithCountDto;
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoWithDivDto;
 import ogya.workshop.performance_appraisal.entity.AssessSum;
 import ogya.workshop.performance_appraisal.entity.User;
@@ -24,11 +16,9 @@ import ogya.workshop.performance_appraisal.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -82,7 +72,7 @@ public class AssessSumServImpl implements AssessSumServ {
             specification = specification.and(AssessSumSpec.hasDivision(divisionIds));
         }
 
-        if(approved != null) {
+        if (approved != null) {
             specification = specification.and(AssessSumSpec.hasApproved(approved));
         }
 
@@ -106,24 +96,25 @@ public class AssessSumServImpl implements AssessSumServ {
 
         return assessSumList;
     }
+
     @Override
     public List<AssessSumDto> getAllAssessSumByYear(Integer year) {
         Log.info("Start getAssessSumByYear in AssessSumServImpl");
         List<AssessSum> assessSums = assessSumRepo.findByYear(year);
         List<AssessSumDto> assessSumList = new ArrayList<>();
-        for(AssessSum assessSum : assessSums) {
+        for (AssessSum assessSum : assessSums) {
             assessSumList.add(AssessSumDto.fromEntity(assessSum));
         }
         Log.info("End getAssessSumByYear in AssessSumServImpl");
         return assessSumList;
     }
-  
+
     @Override
     public List<AssessSumWithUserDto> getAllAssessSumWithUserByYear(Integer year) {
         Log.info("Start getAssessSumByYear in AssessSumServImpl");
         List<AssessSum> assessSums = assessSumRepo.findByYear(year);
         List<AssessSumWithUserDto> assessSumList = new ArrayList<>();
-        for(AssessSum assessSum : assessSums) {
+        for (AssessSum assessSum : assessSums) {
             assessSumList.add(AssessSumWithUserDto.fromEntity(assessSum));
         }
         Log.info("End getAssessSumByYear in AssessSumServImpl");
@@ -204,6 +195,7 @@ public class AssessSumServImpl implements AssessSumServ {
         Log.info("End updateAssessSum in AssessSumServImpl");
         return AssessSumDto.fromEntity(assessSumRepo.save(assessSum));
     }
+
     @Override
     public Boolean deleteAssessSum(UUID id) {
         Log.info("Start deleteAssessSum in AssessSumServImpl");
@@ -274,7 +266,7 @@ public class AssessSumServImpl implements AssessSumServ {
         List<EmpAttitudeSkillDto> empAttitudeSkills = empAttitudeSkillServ.getEmpAttSkillByUserId(userId, year, true);
         List<EmpAchieveSkillDto> empAchievementSkills = empAchieveSkillServ.getAllEmpUserAchieveByUserId(userId, year, true);
         List<GroupAttitudeSkillInfoWithCountDto> groupAttitudeSkills = groupAttitudeSkillServ.getGroupAttitudeSkillWithCount().stream().filter(g -> g.getEnabled() == 1).toList();
-        List<GroupAchieveInfoWithCountDto> groupAchievements = groupAchieveSkillServ.getGroupAchieveInfoWithCount().stream().filter(g -> g.getEnabled() == 1 ).toList();
+        List<GroupAchieveInfoWithCountDto> groupAchievements = groupAchieveSkillServ.getGroupAchieveInfoWithCount().stream().filter(g -> g.getEnabled() == 1).toList();
 
         List<GroupedResultDto<EmpAchieveSkillDto>> groupedAchieveResults = groupDataByCategory(
                 empAchievementSkills,
@@ -479,21 +471,6 @@ public class AssessSumServImpl implements AssessSumServ {
         return 0;
     }
 
-    class GroupedData<T> {
-        int totalScore = 0;
-        double percentage = 0.0;
-        List<T> items = new ArrayList<>();
-
-        public GroupedData() {
-        }
-
-        public GroupedData(int totalScore, double percentage, List<T> items) {
-            this.totalScore = totalScore;
-            this.percentage = percentage;
-            this.items = items;
-        }
-    }
-
     @Override
     public AssessSumWithUserDto getAssessmentSummary(UUID userId, Integer year) {
         Log.info("Start getAssessmentSummary in AssessSumServImpl");
@@ -506,7 +483,6 @@ public class AssessSumServImpl implements AssessSumServ {
         Log.info("End getAssessmentSummary in AssessSumServImpl");
         return AssessSumWithUserDto.fromEntity(assessSum);
     }
-
 
     @Override
     public AssessSumWithUserDto updateAssessSumStatusToApprove(UUID id) {
@@ -546,6 +522,21 @@ public class AssessSumServImpl implements AssessSumServ {
         Log.info("End updateAssessSumStatusToUnapprove in AssessSumServImpl");
 
         return AssessSumWithUserDto.fromEntity(updatedAssessSum);
+    }
+
+    class GroupedData<T> {
+        int totalScore = 0;
+        double percentage = 0.0;
+        List<T> items = new ArrayList<>();
+
+        public GroupedData() {
+        }
+
+        public GroupedData(int totalScore, double percentage, List<T> items) {
+            this.totalScore = totalScore;
+            this.percentage = percentage;
+            this.items = items;
+        }
     }
 
 }

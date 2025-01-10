@@ -1,14 +1,7 @@
 package ogya.workshop.performance_appraisal.controller;
 
 import ogya.workshop.performance_appraisal.dto.ManagerDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDetailDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumReqDto;
-
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumResDto;
-import ogya.workshop.performance_appraisal.dto.assesssum.AssessSumWithUserDto;
-import ogya.workshop.performance_appraisal.entity.AssessSum;
-
+import ogya.workshop.performance_appraisal.dto.assesssum.*;
 import ogya.workshop.performance_appraisal.service.AssessSumServ;
 import ogya.workshop.performance_appraisal.service.DivisionServ;
 import ogya.workshop.performance_appraisal.util.PageInfo;
@@ -17,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,7 +98,7 @@ public class AssessSumController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<AssessSumDto> response = new ManagerDto<>();
-        AssessSumDto content = assessSumServ.updateAssessSum(id,assessSumReqDto);
+        AssessSumDto content = assessSumServ.updateAssessSum(id, assessSumReqDto);
 
         response.setContent(content);
         response.setTotalRows(1);
@@ -168,7 +161,7 @@ public class AssessSumController extends ServerResponseList {
     }
 
     @GetMapping("/detail/{userId}/{year}")
-    public ResponseEntity<ManagerDto<AssessSumDetailDto>> getAssessSumDetail(@PathVariable("userId") UUID userId, @PathVariable("year") int year){
+    public ResponseEntity<ManagerDto<AssessSumDetailDto>> getAssessSumDetail(@PathVariable("userId") UUID userId, @PathVariable("year") int year) {
         Log.info("Start getAssessSumDetail in AssessSumController");
         long startTime = System.currentTimeMillis();
 

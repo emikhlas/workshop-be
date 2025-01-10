@@ -79,7 +79,7 @@ public class RoleController extends ServerResponseList {
         long startTime = System.currentTimeMillis();
 
         ManagerDto<RoleDto> response = new ManagerDto<>();
-        RoleDto content = roleServ.updateRole(id,roleDto);
+        RoleDto content = roleServ.updateRole(id, roleDto);
 
         response.setContent(content);
         response.setTotalRows(1);
@@ -104,6 +104,4 @@ public class RoleController extends ServerResponseList {
         Log.info("End deleteRole in RoleController");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }

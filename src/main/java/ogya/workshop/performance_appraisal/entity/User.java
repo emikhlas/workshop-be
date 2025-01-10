@@ -16,7 +16,7 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "APP_USER")
-public class User{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID", nullable = false)

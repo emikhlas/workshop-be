@@ -10,7 +10,6 @@ import ogya.workshop.performance_appraisal.entity.EmpAttitudeSkill;
 import ogya.workshop.performance_appraisal.entity.User;
 import ogya.workshop.performance_appraisal.repository.EmpAttitudeSkillRepo;
 import ogya.workshop.performance_appraisal.service.EmpAttitudeSkillServ;
-import ogya.workshop.performance_appraisal.service.SharedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +43,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
 
     @Override
     public EmpAttitudeSkillDto updateEmpAttitudeSkill(UUID id, EmpAttitudeSkillCreateDto empAttitudeSkillDto) {
-        EmpAttitudeSkill currentEmpAttitudeSkill = empAttitudeSkillRepo.findById(id).orElseThrow( () -> new RuntimeException("EmpAttitudeSkill not found"));
+        EmpAttitudeSkill currentEmpAttitudeSkill = empAttitudeSkillRepo.findById(id).orElseThrow(() -> new RuntimeException("EmpAttitudeSkill not found"));
 
         if (empAttitudeSkillDto.getUserId() != null) {
             User user = new User();
@@ -90,7 +89,7 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
             if (empAttitudeSkillDto.getUserId() != null) {
                 User user = new User();
                 user.setId(empAttitudeSkillDto.getUserId());
-                currentEmpAttitudeSkill.setUser (user);
+                currentEmpAttitudeSkill.setUser(user);
             }
             if (empAttitudeSkillDto.getAttitudeSkillId() != null) {
                 AttitudeSkill attitudeSkill = new AttitudeSkill();
@@ -101,8 +100,8 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
             currentEmpAttitudeSkill.setAssessmentYear(empAttitudeSkillDto.getAssessmentYear());
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            AuthUser  authUser  = (AuthUser ) authentication.getPrincipal();
-            User creator = authUser .getUser ();
+            AuthUser authUser = (AuthUser) authentication.getPrincipal();
+            User creator = authUser.getUser();
 
             currentEmpAttitudeSkill.setUpdatedBy(creator);
             currentEmpAttitudeSkill.setUpdatedAt(new Date());
@@ -129,9 +128,9 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
 
 
     @Override
-    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly){
+    public List<EmpAttitudeSkillDto> getEmpAttSkillByUserId(UUID userId, Integer year, boolean enabledOnly) {
         List<EmpAttitudeSkill> empAttitudeSkills = empAttitudeSkillRepo.findByUserIdAndAssessmentYear(userId, year);
-        if(enabledOnly){
+        if (enabledOnly) {
             empAttitudeSkills = empAttitudeSkills.stream().filter(e -> e.getAttitudeSkill().getGroupAttitudeSkill().getEnabled() == 1 && e.getAttitudeSkill().getEnabled() == 1).toList();
         }
         return empAttitudeSkills.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -158,7 +157,6 @@ public class EmpAttitudeSkillServImpl implements EmpAttitudeSkillServ {
                 .distinct()
                 .collect(Collectors.toList());
     }
-
 
 
     private EmpAttitudeSkillDto convertToDto(EmpAttitudeSkill empAttitudeSkill) {

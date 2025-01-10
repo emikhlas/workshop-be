@@ -33,7 +33,7 @@ public class TechSkillServImpl implements TechSkillServ {
         List<TechSkill> response;
         if (enabledOnly) {
             response = techSkillRepo.findAllByEnabled(1);
-        }else {
+        } else {
             response = techSkillRepo.findAll();
         }
         for (TechSkill techSkill : response) {
@@ -72,10 +72,10 @@ public class TechSkillServImpl implements TechSkillServ {
     public TechSkillDto update(UUID id, TechSkillCreateDto dto) {
         Log.info("Start update in TechSkillServImpl");
         TechSkill currentTechSkill = techSkillRepo.findById(id).orElseThrow(() -> new RuntimeException("TechSkill not found"));
-        if(dto.getTechSkill() != null){
+        if (dto.getTechSkill() != null) {
             currentTechSkill.setTechSkill(dto.getTechSkill());
         }
-        if(dto.getEnabled() != null){
+        if (dto.getEnabled() != null) {
             currentTechSkill.setEnabled(dto.getEnabled());
         }
         currentTechSkill.setUpdatedAt(LocalDateTime.now());

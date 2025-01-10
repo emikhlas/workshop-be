@@ -52,15 +52,15 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
     public GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillCreateDto groupAttitudeSkillDto) {
         GroupAttitudeSkill currentGroupAttitudeSkill = groupAttitudeSkillRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
 
-        if(groupAttitudeSkillDto.getGroupName() != null){
+        if (groupAttitudeSkillDto.getGroupName() != null) {
             currentGroupAttitudeSkill.setGroupName(groupAttitudeSkillDto.getGroupName());
         }
-        if(groupAttitudeSkillDto.getPercentage() != null){
+        if (groupAttitudeSkillDto.getPercentage() != null) {
             currentGroupAttitudeSkill.setPercentage(groupAttitudeSkillDto.getPercentage());
         }
 
         List<AttitudeSkill> attitudeSkills = attitudeSkillRepo.findByGroupAttitudeSkill_Id(id);
-        if(groupAttitudeSkillDto.getEnabled() != null){
+        if (groupAttitudeSkillDto.getEnabled() != null) {
             currentGroupAttitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
             for (AttitudeSkill attitudeSkill : attitudeSkills) {
                 attitudeSkill.setEnabled(groupAttitudeSkillDto.getEnabled());
@@ -88,9 +88,9 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
 
     @Override
     public List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills(boolean enabledOnly) {
-        if(enabledOnly){
+        if (enabledOnly) {
             return groupAttitudeSkillRepo.findAllByEnabled(1).stream().map(this::convertToDto).collect(Collectors.toList());
-        }else{
+        } else {
             return groupAttitudeSkillRepo.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         }
     }
@@ -141,10 +141,10 @@ public class GroupAttitudeSkillServImpl implements GroupAttitudeSkillServ {
         groupAttitudeSkillDto.setEnabled(groupAttitudeSkill.getEnabled());
         groupAttitudeSkillDto.setCreatedAt(groupAttitudeSkill.getCreatedAt());
         groupAttitudeSkillDto.setUpdatedAt(groupAttitudeSkill.getUpdatedAt());
-        if(groupAttitudeSkill.getCreatedBy() != null){
+        if (groupAttitudeSkill.getCreatedBy() != null) {
             groupAttitudeSkillDto.setCreatedBy(UserInfoDto.fromEntity(groupAttitudeSkill.getCreatedBy()));
         }
-        if(groupAttitudeSkill.getUpdatedBy() != null){
+        if (groupAttitudeSkill.getUpdatedBy() != null) {
             groupAttitudeSkillDto.setUpdatedBy(UserInfoDto.fromEntity(groupAttitudeSkill.getUpdatedBy()));
         }
         return groupAttitudeSkillDto;

@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class TechSkill {
     @Column(name = "ID", nullable = false)
     private UUID id;
 
-    @Column(name = "TECHNICAL_SKILL", length = 100 ,nullable = false)
+    @Column(name = "TECHNICAL_SKILL", length = 100, nullable = false)
     private String techSkill;
 
     @Column(name = "ENABLED")

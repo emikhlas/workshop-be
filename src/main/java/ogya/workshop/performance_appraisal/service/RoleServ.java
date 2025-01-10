@@ -9,9 +9,14 @@ import java.util.UUID;
 
 public interface RoleServ {
     List<RoleDto> getAllRoles();
+
     RoleDto getRoleById(UUID id);
+
     RoleDto createRole(RoleReqDto roleDto);
+
     RoleDto updateRole(UUID id, RoleReqDto roleDto);
+
     Boolean deleteRole(UUID id);
+
     List<UserRoleDto> getUsersWithRole();
 }

@@ -11,9 +11,11 @@ import java.util.UUID;
 @Repository
 public interface EmpTechSkillRepo extends JpaRepository<EmpTechSkill, UUID> {
     List<EmpTechSkill> findByUserId(UUID userId);
+
     List<EmpTechSkill> findByTechSkillId(UUID techSkillId);
+
     List<EmpTechSkill> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear);
+
     @Query("SELECT DISTINCT e.assessmentYear FROM EmpTechSkill e ORDER BY e.assessmentYear DESC")
     List<Integer> findDistinctAssessmentYears();
-
 }

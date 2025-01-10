@@ -52,16 +52,16 @@ public class AchieveServImpl implements AchieveServ {
     @Override
     public AchieveDto updateAchievement(UUID id, AchieveCreateDto achieveDto) {
         Achieve currentAchieve = achieveRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Achieve with this ID does not exist."));
-        if(achieveDto.getAchievementName() != null){
+        if (achieveDto.getAchievementName() != null) {
             currentAchieve.setAchievementName(achieveDto.getAchievementName());
         }
 
-        if(achieveDto.getGroupAchievementId() != null){
+        if (achieveDto.getGroupAchievementId() != null) {
 
             GroupAchieve groupAchieve = groupAchieveRepo.findById(achieveDto.getGroupAchievementId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
             currentAchieve.setGroupAchieve(groupAchieve);
         }
-        if(achieveDto.getEnabled() != null){
+        if (achieveDto.getEnabled() != null) {
             currentAchieve.setEnabled(achieveDto.getEnabled());
         }
 
@@ -112,7 +112,7 @@ public class AchieveServImpl implements AchieveServ {
         achieveDto.setEnabled(achieve.getEnabled());
         achieveDto.setCreatedAt(achieve.getCreatedAt());
 
-        if(achieve.getCreatedAt() != null) {
+        if (achieve.getCreatedAt() != null) {
             achieveDto.setCreatedBy(UserInfoDto.fromEntity(achieve.getCreatedBy()));
         }
         if (achieve.getCreatedBy() != null) {
@@ -120,7 +120,7 @@ public class AchieveServImpl implements AchieveServ {
 
         }
         achieveDto.setUpdatedAt(achieve.getUpdatedAt());
-        if(achieve.getUpdatedBy() != null){
+        if (achieve.getUpdatedBy() != null) {
             achieveDto.setUpdatedBy(UserInfoDto.fromEntity(achieve.getUpdatedBy()));
         }
         return achieveDto;

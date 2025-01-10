@@ -26,7 +26,7 @@ public class EmpTechSkillController extends ServerResponseList {
     private EmpTechSkillServ empTechSkillServ;
 
     @GetMapping("/all")
-    public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>>  getAllEmpTechSkill() {
+    public ResponseEntity<ManagerDto<List<EmpTechSkillDto>>> getAllEmpTechSkill() {
         Log.info("Start getAllEmpTechSkill in EmpTechSkillController");
 
         Long startTime = System.currentTimeMillis();
@@ -43,7 +43,7 @@ public class EmpTechSkillController extends ServerResponseList {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<EmpTechSkillUserDto>> getAllUserEmpTech(@PathVariable UUID userId){
+    public ResponseEntity<List<EmpTechSkillUserDto>> getAllUserEmpTech(@PathVariable UUID userId) {
         List<EmpTechSkillUserDto> empTechSkills = empTechSkillServ.findByUserId(userId);
         return ResponseEntity.ok(empTechSkills);
     }
@@ -66,13 +66,13 @@ public class EmpTechSkillController extends ServerResponseList {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ManagerDto<EmpTechSkillDto>> update(@PathVariable("id") UUID id,@RequestBody EmpTechSkillCreateDto empTechSkillDto) {
+    public ResponseEntity<ManagerDto<EmpTechSkillDto>> update(@PathVariable("id") UUID id, @RequestBody EmpTechSkillCreateDto empTechSkillDto) {
         Log.info("Start update in EmpTechSkillController");
 
         Long startTime = System.currentTimeMillis();
 
         ManagerDto<EmpTechSkillDto> result = new ManagerDto<>();
-        EmpTechSkillDto content = empTechSkillServ.update(id,empTechSkillDto);
+        EmpTechSkillDto content = empTechSkillServ.update(id, empTechSkillDto);
         result.setContent(content);
         result.setTotalRows(1);
 
@@ -94,7 +94,6 @@ public class EmpTechSkillController extends ServerResponseList {
     public List<Integer> getAllAssessmentYears() {
         Log.info("Received request to get all distinct assessment years");
         List<Integer> assessmentYears = empTechSkillServ.getAllEmpTechSkillYears();
-        Log.info("Returning assessment years: {}", assessmentYears);
         return assessmentYears;
     }
 

@@ -10,10 +10,16 @@ import java.util.UUID;
 
 public interface EmpAchieveSkillServ {
     EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto);
+
     EmpAchieveSkillDto updateEmpAchieveSkill(UUID id, EmpAchieveSkillCreateDto empAchieveSkillDto);
+
     Optional<EmpAchieveSkillDto> getEmpAchieveSkillById(UUID id);
+
     List<EmpAchieveSkillDto> getAllEmpAchieveSkill();
+
     boolean deleteEmpAchieveSkill(UUID id);
+
     List<EmpAchieveSkillWithUserDto> getAllEmpUserAchieve();
+
     List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID id, Integer year, boolean enabledOnly);
 }

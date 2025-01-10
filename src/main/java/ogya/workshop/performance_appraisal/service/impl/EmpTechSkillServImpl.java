@@ -43,11 +43,10 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     public List<EmpTechSkillDto> findAll() {
         Log.info("Start findAll in EmpTechSkillServImpl");
         List<EmpTechSkill> response = empTechSkillRepo.findAll();
-        Log.info("Received response: {}", response);
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
             EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-            if(empTechSkillDto.getTechSkill().getEnabled() == 1) {
+            if (empTechSkillDto.getTechSkill().getEnabled() == 1) {
                 result.add(empTechSkillDto);
             }
         }
@@ -56,7 +55,7 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     }
 
     @Override
-    public List<EmpTechSkillUserDto> findByUserId(UUID userId){
+    public List<EmpTechSkillUserDto> findByUserId(UUID userId) {
         List<EmpTechSkill> empTechSkills = empTechSkillRepo.findByUserId(userId);
 
         List<EmpTechSkillUserDto> empTechSkillUserDtos = empTechSkills.stream().map(empTechSkill -> {
@@ -72,12 +71,11 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     @Override
     public List<EmpTechSkillDto> findByUserIdAndAssessmentYear(UUID userId, Integer assessmentYear) {
         Log.info("Start findByUserIdAndAssessmentYear in EmpTechSkillServImpl");
-        List<EmpTechSkill> response = empTechSkillRepo.findByUserIdAndAssessmentYear(userId,assessmentYear);
-        Log.info("Received response: {}", response);
+        List<EmpTechSkill> response = empTechSkillRepo.findByUserIdAndAssessmentYear(userId, assessmentYear);
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
             EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
-            if(empTechSkillDto.getTechSkill().getEnabled() == 1) {
+            if (empTechSkillDto.getTechSkill().getEnabled() == 1) {
                 result.add(empTechSkillDto);
             }
         }
@@ -89,7 +87,6 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     public List<Integer> getAllEmpTechSkillYears() {
         Log.info("Fetching all distinct assessment years from EmpTechSkill");
         List<Integer> assessmentYears = empTechSkillRepo.findDistinctAssessmentYears();
-        Log.info("Found assessment years: {}", assessmentYears);
         return assessmentYears;
     }
 
@@ -98,7 +95,6 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     public List<EmpTechSkillDto> findAllByTechSkillId(UUID techSkillId) {
         Log.info("Start findAllByTechSkillId in EmpTechSkillServImpl");
         List<EmpTechSkill> response = empTechSkillRepo.findByTechSkillId(techSkillId);
-        Log.info("Received response: {}", response);
         List<EmpTechSkillDto> result = new ArrayList<>();
         for (EmpTechSkill empTechSkill : response) {
             EmpTechSkillDto empTechSkillDto = EmpTechSkillDto.fromEntity(empTechSkill);
@@ -155,10 +151,13 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     public EmpTechSkillDto update(UUID id, EmpTechSkillCreateDto empTechSkillDto) {
         Log.info("Start update in EmpTechSkillServImpl");
         EmpTechSkill empTechSkill = empTechSkillRepo.findById(id).orElseThrow(() -> new RuntimeException("EmpTechSkill not found"));
-        if(empTechSkillDto.getUserId() != null) empTechSkill.setUser(userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found")));
-        if(empTechSkillDto.getTechSkillId() != null) empTechSkill.setTechSkill(techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found")));
-        if(empTechSkillDto.getScore() != null) empTechSkill.setScore(empTechSkillDto.getScore());
-        if(empTechSkillDto.getAssessmentYear() != null) empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
+        if (empTechSkillDto.getUserId() != null)
+            empTechSkill.setUser(userRepo.findById(empTechSkillDto.getUserId()).orElseThrow(() -> new RuntimeException("User not found")));
+        if (empTechSkillDto.getTechSkillId() != null)
+            empTechSkill.setTechSkill(techSkillRepo.findById(empTechSkillDto.getTechSkillId()).orElseThrow(() -> new RuntimeException("TechSkill not found")));
+        if (empTechSkillDto.getScore() != null) empTechSkill.setScore(empTechSkillDto.getScore());
+        if (empTechSkillDto.getAssessmentYear() != null)
+            empTechSkill.setAssessmentYear(empTechSkillDto.getAssessmentYear());
         empTechSkill.setUpdatedAt(LocalDateTime.now());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -173,10 +172,10 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
     private EmpTechSkillUserDto convertToDto(EmpTechSkill empTechSkill) {
         EmpTechSkillUserDto empTechSkillUserDto = new EmpTechSkillUserDto();
         empTechSkillUserDto.setId(empTechSkill.getId());
-        if (empTechSkill.getUser() !=null){
+        if (empTechSkill.getUser() != null) {
             empTechSkillUserDto.setUserId(empTechSkill.getUser().getId());
         }
-        if (empTechSkill.getTechSkill() !=null){
+        if (empTechSkill.getTechSkill() != null) {
             empTechSkillUserDto.setTechSkillId(empTechSkill.getTechSkill().getId());
         }
         empTechSkillUserDto.setTechDetail(empTechSkill.getTechDetail());
@@ -185,10 +184,10 @@ public class EmpTechSkillServImpl implements EmpTechSkillServ {
         empTechSkillUserDto.setStatus(empTechSkill.getStatus());
         empTechSkillUserDto.setCreatedAt(empTechSkill.getCreatedAt());
         empTechSkillUserDto.setUpdatedAt(empTechSkill.getUpdatedAt());
-        if(empTechSkill.getCreatedBy() != null){
+        if (empTechSkill.getCreatedBy() != null) {
             empTechSkillUserDto.setCreatedBy(UserInfoDto.fromEntity(empTechSkill.getCreatedBy()));
         }
-        if(empTechSkill.getUpdatedBy() != null){
+        if (empTechSkill.getUpdatedBy() != null) {
             empTechSkillUserDto.setUpdatedBy(UserInfoDto.fromEntity(empTechSkill.getUpdatedBy()));
         }
         return empTechSkillUserDto;

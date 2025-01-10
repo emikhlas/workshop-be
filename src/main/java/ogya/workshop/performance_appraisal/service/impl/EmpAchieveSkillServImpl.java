@@ -14,7 +14,6 @@ import ogya.workshop.performance_appraisal.repository.EmpAchieveSkillRepo;
 import ogya.workshop.performance_appraisal.repository.UserRepo;
 import ogya.workshop.performance_appraisal.service.EmpAchieveSkillServ;
 import ogya.workshop.performance_appraisal.service.SharedService;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +48,7 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
 
     @Override
     public EmpAchieveSkillDto createEmpAchieveSkill(EmpAchieveSkillCreateDto empAchieveSkillDto) {
-        System.out.println("dto: "+ empAchieveSkillDto);
         EmpAchieveSkill empAchieveSkill = convertToEntity(empAchieveSkillDto);
-        System.out.println("entity :" + empAchieveSkill);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
@@ -123,11 +120,11 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
         empAchieveSkillDto.setCreatedAt(empAchieveSkill.getCreatedAt());
         empAchieveSkillDto.setUpdatedAt(empAchieveSkill.getUpdatedAt());
 
-        if(empAchieveSkill.getCreatedBy() != null) {
+        if (empAchieveSkill.getCreatedBy() != null) {
             empAchieveSkillDto.setCreatedBy(UserInfoDto.fromEntity(empAchieveSkill.getCreatedBy()));
         }
 
-        if(empAchieveSkill.getUpdatedBy() != null) {
+        if (empAchieveSkill.getUpdatedBy() != null) {
             empAchieveSkillDto.setUpdatedBy(UserInfoDto.fromEntity(empAchieveSkill.getUpdatedBy()));
         }
         return empAchieveSkillDto;
@@ -160,13 +157,13 @@ public class EmpAchieveSkillServImpl implements EmpAchieveSkillServ {
     @Override
     public List<EmpAchieveSkillDto> getAllEmpUserAchieveByUserId(UUID userId, Integer year, boolean enabledOnly) {
         List<EmpAchieveSkill> empAchieveSkills;
-        if(year == null) {
+        if (year == null) {
             empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserId(userId);
-        }else{
+        } else {
             empAchieveSkills = empAchieveSkillRepo.findEmpAchieveUserByUserIdAndAssessmentYear(userId, year);
         }
         if (enabledOnly) {
-            empAchieveSkills = empAchieveSkills.stream().filter(e -> e.getAchieve().getEnabled()==1 && e.getAchieve().getGroupAchieve().getEnabled()==1).toList();
+            empAchieveSkills = empAchieveSkills.stream().filter(e -> e.getAchieve().getEnabled() == 1 && e.getAchieve().getGroupAchieve().getEnabled() == 1).toList();
         }
         List<EmpAchieveSkillDto> empAchieveSkillDtos = empAchieveSkills.stream().map(this::convertToDto).collect(Collectors.toList());
         return empAchieveSkillDtos;

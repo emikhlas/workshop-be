@@ -11,12 +11,19 @@ import java.util.UUID;
 
 public interface GroupAttitudeSkillServ {
     GroupAttitudeSkillDto createGroupAttitudeSkill(GroupAttitudeSkillCreateDto groupAttitudeSkillDto);
+
     GroupAttitudeSkillDto updateGroupAttitudeSkill(UUID id, GroupAttitudeSkillCreateDto groupAttitudeSkillDto);
+
     Optional<GroupAttitudeSkillDto> getGroupAttitudeSkillById(UUID id);
+
     List<GroupAttitudeSkillDto> getAllGroupAttitudeSkills(boolean enabledOnly);
+
     boolean deleteGroupAttitudeSkill(UUID id);
+
     GroupAttWithAttDto getGroupWithAttitudeSkills(UUID id);
+
     List<GroupAttWithAttDto> getAllGroupWithAttitudeSkills();
+
     List<GroupAttitudeSkillInfoWithCountDto> getGroupAttitudeSkillWithCount();
 
 }

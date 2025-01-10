@@ -2,11 +2,9 @@ package ogya.workshop.performance_appraisal.dto.techskill;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.TechSkill;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -38,10 +36,10 @@ public class TechSkillDto {
         dto.setEnabled(techSkill.getEnabled());
         dto.setCreatedAt(techSkill.getCreatedAt());
         dto.setUpdatedAt(techSkill.getUpdatedAt());
-        if(techSkill.getCreatedBy() != null){
+        if (techSkill.getCreatedBy() != null) {
             dto.setCreatedBy(UserInfoDto.fromEntity(techSkill.getCreatedBy()));
         }
-        if(techSkill.getUpdatedBy() != null){
+        if (techSkill.getUpdatedBy() != null) {
             dto.setUpdatedBy(UserInfoDto.fromEntity(techSkill.getUpdatedBy()));
         }
         return dto;

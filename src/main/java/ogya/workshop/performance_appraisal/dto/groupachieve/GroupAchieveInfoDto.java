@@ -2,10 +2,8 @@ package ogya.workshop.performance_appraisal.dto.groupachieve;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.GroupAchieve;
 
-import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor

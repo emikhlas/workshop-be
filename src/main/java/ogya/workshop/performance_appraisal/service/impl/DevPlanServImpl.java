@@ -44,10 +44,10 @@ public class DevPlanServImpl implements DevPlanServ {
     public DevPlanDto updateDevPlan(UUID id, DevPlanCreateDto devPlanDto) {
         DevPlan currentDevPlan = devPlanRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("DevPlan with this ID does not exist."));
 
-        if(devPlanDto.getPlan() != null){
+        if (devPlanDto.getPlan() != null) {
             currentDevPlan.setPlan(devPlanDto.getPlan());
         }
-        if(devPlanDto.getEnabled() != null){
+        if (devPlanDto.getEnabled() != null) {
             currentDevPlan.setEnabled(devPlanDto.getEnabled());
         }
 
@@ -87,11 +87,11 @@ public class DevPlanServImpl implements DevPlanServ {
         devPlanDto.setPlan(devPlan.getPlan());
         devPlanDto.setEnabled(devPlan.getEnabled());
         devPlanDto.setCreatedAt(devPlan.getCreatedAt());
-        if(devPlan.getCreatedBy() != null){
+        if (devPlan.getCreatedBy() != null) {
             devPlanDto.setCreatedBy(UserInfoDto.fromEntity(devPlan.getCreatedBy()));
         }
         devPlanDto.setUpdatedAt(devPlan.getUpdatedAt());
-        if(devPlan.getUpdatedBy() != null){
+        if (devPlan.getUpdatedBy() != null) {
             devPlanDto.setUpdatedBy(UserInfoDto.fromEntity(devPlan.getUpdatedBy()));
         }
         return devPlanDto;

@@ -7,7 +7,6 @@ import ogya.workshop.performance_appraisal.dto.ManagerDto;
 import ogya.workshop.performance_appraisal.dto.auth.AuthRequestDto;
 import ogya.workshop.performance_appraisal.dto.auth.AuthResponseDto;
 import ogya.workshop.performance_appraisal.dto.auth.ChangePasswordDto;
-import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoWithDivDto;
 import ogya.workshop.performance_appraisal.util.ServerResponseList;
 import org.slf4j.Logger;

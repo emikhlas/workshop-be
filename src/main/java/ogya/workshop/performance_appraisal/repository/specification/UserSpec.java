@@ -8,27 +8,27 @@ import java.util.UUID;
 
 public class UserSpec {
 
-    public static Specification<User> hasName(String name){
+    public static Specification<User> hasName(String name) {
         return (root, query, builder) ->
                 name == null ? null : builder.like(builder.lower(root.get("fullName")),
-                        "%" + name.toLowerCase() + "%" );
+                        "%" + name.toLowerCase() + "%");
     }
 
-    public static Specification<User> hasPosition(String position){
+    public static Specification<User> hasPosition(String position) {
         return (root, query, builder) ->
                 position == null ? null : builder.like(builder.lower(root.get("position")),
-                        "%" + position.toLowerCase() + "%" );
+                        "%" + position.toLowerCase() + "%");
     }
 
-    public static Specification<User> hasEmail(String email){
+    public static Specification<User> hasEmail(String email) {
         return (root, query, builder) ->
                 email == null ? null : builder.like(builder.lower(root.get("emailAddress")),
                         "%" + email.toLowerCase() + "%");
     }
 
-    public static Specification<User> hasDivision(UUID divisionId){
+    public static Specification<User> hasDivision(UUID divisionId) {
         return (root, query, builder) -> {
-            if(divisionId == null){
+            if (divisionId == null) {
                 return null;
             }
 
@@ -37,5 +37,5 @@ public class UserSpec {
         };
     }
 
-    
+
 }

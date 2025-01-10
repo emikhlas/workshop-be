@@ -20,12 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -53,6 +53,10 @@ public class UserServImpl implements UserServ {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public static String generatePassword() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+    }
 
     @Override
     public Page<UserDto> getAllUsers(String searchTerm, Pageable pageable) {
@@ -84,9 +88,9 @@ public class UserServImpl implements UserServ {
         Optional<User> user = userRepo.findById(id);
         List<UserRole> userRoles = userRoleRepo.findByUserId(id);
         Set<RoleInfoDto> roles = new HashSet<>();
-        if(!userRoles.isEmpty()) {
+        if (!userRoles.isEmpty()) {
             for (UserRole userRole : userRoles) {
-                Role role= userRole.getRole();
+                Role role = userRole.getRole();
                 roles.add(RoleInfoDto.fromEntity(role));
             }
         }
@@ -111,7 +115,6 @@ public class UserServImpl implements UserServ {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         User creator = authUser.getUser();
-        Log.info("creator: {}", creator);
 
         user.setCreatedBy(creator);
         user.setCreatedAt(LocalDateTime.now());
@@ -119,7 +122,7 @@ public class UserServImpl implements UserServ {
         userRepo.save(user);
         UserDto result = UserDto.fromEntity(user);
         Set<RoleInfoDto> roles = new HashSet<>();
-        for(UUID roleId : userDto.getRole()) {
+        for (UUID roleId : userDto.getRole()) {
             Role role = roleRepo.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
             UserRole userRole = new UserRole();
             userRole.setUser(user);
@@ -134,21 +137,21 @@ public class UserServImpl implements UserServ {
     }
 
     @Override
-    public UserDto updateUser (UUID id, UserReqDto userDto) {
+    public UserDto updateUser(UUID id, UserReqDto userDto) {
         Log.info("Start updateUser in UserServImpl");
-        User findUser  = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User  not found"));
+        User findUser = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User  not found"));
         if (userDto.getDivisionId() != null) {
             Division division = divisionRepo.findById(userDto.getDivisionId()).orElseThrow(() -> new RuntimeException("Division not found"));
             findUser.setDivision(division);
         }
 
-        if(userDto.getRole() != null) {
+        if (userDto.getRole() != null) {
             UserRoleUpdateDto userRoleUpdateDto = new UserRoleUpdateDto();
             userRoleUpdateDto.setRole(userDto.getRole());
-            userRoleServ.updateUserRole(id,userRoleUpdateDto);
+            userRoleServ.updateUserRole(id, userRoleUpdateDto);
         }
 
-        updateUserFields(findUser , userDto);
+        updateUserFields(findUser, userDto);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -196,10 +199,6 @@ public class UserServImpl implements UserServ {
         Boolean emailExist = userRepo.existsByEmailAddress(email);
         Log.info("End isEmailExist in UserServImpl");
         return emailExist;
-    }
-
-    public static String generatePassword() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
     }
 
     private void updateUserFields(User existingUser, UserReqDto userDto) {

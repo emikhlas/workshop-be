@@ -3,13 +3,8 @@ package ogya.workshop.performance_appraisal.dto.role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
-import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.entity.Role;
-import ogya.workshop.performance_appraisal.entity.User;
-import org.springframework.beans.BeanUtils;
 
-import java.beans.BeanProperty;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -38,10 +33,10 @@ public class RoleDto {
         dto.setRolename(role.getRolename());
         dto.setCreatedAt(role.getCreatedAt());
         dto.setUpdatedAt(role.getUpdatedAt());
-        if(role.getCreatedBy() != null){
+        if (role.getCreatedBy() != null) {
             dto.setCreatedBy(UserInfoDto.fromEntity(role.getCreatedBy()));
         }
-        if(role.getUpdatedBy() != null){
+        if (role.getUpdatedBy() != null) {
             dto.setUpdatedBy(UserInfoDto.fromEntity(role.getUpdatedBy()));
         }
         return dto;

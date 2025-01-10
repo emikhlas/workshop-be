@@ -32,11 +32,11 @@ public class DivisionDto {
         dto.setId(division.getId());
         dto.setDivisionName(division.getDivisionName());
         dto.setCreatedAt(division.getCreatedAt());
-        if(division.getCreatedBy() != null) {
+        if (division.getCreatedBy() != null) {
             dto.setCreatedBy(UserInfoDto.fromEntity(division.getCreatedBy()));
         }
         dto.setUpdatedAt(division.getUpdatedAt());
-        if(division.getUpdatedBy() != null) {
+        if (division.getUpdatedBy() != null) {
             dto.setUpdatedBy(UserInfoDto.fromEntity(division.getUpdatedBy()));
         }
         return dto;

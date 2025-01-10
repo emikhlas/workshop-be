@@ -2,12 +2,10 @@ package ogya.workshop.performance_appraisal.dto.empsuggest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ogya.workshop.performance_appraisal.dto.user.UserDto;
 import ogya.workshop.performance_appraisal.dto.user.UserInfoDto;
 import ogya.workshop.performance_appraisal.entity.EmpSuggest;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -41,10 +39,10 @@ public class EmpSuggestDto {
         empSuggestDto.setAssessmentYear(empSuggest.getAssessmentYear());
         empSuggestDto.setCreatedAt(empSuggest.getCreatedAt());
         empSuggestDto.setUpdatedAt(empSuggest.getUpdatedAt());
-        if(empSuggest.getCreatedBy() != null){
+        if (empSuggest.getCreatedBy() != null) {
             empSuggestDto.setCreatedBy(UserInfoDto.fromEntity(empSuggest.getCreatedBy()));
         }
-        if(empSuggest.getUpdatedBy() != null){
+        if (empSuggest.getUpdatedBy() != null) {
             empSuggestDto.setUpdatedBy(UserInfoDto.fromEntity(empSuggest.getUpdatedBy()));
         }
         return empSuggestDto;

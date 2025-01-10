@@ -57,7 +57,7 @@ public class GroupAttitudeSkillController extends ServerResponseList {
             response.setContent(achievement.get());
             response.setTotalRows(1);
             return ResponseEntity.ok(response);
-        }else {
+        } else {
             return ResponseEntity.notFound().build();
         }
     }

@@ -56,16 +56,16 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
     public AttitudeSkillDto updateAttitudeSkill(UUID id, AttitudeSkillCreateDto attitudeSkillDto) {
         AttitudeSkill currentAttitudeSkill = attitudeSkillRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Attitude Skill with this ID does not exist."));
 
-        if(attitudeSkillDto.getAttitudeSkillName() != null){
+        if (attitudeSkillDto.getAttitudeSkillName() != null) {
             currentAttitudeSkill.setAttitudeSkillName(attitudeSkillDto.getAttitudeSkillName());
         }
 
-        if(attitudeSkillDto.getGroupAttitudeSkillId() != null){
+        if (attitudeSkillDto.getGroupAttitudeSkillId() != null) {
 
             GroupAttitudeSkill groupAttitudeSkill = groupAttitudeSkillRepo.findById(attitudeSkillDto.getGroupAttitudeSkillId()).orElseThrow(() -> new IllegalArgumentException("Group Attitude Skill with this ID does not exist."));
             currentAttitudeSkill.setGroupAttitudeSkill(groupAttitudeSkill);
         }
-        if(attitudeSkillDto.getEnabled() != null){
+        if (attitudeSkillDto.getEnabled() != null) {
             currentAttitudeSkill.setEnabled(attitudeSkillDto.getEnabled());
         }
 
@@ -93,7 +93,7 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         List<AttitudeSkill> response;
         if (enabledOnly) {
             response = attitudeSkillRepo.findAllByEnabled(1);
-        }else{
+        } else {
             response = attitudeSkillRepo.findAll();
         }
         return response.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -120,11 +120,11 @@ public class AttitudeSkillServImpl implements AttitudeSkillServ {
         }
         attitudeSkillDto.setEnabled(attitudeSkill.getEnabled());
         attitudeSkillDto.setCreatedAt(attitudeSkill.getCreatedAt());
-        if(attitudeSkill.getCreatedBy() != null){
+        if (attitudeSkill.getCreatedBy() != null) {
             attitudeSkillDto.setCreatedBy(UserInfoDto.fromEntity(attitudeSkill.getCreatedBy()));
         }
         attitudeSkillDto.setUpdatedAt(attitudeSkill.getUpdatedAt());
-        if(attitudeSkill.getUpdatedBy() != null){
+        if (attitudeSkill.getUpdatedBy() != null) {
             attitudeSkillDto.setUpdatedBy(UserInfoDto.fromEntity(attitudeSkill.getUpdatedBy()));
         }
         return attitudeSkillDto;
